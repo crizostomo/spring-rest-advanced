@@ -10,5 +10,5 @@ public class BeverageApiApplication {
 		SpringApplication.run(BeverageApiApplication.class, args);
 	}
 
-	//2.11. Definindo beans com @Component
+	//2.13. Usando @Configuration e @Bean para definir beans
 }
