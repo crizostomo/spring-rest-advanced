@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
+@Component
 public class EmailNotificator implements Notificator {
 
     private boolean upperCase;
