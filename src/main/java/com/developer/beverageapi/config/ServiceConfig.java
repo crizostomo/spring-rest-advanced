@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceConfig {
 
-    @Bean
-    public ClientActivationService clientActivationService(Notificator notificator){
-        return new ClientActivationService(notificator);
-    }
+//    @Bean
+//    public ClientActivationService clientActivationService(Notificator notificator){
+//        return new ClientActivationService(notificator);
+//    }
 }

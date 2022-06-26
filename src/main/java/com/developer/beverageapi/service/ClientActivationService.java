@@ -3,24 +3,24 @@ package com.developer.beverageapi.service;
 import com.developer.beverageapi.model.Client;
 import com.developer.beverageapi.notification.Notificator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@Component
 public class ClientActivationService {
 
-    @Autowired(required = false)
-    private Notificator notificator;
+    @Autowired
+    private List<Notificator> notificators;
 
-    public ClientActivationService(Notificator notificator) {
-        this.notificator = notificator;
-    }
+//    public ClientActivationService(Notificator notificator) {
+//    }
 
     public void active(Client client) {
         client.isActive();
 
-        if (notificator != null) {
-
+        for(Notificator notificator : notificators) {
             notificator.notifyEmail(client, "Your record is active");
-        } else {
-            System.out.println("There is no notificator, but client has been activated");
         }
     }
 }

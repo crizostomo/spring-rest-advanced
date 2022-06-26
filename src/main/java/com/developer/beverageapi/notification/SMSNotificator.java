@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 import java.util.Locale;
 
 @Component
-public class EmailNotificator implements Notificator {
+public class SMSNotificator implements Notificator {
 
 //    private boolean upperCase;
 //    private String serverHostSmtp;
 //
-//    public EmailNotificator(String serverHostSmtp) {
+//    public SMSNotificator(String serverHostSmtp) {
 //        this.serverHostSmtp = serverHostSmtp;
 //    }
 
@@ -21,9 +21,9 @@ public class EmailNotificator implements Notificator {
 //            message = message.toUpperCase(Locale.ROOT);
 //        }
 
-        System.out.printf("Notifying %s through e-mail %s : %s\n",
+        System.out.printf("Notifying %s through SMS %s using telephone : %s\n",
                 client.getName(),
-                client.getEmail(),
+                client.getPhone(),
 //                this.serverHostSmtp,
                 message);
     }

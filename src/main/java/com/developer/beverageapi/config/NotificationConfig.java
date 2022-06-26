@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class NotificationConfig {
 
-    @Bean
-    public EmailNotificator emailNotificator(){
-        EmailNotificator notificator = new EmailNotificator("smtp.beveragemail.com.br");
-        notificator.setUpperCase(true);
-
-        return notificator;
-    }
+//    @Bean
+//    public EmailNotificator emailNotificator(){
+//        EmailNotificator notificator = new EmailNotificator("smtp.beveragemail.com.br");
+//        notificator.setUpperCase(true);
+//
+//        return notificator;
+//    }
 }
