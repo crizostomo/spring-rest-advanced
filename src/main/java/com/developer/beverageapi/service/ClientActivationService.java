@@ -13,9 +13,6 @@ public class ClientActivationService {
     @Autowired
     private List<Notificator> notificators;
 
-//    public ClientActivationService(Notificator notificator) {
-//    }
-
     public void active(Client client) {
         client.isActive();
 
