@@ -1,10 +1,10 @@
 package com.developer.beverageapi.notification;
 
 import com.developer.beverageapi.model.Client;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import java.util.Locale;
-
+@Primary
 @Component
 public class EmailNotificator implements Notificator {
 
