@@ -1,10 +1,11 @@
 package com.developer.beverageapi.notification;
 
 import com.developer.beverageapi.model.Client;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-@Primary
+@Qualifier("email")
 @Component
 public class EmailNotificator implements Notificator {
 
