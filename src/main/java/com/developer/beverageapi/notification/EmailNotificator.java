@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-@Qualifier("email")
+@NotifierType(UrgencyLevel.NORMAL)
 @Component
 public class EmailNotificator implements Notificator {
 

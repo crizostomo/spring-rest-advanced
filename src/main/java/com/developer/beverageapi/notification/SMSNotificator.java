@@ -4,7 +4,7 @@ import com.developer.beverageapi.model.Client;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Qualifier("sms")
+@NotifierType(UrgencyLevel.URGENT)
 @Component
 public class SMSNotificator implements Notificator {
 
