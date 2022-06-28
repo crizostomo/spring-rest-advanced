@@ -4,19 +4,19 @@ import com.developer.beverageapi.model.Client;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Profile("prod")
+@Profile("dev")
 @NotifierType(UrgencyLevel.NORMAL)
 @Component
-public class EmailNotificator implements Notificator {
+public class MockEmailNotificator implements Notificator {
 
-    public EmailNotificator() {
-        System.out.println("Real EmailNotificator");
+    public MockEmailNotificator() {
+        System.out.println("Mock MockEmailNotificator");
     }
 
     @Override
     public void notifyEmail(Client client, String message){
 
-        System.out.printf("Notifying %s through e-mail %s : %s\n",
+        System.out.printf("MOCK: Notifying %s would be sent through e-mail %s : %s\n",
                 client.getName(),
                 client.getEmail(),
                 message);
