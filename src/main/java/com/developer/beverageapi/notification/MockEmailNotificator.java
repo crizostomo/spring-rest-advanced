@@ -9,10 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class MockEmailNotificator implements Notificator {
 
-    public MockEmailNotificator() {
-        System.out.println("Mock MockEmailNotificator");
-    }
-
     @Override
     public void notifyEmail(Client client, String message){
 

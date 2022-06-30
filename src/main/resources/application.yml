@@ -2,6 +2,9 @@ spring:
   profiles:
     active: "dev"
 
-server:
-  port: 8081
+notifier:
+  email:
+    host-server: "smtp.beveragefood.com.br"
+    server-port: 25
+
 
