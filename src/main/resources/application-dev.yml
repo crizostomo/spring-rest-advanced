@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: "dev"
+
+notifier:
+  email:
+    host-server: "smtp.beveragefood.local"
+    server-port: 30
+
+
