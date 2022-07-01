@@ -1,6 +1,7 @@
 package com.developer.beverageapi.notification;
 
 import com.developer.beverageapi.model.Client;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -10,11 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailNotificator implements Notificator {
 
-    @Value("${notifier.email.host-server}")
-    private String host;
+//    @Value("${notifier.email.host-server}")
+//    private String host;
+//
+//    @Value("${notifier.email.server-port}")
+//    private Integer port;
 
-    @Value("${notifier.email.server-port}")
-    private Integer port;
+    @Autowired
+    private PropertiesNotifier propertiesNotifier;
 
     @Override
     public void notifyEmail(Client client, String message){
