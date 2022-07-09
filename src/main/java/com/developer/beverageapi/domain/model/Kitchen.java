@@ -13,7 +13,7 @@ public class Kitchen {
     @Id
     private Long id;
 
-    @Column (name = "name") //Optional if you want to use the same name
+    @Column (name = "name", length = 30) //Optional if you want to use the same name
     private String name;
 
     public Long getId() {

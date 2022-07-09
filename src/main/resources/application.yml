@@ -3,5 +3,8 @@ spring:
     url: jdbc:mysql://localhost:3306/beverage?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
     password: root
-
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
 
