@@ -1,10 +1,7 @@
 spring:
-  profiles:
-    active: "dev"
-
-notifier:
-  email:
-    host-server: "smtp.beveragefood.com.br"
-    server-port: 25
+  datasource:
+    url: jdbc:mysql://localhost:3306/beverage?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: root
 
 
