@@ -2,6 +2,7 @@ package com.developer.beverageapi.jpa;
 
 import com.developer.beverageapi.domain.model.Kitchen;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +19,7 @@ public class KitchenRecord {
                 .getResultList();
     }
 
+    @Transactional
     public Kitchen add(Kitchen kitchen){
         return manager.merge(kitchen);
     }

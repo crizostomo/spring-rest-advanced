@@ -1,27 +1,31 @@
 package com.developer.beverageapi.jpa;
 
+import com.developer.beverageapi.BeverageApiApplication;
 import com.developer.beverageapi.domain.model.Kitchen;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 
-@SpringBootApplication
 public class MainKitchenInclusion {
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext applicationContext = new SpringApplicationBuilder(MainKitchenInclusion.class)
+        ApplicationContext applicationContext = new SpringApplicationBuilder(BeverageApiApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
 
         KitchenRecord kitchenRecord = applicationContext.getBean(KitchenRecord.class);
 
-        List<Kitchen> kitchens = kitchenRecord.list();
+        Kitchen kitchen1 = new Kitchen();
+        Kitchen kitchen2 = new Kitchen();
+        kitchen1.setName("Brazilian");
+        kitchen2.setName("Japanese");
 
-        for (Kitchen kitchen : kitchens) {
-            System.out.println(kitchen.getName());
-        }
+        kitchen1 = kitchenRecord.add(kitchen1);
+        kitchen2 = kitchenRecord.add(kitchen2);
+
+        System.out.printf("%d - %s\n", kitchen1.getId(), kitchen1.getName());
+        System.out.printf("%d - %s\n", kitchen2.getId(), kitchen2.getName());
     }
 }
