@@ -2,6 +2,7 @@ package com.developer.beverageapi.jpa;
 
 import com.developer.beverageapi.BeverageApiApplication;
 import com.developer.beverageapi.domain.model.Kitchen;
+import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -13,9 +14,9 @@ public class MainKitchenSearch {
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        KitchenRecord kitchenRecord = applicationContext.getBean(KitchenRecord.class);
+        RepositoryKitchen repositoryKitchen = applicationContext.getBean(RepositoryKitchen.class);
 
-        Kitchen kitchen = kitchenRecord.search(1L);
+        Kitchen kitchen = repositoryKitchen.searchById(1L);
 
         System.out.println(kitchen.getName());
     }

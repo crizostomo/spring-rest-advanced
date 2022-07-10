@@ -2,6 +2,7 @@ package com.developer.beverageapi.jpa;
 
 import com.developer.beverageapi.BeverageApiApplication;
 import com.developer.beverageapi.domain.model.Kitchen;
+import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -13,15 +14,15 @@ public class MainKitchenInclusion {
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        KitchenRecord kitchenRecord = applicationContext.getBean(KitchenRecord.class);
+        RepositoryKitchen repositoryKitchen = applicationContext.getBean(RepositoryKitchen.class);
 
         Kitchen kitchen1 = new Kitchen();
         Kitchen kitchen2 = new Kitchen();
         kitchen1.setName("Brazilian");
         kitchen2.setName("Japanese");
 
-        kitchen1 = kitchenRecord.save(kitchen1);
-        kitchen2 = kitchenRecord.save(kitchen2);
+        kitchen1 = repositoryKitchen.add(kitchen1);
+        kitchen2 = repositoryKitchen.add(kitchen2);
 
         System.out.printf("%d - %s\n", kitchen1.getId(), kitchen1.getName());
         System.out.printf("%d - %s\n", kitchen2.getId(), kitchen2.getName());
