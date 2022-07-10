@@ -17,4 +17,8 @@ public class KitchenRecord {
         return manager.createQuery("from Kitchen", Kitchen.class)
                 .getResultList();
     }
+
+    public Kitchen add(Kitchen kitchen){
+        return manager.merge(kitchen);
+    }
 }
