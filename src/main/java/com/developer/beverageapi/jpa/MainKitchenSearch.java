@@ -6,8 +6,6 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-import java.util.List;
-
 public class MainKitchenSearch {
 
     public static void main(String[] args) {
@@ -17,7 +15,7 @@ public class MainKitchenSearch {
 
         KitchenRecord kitchenRecord = applicationContext.getBean(KitchenRecord.class);
 
-        Kitchen kitchen = kitchenRecord.search(1L);
+        Kitchen kitchen = kitchenRecord.save(1L);
 
         System.out.println(kitchen.getName());
     }

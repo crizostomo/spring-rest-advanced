@@ -19,7 +19,7 @@ public class KitchenRecord {
                 .getResultList();
     }
 
-    public Kitchen search(Long id){
+    public Kitchen save(Long id){
         return manager.find(Kitchen.class, id);
     }
 
