@@ -15,7 +15,7 @@ public class MainKitchenSearch {
 
         KitchenRecord kitchenRecord = applicationContext.getBean(KitchenRecord.class);
 
-        Kitchen kitchen = kitchenRecord.save(1L);
+        Kitchen kitchen = kitchenRecord.search(1L);
 
         System.out.println(kitchen.getName());
     }

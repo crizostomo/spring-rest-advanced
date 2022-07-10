@@ -19,12 +19,18 @@ public class KitchenRecord {
                 .getResultList();
     }
 
-    public Kitchen save(Long id){
+    public Kitchen search(Long id){
         return manager.find(Kitchen.class, id);
     }
 
     @Transactional
-    public Kitchen add(Kitchen kitchen){
+    public Kitchen save(Kitchen kitchen){
         return manager.merge(kitchen);
+    }
+
+    @Transactional
+    public void remove(Kitchen kitchen){
+        kitchen = search(kitchen.getId());
+        manager.remove(kitchen);
     }
 }

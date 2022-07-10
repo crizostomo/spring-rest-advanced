@@ -6,8 +6,6 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-import java.util.List;
-
 public class MainKitchenInclusion {
 
     public static void main(String[] args) {
@@ -22,8 +20,8 @@ public class MainKitchenInclusion {
         kitchen1.setName("Brazilian");
         kitchen2.setName("Japanese");
 
-        kitchen1 = kitchenRecord.add(kitchen1);
-        kitchen2 = kitchenRecord.add(kitchen2);
+        kitchen1 = kitchenRecord.save(kitchen1);
+        kitchen2 = kitchenRecord.save(kitchen2);
 
         System.out.printf("%d - %s\n", kitchen1.getId(), kitchen1.getName());
         System.out.printf("%d - %s\n", kitchen2.getId(), kitchen2.getName());
