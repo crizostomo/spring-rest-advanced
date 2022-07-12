@@ -24,6 +24,7 @@ public class Restaurant {
     private BigDecimal delivery;
 
     @ManyToOne //Many restaurants own one kitchen
+    @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
 
 }
