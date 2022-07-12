@@ -23,4 +23,7 @@ public class Restaurant {
     @Column (name = "delivery")
     private BigDecimal delivery;
 
+    @ManyToOne //Many restaurants own one kitchen
+    private Kitchen kitchen;
+
 }
