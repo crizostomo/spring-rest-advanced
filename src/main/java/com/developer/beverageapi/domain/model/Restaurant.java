@@ -17,10 +17,10 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (name = "name") //Optional if you want to use the same name
+    @Column (name = "name", nullable = false) //Optional if you want to use the same name
     private String name;
 
-    @Column (name = "delivery")
+    @Column (name = "delivery", nullable = false)
     private BigDecimal delivery;
 
     @ManyToOne //Many restaurants own one kitchen

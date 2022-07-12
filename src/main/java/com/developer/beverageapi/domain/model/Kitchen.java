@@ -16,7 +16,7 @@ public class Kitchen {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (name = "name", length = 30) //Optional if you want to use the same name
+    @Column (name = "name", length = 30, nullable = false) //Optional if you want to use the same name
     private String name;
 
 }
