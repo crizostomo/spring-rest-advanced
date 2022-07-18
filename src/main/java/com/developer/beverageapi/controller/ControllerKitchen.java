@@ -41,4 +41,10 @@ public class ControllerKitchen {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Kitchen add(@RequestBody Kitchen kitchen){
+        return repositoryKitchen.add(kitchen);
+    }
 }
