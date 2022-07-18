@@ -35,14 +35,10 @@ public class ControllerKitchen {
     public ResponseEntity<Kitchen> search(@PathVariable Long kitchenId){
         Kitchen kitchen = repositoryKitchen.searchById(kitchenId);
 
-//        return ResponseEntity.status(HttpStatus.OK).body(kitchen);
+        if (kitchen != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(kitchen);
+        }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.LOCATION, "http://localhost:8080/kitchens");
-
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .headers(headers)
-                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
