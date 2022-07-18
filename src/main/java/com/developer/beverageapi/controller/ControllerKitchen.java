@@ -1,6 +1,7 @@
 package com.developer.beverageapi.controller;
 
 import com.developer.beverageapi.domain.model.Kitchen;
+import com.developer.beverageapi.domain.model.XMLWrapperKitchens;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,6 +23,11 @@ public class ControllerKitchen {
     @GetMapping
     public List<Kitchen> list(){
         return repositoryKitchen.listAll();
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    public XMLWrapperKitchens listXML(){
+        return new XMLWrapperKitchens(repositoryKitchen.listAll());
     }
 
     @GetMapping("/{kitchenId}")
