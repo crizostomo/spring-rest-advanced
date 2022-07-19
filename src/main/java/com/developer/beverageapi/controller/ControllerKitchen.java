@@ -3,6 +3,7 @@ package com.developer.beverageapi.controller;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.model.XMLWrapperKitchens;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
+import com.developer.beverageapi.domain.service.KitchenRegistrationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,6 +21,9 @@ public class ControllerKitchen {
 
     @Autowired
     private RepositoryKitchen repositoryKitchen;
+
+    @Autowired
+    private KitchenRegistrationService registrationKitchen;
 
     //    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @GetMapping
@@ -47,7 +51,7 @@ public class ControllerKitchen {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Kitchen add(@RequestBody Kitchen kitchen) {
-        return repositoryKitchen.add(kitchen);
+        return registrationKitchen.add(kitchen);
     }
 
     @PutMapping("/{kitchenId}")
