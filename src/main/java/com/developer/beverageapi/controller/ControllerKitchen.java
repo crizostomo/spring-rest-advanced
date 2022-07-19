@@ -5,6 +5,7 @@ import com.developer.beverageapi.domain.model.XMLWrapperKitchens;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,20 +21,20 @@ public class ControllerKitchen {
     @Autowired
     private RepositoryKitchen repositoryKitchen;
 
-//    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    //    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @GetMapping
-    public List<Kitchen> list(){
+    public List<Kitchen> list() {
         return repositoryKitchen.listAll();
     }
 
     @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public XMLWrapperKitchens listXML(){
+    public XMLWrapperKitchens listXML() {
         return new XMLWrapperKitchens(repositoryKitchen.listAll());
     }
 
-//    @ResponseStatus(HttpStatus.CREATED)
+    //    @ResponseStatus(HttpStatus.CREATED)
     @GetMapping("/{kitchenId}")
-    public ResponseEntity<Kitchen> search(@PathVariable Long kitchenId){
+    public ResponseEntity<Kitchen> search(@PathVariable Long kitchenId) {
         Kitchen kitchen = repositoryKitchen.searchById(kitchenId);
 
         if (kitchen != null) {
@@ -45,13 +46,13 @@ public class ControllerKitchen {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Kitchen add(@RequestBody Kitchen kitchen){
+    public Kitchen add(@RequestBody Kitchen kitchen) {
         return repositoryKitchen.add(kitchen);
     }
 
     @PutMapping("/{kitchenId}")
     public ResponseEntity<Kitchen> update(@PathVariable Long kitchenId,
-                                          @RequestBody Kitchen kitchen){
+                                          @RequestBody Kitchen kitchen) {
         Kitchen actualKitchen = repositoryKitchen.searchById(kitchenId);
 
         if (actualKitchen != null) {
@@ -64,4 +65,20 @@ public class ControllerKitchen {
         return ResponseEntity.notFound().build();
     }
 
+    @DeleteMapping("/{kitchenId}")
+    public ResponseEntity<Kitchen> delete(@PathVariable Long kitchenId) {
+
+        try {
+            Kitchen kitchen = repositoryKitchen.searchById(kitchenId);
+
+            if (kitchen != null) {
+                repositoryKitchen.remove(kitchen);
+
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (DataIntegrityViolationException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
 }
