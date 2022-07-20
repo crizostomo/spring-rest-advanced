@@ -2,6 +2,7 @@ package com.developer.beverageapi.infrasctructure.repository;
 
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +35,13 @@ public class RepositoryKitchenImpl implements RepositoryKitchen {
 
     @Override
     @Transactional
-    public void remove(Kitchen kitchen){
-        kitchen = searchById(kitchen.getId());
+    public void remove(Long id){
+        Kitchen kitchen = searchById(id);
+
+        if (kitchen == null){
+            throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(kitchen);
     }
 }
