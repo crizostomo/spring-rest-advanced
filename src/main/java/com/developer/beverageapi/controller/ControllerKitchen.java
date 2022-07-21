@@ -3,13 +3,10 @@ package com.developer.beverageapi.controller;
 import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Kitchen;
-import com.developer.beverageapi.domain.model.XMLWrapperKitchens;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.service.KitchenRegistrationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +28,6 @@ public class ControllerKitchen {
     @GetMapping
     public List<Kitchen> list() {
         return repositoryKitchen.listAll();
-    }
-
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public XMLWrapperKitchens listXML() {
-        return new XMLWrapperKitchens(repositoryKitchen.listAll());
     }
 
     //    @ResponseStatus(HttpStatus.CREATED)
@@ -62,10 +54,9 @@ public class ControllerKitchen {
         Kitchen actualKitchen = repositoryKitchen.searchById(kitchenId);
 
         if (actualKitchen != null) {
-
             BeanUtils.copyProperties(kitchen, actualKitchen, "id"); //"It is ignoring the 'id' property
 
-            Kitchen add = repositoryKitchen.add(actualKitchen);
+            actualKitchen = registrationKitchen.add(actualKitchen);
             return ResponseEntity.ok(actualKitchen);
         }
         return ResponseEntity.notFound().build();
