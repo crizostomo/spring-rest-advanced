@@ -1,14 +1,15 @@
 package com.developer.beverageapi.controller;
 
+import com.developer.beverageapi.domain.exception.EntityNotFoundException;
+import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.model.Restaurant;
+import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
+import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class ControllerRestaurant {
     private RepositoryRestaurant repositoryRestaurant;
 
     @GetMapping
-    public List<Restaurant> list(){
+    public List<Restaurant> list() {
         return repositoryRestaurant.listAll();
     }
 
@@ -34,4 +35,23 @@ public class ControllerRestaurant {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
+    @Autowired
+    private RepositoryKitchen repositoryKitchen;
+
+    @PostMapping
+    public ResponseEntity<?> add(@RequestBody Restaurant restaurant) {
+
+        try {
+            restaurant = repositoryRestaurant.add(restaurant);
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(restaurant);
+        } catch (EntityNotFoundException e){
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+
+        }
+    }
+
 }
