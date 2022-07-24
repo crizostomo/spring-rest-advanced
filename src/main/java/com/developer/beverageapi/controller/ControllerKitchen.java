@@ -51,13 +51,13 @@ public class ControllerKitchen {
     @PutMapping("/{kitchenId}")
     public ResponseEntity<Kitchen> update(@PathVariable Long kitchenId,
                                           @RequestBody Kitchen kitchen) {
-        Kitchen actualKitchen = repositoryKitchen.searchById(kitchenId);
+        Kitchen currentKitchen = repositoryKitchen.searchById(kitchenId);
 
-        if (actualKitchen != null) {
-            BeanUtils.copyProperties(kitchen, actualKitchen, "id"); //"It is ignoring the 'id' property
+        if (currentKitchen != null) {
+            BeanUtils.copyProperties(kitchen, currentKitchen, "id"); //"It is ignoring the 'id' property
 
-            actualKitchen = registrationKitchen.add(actualKitchen);
-            return ResponseEntity.ok(actualKitchen);
+            currentKitchen = registrationKitchen.add(currentKitchen);
+            return ResponseEntity.ok(currentKitchen);
         }
         return ResponseEntity.notFound().build();
     }

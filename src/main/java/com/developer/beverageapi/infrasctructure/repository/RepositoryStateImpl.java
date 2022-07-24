@@ -2,6 +2,7 @@ package com.developer.beverageapi.infrasctructure.repository;
 
 import com.developer.beverageapi.domain.model.State;
 import com.developer.beverageapi.domain.repository.RepositoryState;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +35,13 @@ public class RepositoryStateImpl implements RepositoryState {
 
     @Override
     @Transactional
-    public void remove(State state){
-        state = searchById(state.getId());
+    public void remove(Long id){
+        State state = searchById(id);
+
+        if (state == null){
+           throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(state);
     }
 }

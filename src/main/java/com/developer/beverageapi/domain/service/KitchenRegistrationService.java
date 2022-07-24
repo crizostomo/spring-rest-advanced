@@ -7,8 +7,6 @@ import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +23,7 @@ public class KitchenRegistrationService {
         try {
             repositoryKitchen.remove(kitchenId);
 
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException(
                     String.format("There is no Kitchen with the code %d",
                             kitchenId));

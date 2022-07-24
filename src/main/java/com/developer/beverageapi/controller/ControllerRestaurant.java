@@ -61,18 +61,27 @@ public class ControllerRestaurant {
     @PutMapping("/{restaurantId}")
     public ResponseEntity<Restaurant> update(@PathVariable Long restaurantId,
                                              @RequestBody Restaurant restaurant){
-        Restaurant actualRestaurant = repositoryRestaurant.searchById(restaurantId);
+        Restaurant currentRestaurant = repositoryRestaurant.searchById(restaurantId);
 
         try {
-            if (actualRestaurant != null) {
-                BeanUtils.copyProperties(restaurant, actualRestaurant, "id");
+            if (currentRestaurant != null) {
+                BeanUtils.copyProperties(restaurant, currentRestaurant, "id");
 
-                actualRestaurant = registrationRestaurant.add(actualRestaurant);
-                return ResponseEntity.ok(actualRestaurant);
+                currentRestaurant = registrationRestaurant.add(currentRestaurant);
+                return ResponseEntity.ok(currentRestaurant);
             }
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.badRequest().build();
     }
+
+//    @DeleteMapping("/{restaurantId}")
+//    public ResponseEntity<Restaurant> delete(@PathVariable Long restaurantId){
+//        try{
+//            registrationRestaurant
+//        }catch (
+//
+//        )
+//    }
 }
