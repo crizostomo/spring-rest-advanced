@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class KitchenRegistrationService {
 
     @Autowired
-    RepositoryKitchen repositoryKitchen;
+    private RepositoryKitchen repositoryKitchen;
 
     public Kitchen add(Kitchen kitchen) {
         return repositoryKitchen.add(kitchen);

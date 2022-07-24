@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class StateRegistrationService {
 
     @Autowired
-    RepositoryState repositoryState;
+    private RepositoryState repositoryState;
 
     public State add(State state){
         return repositoryState.add(state);

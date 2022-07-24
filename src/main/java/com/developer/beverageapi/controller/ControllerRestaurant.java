@@ -26,6 +26,9 @@ public class ControllerRestaurant {
     @Autowired
     private RestaurantRegistrationService registrationRestaurant;
 
+    @Autowired
+    private RepositoryKitchen repositoryKitchen;
+
     @GetMapping
     public List<Restaurant> list() {
         return repositoryRestaurant.listAll();
@@ -42,26 +45,22 @@ public class ControllerRestaurant {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @Autowired
-    private RepositoryKitchen repositoryKitchen;
-
     @PostMapping
     public ResponseEntity<?> add(@RequestBody Restaurant restaurant) {
 
         try {
             restaurant = repositoryRestaurant.add(restaurant);
-
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(restaurant);
-        } catch (EntityNotFoundException e){
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
+
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("/{restaurantId}")
     public ResponseEntity<Restaurant> update(@PathVariable Long restaurantId,
-                                             @RequestBody Restaurant restaurant){
+                                             @RequestBody Restaurant restaurant) {
         Restaurant currentRestaurant = repositoryRestaurant.searchById(restaurantId);
 
         try {
@@ -78,12 +77,12 @@ public class ControllerRestaurant {
     }
 
     @DeleteMapping("/{restaurantId}")
-    public ResponseEntity<Restaurant> delete(@PathVariable Long restaurantId){
-        try{
+    public ResponseEntity<Restaurant> delete(@PathVariable Long restaurantId) {
+        try {
             registrationRestaurant.remove(restaurantId);
             return ResponseEntity.noContent().build();
 
-        }catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
 
         } catch (EntityInUseException e) {

@@ -2,6 +2,7 @@ package com.developer.beverageapi.infrasctructure.repository;
 
 import com.developer.beverageapi.domain.model.City;
 import com.developer.beverageapi.domain.repository.RepositoryCity;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +35,13 @@ public class RepositoryCityImpl implements RepositoryCity {
 
     @Override
     @Transactional
-    public void remove(City city){
-        city = searchById(city.getId());
+    public void remove(Long id){
+        City city = searchById(id);
+
+        if(city == null){
+            throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(city);
     }
 }
