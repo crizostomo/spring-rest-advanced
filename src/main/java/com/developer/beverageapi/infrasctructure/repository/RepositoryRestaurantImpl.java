@@ -2,6 +2,7 @@ package com.developer.beverageapi.infrasctructure.repository;
 
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +35,13 @@ public class RepositoryRestaurantImpl implements RepositoryRestaurant {
 
     @Override
     @Transactional
-    public void remove(Restaurant restaurant){
-        restaurant = searchById(restaurant.getId());
+    public void remove(Long id){
+        Restaurant restaurant = searchById(id);
+
+        if (restaurant == null){
+            throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(restaurant);
     }
 }

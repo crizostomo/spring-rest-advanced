@@ -1,5 +1,6 @@
 package com.developer.beverageapi.controller;
 
+import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.model.Restaurant;
@@ -76,12 +77,17 @@ public class ControllerRestaurant {
         return ResponseEntity.badRequest().build();
     }
 
-//    @DeleteMapping("/{restaurantId}")
-//    public ResponseEntity<Restaurant> delete(@PathVariable Long restaurantId){
-//        try{
-//            registrationRestaurant
-//        }catch (
-//
-//        )
-//    }
+    @DeleteMapping("/{restaurantId}")
+    public ResponseEntity<Restaurant> delete(@PathVariable Long restaurantId){
+        try{
+            registrationRestaurant.remove(restaurantId);
+            return ResponseEntity.noContent().build();
+
+        }catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+
+        } catch (EntityInUseException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
 }
