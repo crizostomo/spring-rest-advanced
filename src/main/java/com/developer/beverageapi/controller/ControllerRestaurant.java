@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -59,7 +60,7 @@ public class ControllerRestaurant {
     }
 
     @PutMapping("/{restaurantId}")
-    public ResponseEntity<Restaurant> update(@PathVariable Long restaurantId,
+    public ResponseEntity<?> update(@PathVariable Long restaurantId,
                                              @RequestBody Restaurant restaurant) {
         Restaurant currentRestaurant = repositoryRestaurant.searchById(restaurantId);
 
@@ -70,10 +71,33 @@ public class ControllerRestaurant {
                 currentRestaurant = registrationRestaurant.add(currentRestaurant);
                 return ResponseEntity.ok(currentRestaurant);
             }
+
+            return ResponseEntity.notFound().build();
+
         } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{restaurantId}")
+    public ResponseEntity<?> partialUpdate(@PathVariable Long restaurantId,
+                                           @RequestBody Map<String, Object> fields){
+        Restaurant currentRestaurant = repositoryRestaurant.searchById(restaurantId);
+
+        if (currentRestaurant == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.badRequest().build();
+
+        merge(fields, currentRestaurant);
+
+        return update(restaurantId, currentRestaurant);
+    }
+
+    private void merge(Map<String, Object> fieldSource, Restaurant destinyRestaurant) {
+        fieldSource.forEach((propertyName, propertyValue) -> {
+
+            System.out.println(propertyName + " = " + propertyValue);
+        });
     }
 
     @DeleteMapping("/{restaurantId}")
