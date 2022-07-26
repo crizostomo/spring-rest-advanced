@@ -4,13 +4,14 @@ import com.developer.beverageapi.domain.model.State;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
 public class RepositoryStateImpl implements RepositoryState {
 
     @PersistenceContext

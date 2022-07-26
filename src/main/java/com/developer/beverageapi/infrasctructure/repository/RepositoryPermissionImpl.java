@@ -3,13 +3,14 @@ package com.developer.beverageapi.infrasctructure.repository;
 import com.developer.beverageapi.domain.model.Permission;
 import com.developer.beverageapi.domain.repository.RepositoryPermission;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
 public class RepositoryPermissionImpl implements RepositoryPermission {
 
     @PersistenceContext

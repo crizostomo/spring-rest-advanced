@@ -3,14 +3,14 @@ package com.developer.beverageapi.infrasctructure.repository;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
 public class RepositoryKitchenImpl implements RepositoryKitchen {
 
     @PersistenceContext
@@ -19,6 +19,13 @@ public class RepositoryKitchenImpl implements RepositoryKitchen {
     @Override
     public List<Kitchen> listAll(){
         return manager.createQuery("from Kitchen", Kitchen.class)
+                .getResultList();
+    }
+
+    @Override
+    public List<Kitchen> searchByName(String name) {
+        return manager.createQuery("from Kitchen where name like :name", Kitchen.class) //like = it contains part of the name
+                .setParameter("name", "%" + name + "%") //We need to inform the double "%" because they are like the '*' when we are searching
                 .getResultList();
     }
 
