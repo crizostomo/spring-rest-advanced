@@ -23,12 +23,10 @@ public class RestaurantRegistrationService {
     public Restaurant add(Restaurant restaurant){
 
         Long kitchenId = restaurant.getKitchen().getId();
-        Kitchen kitchen = repositoryKitchen.searchById(kitchenId);
-
-        if (kitchen == null){
-            throw new EntityNotFoundException(
-                    String.format("There is no kitchen registry with code %d", kitchenId));
-        }
+        Kitchen kitchen = repositoryKitchen
+                .findById(kitchenId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format("There is no kitchen registry with code %d", kitchenId)));
 
         restaurant.setKitchen(kitchen);
 

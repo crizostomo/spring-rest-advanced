@@ -16,12 +16,12 @@ public class KitchenRegistrationService {
     private RepositoryKitchen repositoryKitchen;
 
     public Kitchen add(Kitchen kitchen) {
-        return repositoryKitchen.add(kitchen);
+        return repositoryKitchen.save(kitchen);
     }
 
     public void remove(Long kitchenId) {
         try {
-            repositoryKitchen.remove(kitchenId);
+            repositoryKitchen.deleteById(kitchenId);
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException(

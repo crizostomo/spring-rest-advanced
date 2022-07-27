@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/kitchens", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -27,16 +28,16 @@ public class ControllerKitchen {
     //    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @GetMapping
     public List<Kitchen> list() {
-        return repositoryKitchen.listAll();
+        return repositoryKitchen.findAll();
     }
 
     //    @ResponseStatus(HttpStatus.CREATED)
     @GetMapping("/{kitchenId}")
     public ResponseEntity<Kitchen> search(@PathVariable Long kitchenId) {
-        Kitchen kitchen = repositoryKitchen.searchById(kitchenId);
+        Optional<Kitchen> kitchen = repositoryKitchen.findById(kitchenId);
 
-        if (kitchen != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(kitchen);
+        if (kitchen.isPresent()) {
+            return ResponseEntity.ok(kitchen.get());
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -51,13 +52,13 @@ public class ControllerKitchen {
     @PutMapping("/{kitchenId}")
     public ResponseEntity<Kitchen> update(@PathVariable Long kitchenId,
                                           @RequestBody Kitchen kitchen) {
-        Kitchen currentKitchen = repositoryKitchen.searchById(kitchenId);
+        Optional<Kitchen> currentKitchen = repositoryKitchen.findById(kitchenId);
 
-        if (currentKitchen != null) {
-            BeanUtils.copyProperties(kitchen, currentKitchen, "id"); //"It is ignoring the 'id' property
+        if (currentKitchen.isPresent()) {
+            BeanUtils.copyProperties(kitchen, currentKitchen.get(), "id"); //"It is ignoring the 'id' property
 
-            currentKitchen = registrationKitchen.add(currentKitchen);
-            return ResponseEntity.ok(currentKitchen);
+            Kitchen savedKitchen = registrationKitchen.add(currentKitchen.get());
+            return ResponseEntity.ok(savedKitchen);
         }
         return ResponseEntity.notFound().build();
     }

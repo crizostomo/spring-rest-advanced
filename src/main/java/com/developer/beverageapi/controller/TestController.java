@@ -23,8 +23,8 @@ public class TestController {
      * An example: https://localhost:8080/test/kitchens/by-name?name=Brazilian
      */
 
-    @GetMapping("/kitchens/by-name")
-    public List<Kitchen> kitchenByName(@RequestParam String name){
-        return repositoryKitchen.searchByName(name);
-    }
+//    @GetMapping("/kitchens/by-name")
+//    public List<Kitchen> kitchenByName(@RequestParam String name){
+//        return repositoryKitchen.searchByName(name);
+//    }
 }
