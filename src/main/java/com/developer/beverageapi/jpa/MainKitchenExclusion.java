@@ -19,7 +19,7 @@ public class MainKitchenExclusion {
         Kitchen kitchen1 = new Kitchen();
         kitchen1.setId(1L);
 
-        repositoryKitchen.remove(kitchen1.getId());
+        repositoryKitchen.deleteById(kitchen1.getId());
 
         System.out.printf("%d - %s\n", kitchen1.getId(), kitchen1.getName());
     }

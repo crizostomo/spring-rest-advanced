@@ -7,6 +7,8 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
+import java.util.Optional;
+
 public class MainKitchenSearch {
 
     public static void main(String[] args) {
@@ -16,8 +18,8 @@ public class MainKitchenSearch {
 
         RepositoryKitchen repositoryKitchen = applicationContext.getBean(RepositoryKitchen.class);
 
-        Kitchen kitchen = repositoryKitchen.searchById(1L);
+        Optional<Kitchen> kitchen = repositoryKitchen.findById(1L);
 
-        System.out.println(kitchen.getName());
+        System.out.println(kitchen.get().getName());
     }
 }

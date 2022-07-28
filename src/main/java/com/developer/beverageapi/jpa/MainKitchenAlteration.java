@@ -20,7 +20,7 @@ public class MainKitchenAlteration {
         kitchen1.setId(1L);
         kitchen1.setName("Brazilian");
 
-        kitchen1 = repositoryKitchen.add(kitchen1);
+        kitchen1 = repositoryKitchen.save(kitchen1);
 
         System.out.printf("%d - %s\n", kitchen1.getId(), kitchen1.getName());
     }

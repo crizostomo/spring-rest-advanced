@@ -11,6 +11,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CityRegistrationService {
 
@@ -23,21 +25,21 @@ public class CityRegistrationService {
     public City add(City city){
 
         Long stateId = city.getState().getId();
-        State state = repositoryState.searchById(stateId);
+        Optional<State> state = repositoryState.findById(stateId);
 
-        if (state == null){
+        if (state.isEmpty()){
             throw new EntityNotFoundException(
                     String.format("There is no state registry with code %d", stateId));
         }
 
-        city.setState(state);
+        city.setState(state.get());
 
-        return repositoryCity.add(city);
+        return repositoryCity.save(city);
     }
 
     public void remove(Long cityId){
         try {
-            repositoryCity.remove(cityId);
+            repositoryCity.deleteById(cityId);
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException(

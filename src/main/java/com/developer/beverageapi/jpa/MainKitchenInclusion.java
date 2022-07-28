@@ -21,8 +21,8 @@ public class MainKitchenInclusion {
         kitchen1.setName("Brazilian");
         kitchen2.setName("Japanese");
 
-        kitchen1 = repositoryKitchen.add(kitchen1);
-        kitchen2 = repositoryKitchen.add(kitchen2);
+        kitchen1 = repositoryKitchen.save(kitchen1);
+        kitchen2 = repositoryKitchen.save(kitchen2);
 
         System.out.printf("%d - %s\n", kitchen1.getId(), kitchen1.getName());
         System.out.printf("%d - %s\n", kitchen2.getId(), kitchen2.getName());

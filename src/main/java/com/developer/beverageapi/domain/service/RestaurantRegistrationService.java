@@ -30,12 +30,12 @@ public class RestaurantRegistrationService {
 
         restaurant.setKitchen(kitchen);
 
-        return repositoryRestaurant.add(restaurant);
+        return repositoryRestaurant.save(restaurant);
     }
 
     public void remove(Long restaurantId){
         try {
-            repositoryRestaurant.remove(restaurantId);
+            repositoryRestaurant.deleteById(restaurantId);
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException(

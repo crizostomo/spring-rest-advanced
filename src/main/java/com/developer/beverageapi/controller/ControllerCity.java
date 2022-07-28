@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cities")
@@ -29,15 +30,15 @@ public class ControllerCity {
 
     @GetMapping
     public List<City> list() {
-        return repositoryCity.listAll();
+        return repositoryCity.findAll();
     }
 
     @GetMapping("/{cityId}")
     public ResponseEntity<City> search(@PathVariable Long cityId) {
-        City city = repositoryCity.searchById(cityId);
+        Optional<City> city = repositoryCity.findById(cityId);
 
-        if (city != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(city);
+        if (city.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(city.get());
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -47,7 +48,7 @@ public class ControllerCity {
     public ResponseEntity<?> add(@RequestBody City city) {
 
         try {
-            city = repositoryCity.add(city);
+            city = repositoryCity.save(city);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(city);
 
@@ -57,16 +58,15 @@ public class ControllerCity {
     }
 
     @PutMapping("/{cityId}")
-    public ResponseEntity<City> update(@PathVariable Long cityId,
-                                       @RequestBody City city) {
-        City currentCity = repositoryCity.searchById(cityId);
+    public ResponseEntity<City> update(@PathVariable Long cityId, @RequestBody City city) {
+        Optional<City> currentCity = repositoryCity.findById(cityId);
 
         try {
-            if (currentCity != null) {
+            if (currentCity.isPresent()) {
                 BeanUtils.copyProperties(city, currentCity, "id");
 
-                currentCity = registrationCity.add(currentCity);
-                return ResponseEntity.ok(currentCity);
+                City savedCity = registrationCity.add(currentCity.get());
+                return ResponseEntity.ok(savedCity);
             }
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();

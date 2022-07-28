@@ -18,7 +18,7 @@ public class MainRestaurantConsult {
 
         RepositoryRestaurant repositoryRestaurant = applicationContext.getBean(RepositoryRestaurant.class);
 
-        List<Restaurant> restaurants = repositoryRestaurant.listAll();
+        List<Restaurant> restaurants = repositoryRestaurant.findAll();
 
         for (Restaurant restaurant : restaurants) {
             System.out.printf("%s - %f - %s\n",

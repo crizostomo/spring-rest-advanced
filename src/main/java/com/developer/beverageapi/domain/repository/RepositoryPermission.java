@@ -1,13 +1,10 @@
 package com.developer.beverageapi.domain.repository;
 
 import com.developer.beverageapi.domain.model.Permission;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RepositoryPermission {
+public interface RepositoryPermission extends JpaRepository<Permission, Long> {
 
-    List<Permission> listAll();
-    Permission searchById(Long id);
-    Permission add(Permission permission);
-    void remove(Permission permission);
 }
