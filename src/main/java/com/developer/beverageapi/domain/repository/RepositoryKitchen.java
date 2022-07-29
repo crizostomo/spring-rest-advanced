@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface RepositoryKitchen extends JpaRepository<Kitchen, Long> {
 
-    List<Kitchen> findByName(String name);
+    List<Kitchen> findByNameContaining(String name);
 
     Optional<Kitchen> findOneByName(String name);
 }
