@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/test")
@@ -23,8 +24,13 @@ public class TestController {
      * An example: https://localhost:8080/test/kitchens/by-name?name=Brazilian
      */
 
-//    @GetMapping("/kitchens/by-name")
-//    public List<Kitchen> kitchenByName(@RequestParam String name){
-//        return repositoryKitchen.searchByName(name);
-//    }
+    @GetMapping("/kitchens/by-name")
+    public List<Kitchen> kitchensByName(@RequestParam("name") String name){ //@RequestParam("name") is optional
+        return repositoryKitchen.findByName(name);
+    }
+
+    @GetMapping("/kitchens/by-only-name")
+    public Optional<Kitchen> kitchenByName(@RequestParam("name") String name){ //@RequestParam("name") is optional
+        return repositoryKitchen.findOneByName(name);
+    }
 }
