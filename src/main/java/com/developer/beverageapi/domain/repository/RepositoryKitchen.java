@@ -13,4 +13,7 @@ public interface RepositoryKitchen extends JpaRepository<Kitchen, Long> {
     List<Kitchen> findByNameContaining(String name);
 
     Optional<Kitchen> findOneByName(String name);
+
+    boolean existsByName(String name);
+
 }
