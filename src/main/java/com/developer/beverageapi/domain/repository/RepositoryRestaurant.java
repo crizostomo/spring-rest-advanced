@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-public interface RepositoryRestaurant extends JpaRepository<Restaurant, Long> {
+public interface RepositoryRestaurant extends JpaRepository<Restaurant, Long>, RestaurantRepositoryQueries {
 
     List<Restaurant> findByDeliveryBetween (BigDecimal initialFee, BigDecimal finalFee);
 
@@ -25,4 +25,5 @@ public interface RepositoryRestaurant extends JpaRepository<Restaurant, Long> {
     List<Restaurant> findTop2ByNameContaining(String name);
 
     int countByKitchenId(Long kitchen);
+
 }
