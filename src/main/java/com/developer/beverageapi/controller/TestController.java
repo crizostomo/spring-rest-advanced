@@ -53,7 +53,7 @@ public class TestController {
 
     @GetMapping("/restaurants/by-name")
     public List<Restaurant> restaurantsByNameAndKitchenId(String name, Long kitchenId){
-        return repositoryRestaurant.findByNameContainingAndKitchenId(name, kitchenId);
+        return repositoryRestaurant.findByName(name, kitchenId);
     }
 
     @GetMapping("/restaurants/by-first-name")
