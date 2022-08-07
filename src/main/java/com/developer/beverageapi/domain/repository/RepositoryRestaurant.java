@@ -26,4 +26,4 @@ public interface RepositoryRestaurant extends JpaRepository<Restaurant, Long>, R
 
     int countByKitchenId(Long kitchen);
 
-    }
+}
