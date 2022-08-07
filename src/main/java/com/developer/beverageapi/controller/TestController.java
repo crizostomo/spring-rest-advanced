@@ -4,6 +4,8 @@ import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
+import com.developer.beverageapi.infrasctructure.repository.spec.RestaurantWithFreeDeliverySpec;
+import com.developer.beverageapi.infrasctructure.repository.spec.RestaurantWithSimilarNameSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,4 +78,11 @@ public class TestController {
         return repositoryRestaurant.find(name, initialDeliveryFee, finalDeliveryFee);
     }
 
+    @GetMapping("/restaurants/with-free-delivery")
+    public List<Restaurant> restaurantsWithFreeDelivery(String name){
+        var withFreeDelivery = new RestaurantWithFreeDeliverySpec();
+        var withSimilarName = new RestaurantWithSimilarNameSpec(name);
+
+        return repositoryRestaurant.findAll(withFreeDelivery.and(withSimilarName));
+    }
 }

@@ -2,6 +2,7 @@ package com.developer.beverageapi.domain.repository;
 
 import com.developer.beverageapi.domain.model.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -9,7 +10,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-public interface RepositoryRestaurant extends JpaRepository<Restaurant, Long>, RepositoryRestaurantQueries {
+public interface RepositoryRestaurant extends JpaRepository<Restaurant, Long>, RepositoryRestaurantQueries,
+        JpaSpecificationExecutor<Restaurant> {
 
     List<Restaurant> findByDeliveryBetween (BigDecimal initialFee, BigDecimal finalFee);
 
