@@ -70,4 +70,10 @@ public class TestController {
     public int restaurantsCountByKitchen(Long kitchenId){
         return repositoryRestaurant.countByKitchenId(kitchenId);
     }
+
+    @GetMapping("/restaurants/by-name-and-delivery")
+    public List<Restaurant> restaurantsByNameAndDelivery(String name, BigDecimal initialDeliveryFee, BigDecimal finalDeliveryFee){
+        return repositoryRestaurant.find(name, initialDeliveryFee, finalDeliveryFee);
+    }
+
 }
