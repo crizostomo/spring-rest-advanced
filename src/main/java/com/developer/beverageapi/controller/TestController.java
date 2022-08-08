@@ -80,8 +80,6 @@ public class TestController {
 
     @GetMapping("/restaurants/with-free-delivery")
     public List<Restaurant> restaurantsWithFreeDelivery(String name){
-
-        return repositoryRestaurant.findAll(withFreeDelivery()
-                .and(withSimilarName(name)));
+        return repositoryRestaurant.findWithFreeDelivery(name);
     }
 }

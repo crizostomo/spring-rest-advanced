@@ -52,4 +52,9 @@ public class RepositoryRestaurantImpl implements RepositoryRestaurantQueries {
         TypedQuery<Restaurant> query = manager.createQuery(criteria);
         return query.getResultList();
     }
+
+    @Override
+    public List<Restaurant> findWithFreeDelivery(String name) {
+        return null;
+    }
 }

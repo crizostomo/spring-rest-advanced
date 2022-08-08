@@ -1,7 +1,10 @@
 package com.developer.beverageapi.infrasctructure.repository;
 
 import com.developer.beverageapi.domain.model.Restaurant;
+import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurantQueries;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -16,11 +19,17 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.developer.beverageapi.infrasctructure.repository.spec.RestaurantsSpecs.withFreeDelivery;
+import static com.developer.beverageapi.infrasctructure.repository.spec.RestaurantsSpecs.withSimilarName;
+
 @Repository
 public class RestaurantRepositoryImpl implements RepositoryRestaurantQueries {
 
     @PersistenceContext
     private EntityManager manager;
+
+    @Autowired @Lazy
+    private RepositoryRestaurant repositoryRestaurant;
 
     @Override
     public List<Restaurant> find(String name, BigDecimal initialDeliveryFee, BigDecimal finalDeliveryFee) {
@@ -50,5 +59,11 @@ public class RestaurantRepositoryImpl implements RepositoryRestaurantQueries {
 
         TypedQuery<Restaurant> query = manager.createQuery(criteria);
         return query.getResultList();
+    }
+
+    @Override
+    public List<Restaurant> findWithFreeDelivery(String name) {
+        return repositoryRestaurant.findAll(withFreeDelivery()
+                .and(withSimilarName(name)));
     }
 }
