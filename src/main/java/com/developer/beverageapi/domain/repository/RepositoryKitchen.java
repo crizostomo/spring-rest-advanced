@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RepositoryKitchen extends JpaRepository<Kitchen, Long> {
+public interface RepositoryKitchen extends CustomJpaRepository<Kitchen, Long> {
 
     List<Kitchen> findByNameContaining(String name);
 

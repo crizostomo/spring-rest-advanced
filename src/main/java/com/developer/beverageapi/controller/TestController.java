@@ -14,8 +14,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import static com.developer.beverageapi.infrasctructure.repository.spec.RestaurantsSpecs.*;
-
 @RestController
 @RequestMapping("/test")
 public class TestController {
@@ -46,6 +44,11 @@ public class TestController {
     @GetMapping("/kitchens/exists")
     public boolean kitchenExists(@RequestParam("name") String name){ //@RequestParam("name") is optional
         return repositoryKitchen.existsByName(name);
+    }
+
+    @GetMapping("/kitchens/first")
+    public Optional<Kitchen> kitchenFirst(){
+        return repositoryKitchen.findFirst();
     }
 
     @GetMapping("/restaurants/by-delivery-fee")
@@ -81,5 +84,10 @@ public class TestController {
     @GetMapping("/restaurants/with-free-delivery")
     public List<Restaurant> restaurantsWithFreeDelivery(String name){
         return repositoryRestaurant.findWithFreeDelivery(name);
+    }
+
+    @GetMapping("/restaurants/first")
+    public Optional<Restaurant> restaurantsFirst(){
+        return repositoryRestaurant.findFirst();
     }
 }

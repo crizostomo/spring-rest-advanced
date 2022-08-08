@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-public interface RepositoryRestaurant extends JpaRepository<Restaurant, Long>, RepositoryRestaurantQueries,
+public interface RepositoryRestaurant extends CustomJpaRepository<Restaurant, Long>, RepositoryRestaurantQueries,
         JpaSpecificationExecutor<Restaurant> {
 
     List<Restaurant> findByDeliveryBetween (BigDecimal initialFee, BigDecimal finalFee);
