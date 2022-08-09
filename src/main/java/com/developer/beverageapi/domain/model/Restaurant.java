@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -26,5 +28,11 @@ public class Restaurant {
     @ManyToOne //Many restaurants own one kitchen
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
+
+    @ManyToMany
+    @JoinTable(name = "restaurant_payment",
+    joinColumns = @JoinColumn(name = "restaurant_id"),
+    inverseJoinColumns = @JoinColumn(name = "payment_id"))
+    private List<Payment> payments = new ArrayList<>();
 
 }
