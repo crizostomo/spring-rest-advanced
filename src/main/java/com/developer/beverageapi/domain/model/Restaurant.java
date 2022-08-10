@@ -1,5 +1,6 @@
 package com.developer.beverageapi.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -29,6 +30,7 @@ public class Restaurant {
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "restaurant_payment",
     joinColumns = @JoinColumn(name = "restaurant_id"),
