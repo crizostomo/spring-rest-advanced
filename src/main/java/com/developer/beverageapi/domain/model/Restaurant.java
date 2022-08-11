@@ -30,6 +30,7 @@ public class Restaurant {
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
 
+    @JsonIgnore
     @Embedded //This property is part of the restaurant entity
     private Address address;
 
