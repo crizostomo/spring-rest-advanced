@@ -3,9 +3,12 @@ package com.developer.beverageapi.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,16 @@ public class Restaurant {
     @JsonIgnore
     @Embedded //This property is part of the restaurant entity
     private Address address;
+
+    @JsonIgnore
+    @CreationTimestamp //The property must be salved with the current time
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime recordDate;
+
+    @JsonIgnore
+    @UpdateTimestamp //The property must be salved with the current time when updated
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime updatedDate;
 
     @JsonIgnore
     @ManyToMany
