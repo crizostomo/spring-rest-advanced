@@ -30,5 +30,4 @@ public class Kitchen {
     @JsonIgnore
     @OneToMany(mappedBy = "kitchen")
     private List<Restaurant> restaurants = new ArrayList<>(); //new ArrayList<>() to start an empty list to avoid nullPointer exception
-
 }

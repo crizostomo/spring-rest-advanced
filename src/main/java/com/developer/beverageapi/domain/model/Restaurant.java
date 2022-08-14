@@ -53,5 +53,4 @@ public class Restaurant {
     joinColumns = @JoinColumn(name = "restaurant_id"),
     inverseJoinColumns = @JoinColumn(name = "payment_id"))
     private List<Payment> payments = new ArrayList<>();
-
 }
