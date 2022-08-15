@@ -1,6 +1,7 @@
 package com.developer.beverageapi.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,8 +30,9 @@ public class Restaurant {
     @Column (name = "delivery", nullable = false)
     private BigDecimal delivery;
 
-    @JsonIgnore
-    @ManyToOne //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
+//    @JsonIgnore
+    @JsonIgnoreProperties("hibernateLazyInitializer")
+    @ManyToOne(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
 
