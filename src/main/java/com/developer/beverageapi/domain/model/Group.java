@@ -4,31 +4,27 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Product {
+@Table(name = "groupp")
+public class Group {
 
     @EqualsAndHashCode.Include
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String description;
+    @ManyToMany
+    @JoinTable(name = "groupp_permission",
+    joinColumns = @JoinColumn(name = "groupp_id"),
+    inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private List<Permission> permissions = new ArrayList<>();
 
-    @Column(nullable = false)
-    private BigDecimal price;
-
-    @Column(nullable = false)
-    private Boolean active;
-
-    @ManyToOne
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
 }

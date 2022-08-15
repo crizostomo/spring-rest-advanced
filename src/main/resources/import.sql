@@ -18,10 +18,17 @@ insert into payment (id, description) values (1, 'debit');
 insert into payment (id, description) values (2, 'cash');
 insert into payment (id, description) values (3, 'credit');
 
+insert into groupp (id, name) values (1, 'Ouro');
+insert into groupp (id, name) values (2, 'Prata');
+insert into groupp (id, name) values (3, 'Bronze');
+
 insert into permission (name, description) values ('admin', "All permissions");
 insert into permission (name, description) values ('user', "read permissions");
+insert into permission (name, description) values ('visitor', "read permissions");
 
 insert into restaurant_payment (restaurant_id, payment_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3);
+
+insert into groupp_permission (groupp_id, permission_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3);
 
 insert into product (id, name, description, price, active, restaurant_id) values (1, 'Mix de Frutas', 'Contém 4 Frutas', 10, TRUE, 1);
 insert into product (id, name, description, price, active, restaurant_id) values (2, 'Matutinho', 'Feijao, Arroz, Contra File e Batata Frita', 26, TRUE, 2);
