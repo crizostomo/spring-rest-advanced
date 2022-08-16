@@ -32,7 +32,7 @@ public class Restaurant {
 
 //    @JsonIgnore
     @JsonIgnoreProperties("hibernateLazyInitializer")
-    @ManyToOne(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
+    @ManyToOne//(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
 
@@ -50,8 +50,8 @@ public class Restaurant {
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime updatedDate;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER) // Everything that finishes with ...ToMany uses the strategy 'Lazy Loading'
+//    @JsonIgnore
+    @ManyToMany//(fetch = FetchType.EAGER) // Everything that finishes with ...ToMany uses the strategy 'Lazy Loading'
     @JoinTable(name = "restaurant_payment",
     joinColumns = @JoinColumn(name = "restaurant_id"),
     inverseJoinColumns = @JoinColumn(name = "payment_id"))

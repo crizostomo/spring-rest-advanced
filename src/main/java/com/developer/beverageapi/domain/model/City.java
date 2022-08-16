@@ -19,7 +19,7 @@ public class City {
     @Column (name = "name", nullable = false) //Optional if you want to use the same name
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY) //Many states have one city
+    @ManyToOne//(fetch = FetchType.LAZY) //Many states have one city
     @JoinColumn(name = "state_id") //In JPA this is generated automatically if you don't put the name
     private State state;
 
