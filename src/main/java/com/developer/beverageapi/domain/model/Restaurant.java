@@ -51,7 +51,7 @@ public class Restaurant {
     private LocalDateTime updatedDate;
 
     @JsonIgnore
-    @ManyToMany // Everything that finishes with ...ToMany uses the strategy 'Lazy Loading'
+    @ManyToMany(fetch = FetchType.EAGER) // Everything that finishes with ...ToMany uses the strategy 'Lazy Loading'
     @JoinTable(name = "restaurant_payment",
     joinColumns = @JoinColumn(name = "restaurant_id"),
     inverseJoinColumns = @JoinColumn(name = "payment_id"))
