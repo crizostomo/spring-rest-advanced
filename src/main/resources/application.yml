@@ -3,6 +3,10 @@ spring:
     url: jdbc:mysql://localhost:3306/beverage?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
     password: root
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 3
+      idle-timeout: 10000
   jpa:
     generate-ddl: true
     hibernate:
