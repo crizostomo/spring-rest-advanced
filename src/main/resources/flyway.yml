@@ -1,0 +1,4 @@
+flyway:
+  url: jdbc:mysql://localhost:3306/beverage?createDatabaseIfNotExist=true&serverTimezone=UTC
+  user: root
+  password: root
