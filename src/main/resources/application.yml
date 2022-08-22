@@ -1,4 +1,6 @@
 spring:
+  flyway:
+    locations: classpath:db/migration,classpath:db/testdata
   datasource:
     url: jdbc:mysql://localhost:3306/beverage?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
@@ -16,9 +18,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
-      javax:
-        persistence:
-          schema-generation:
+#      javax:
+#        persistence:
+#          schema-generation:
 #            scripts:
 #              action: create
               #create-target: src/main/resources/ddl.sql #We use this file just once to create the DB.
