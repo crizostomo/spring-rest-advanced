@@ -14,6 +14,12 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class KitchenRegistrationService {
 
+    public static final String MSG_KITCHEN_NOT_FOUND
+            = "There is no Kitchen with the code %d";
+
+    public static final String MSG_KITCHEN_BEING_USED
+            = "Kitchen with the code %d cannot be removed, because it is being used";
+
     @Autowired
     private RepositoryKitchen repositoryKitchen;
 
@@ -29,13 +35,18 @@ public class KitchenRegistrationService {
 //            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
 //                    String.format("There is no Kitchen with the code %d", kitchenId));
             throw new EntityNotFoundException(
-                    String.format("There is no Kitchen with the code %d",
+                    String.format(MSG_KITCHEN_NOT_FOUND,
                             kitchenId));
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
-                    String.format("Kitchen with the code %d cannot be removed," +
-                            "because it is being used", kitchenId));
+                    String.format(MSG_KITCHEN_BEING_USED, kitchenId));
         }
+    }
+
+    public Kitchen searchOrFail(Long kitchenId) {
+        return repositoryKitchen.findById(kitchenId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format(MSG_KITCHEN_NOT_FOUND, kitchenId)));
     }
 }
