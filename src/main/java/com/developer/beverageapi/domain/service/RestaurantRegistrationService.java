@@ -26,13 +26,14 @@ public class RestaurantRegistrationService {
     @Autowired
     private RepositoryKitchen repositoryKitchen;
 
+    @Autowired
+    private KitchenRegistrationService registrationKitchen;
+
     public Restaurant add(Restaurant restaurant) {
 
         Long kitchenId = restaurant.getKitchen().getId();
-        Kitchen kitchen = repositoryKitchen
-                .findById(kitchenId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        String.format(MSG_RESTAURANT_NOT_FOUND, kitchenId)));
+
+        Kitchen kitchen = registrationKitchen.searchOrFail(kitchenId);
 
         restaurant.setKitchen(kitchen);
 

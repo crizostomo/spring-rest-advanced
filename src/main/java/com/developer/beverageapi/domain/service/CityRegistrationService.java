@@ -27,17 +27,16 @@ public class CityRegistrationService {
     @Autowired
     private RepositoryState repositoryState;
 
+    @Autowired
+    private StateRegistrationService registrationState;
+
     public City add(City city) {
 
         Long stateId = city.getState().getId();
-        Optional<State> state = repositoryState.findById(stateId);
 
-        if (state.isEmpty()) {
-            throw new EntityNotFoundException(
-                    String.format(MSG_CITY_NOT_FOUND, stateId));
-        }
+        State state = registrationState.searchOrFail(stateId);
 
-        city.setState(state.get());
+        city.setState(state);
 
         return repositoryCity.save(city);
     }

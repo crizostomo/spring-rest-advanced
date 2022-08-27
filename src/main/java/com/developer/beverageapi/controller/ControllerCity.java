@@ -1,5 +1,7 @@
 package com.developer.beverageapi.controller;
 
+import com.developer.beverageapi.domain.exception.BusinessException;
+import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.City;
 import com.developer.beverageapi.domain.repository.RepositoryCity;
 import com.developer.beverageapi.domain.repository.RepositoryState;
@@ -37,7 +39,11 @@ public class ControllerCity {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public City add(@RequestBody City city) {
-        return registrationCity.add(city);
+        try {
+            return registrationCity.add(city);
+        } catch (EntityNotFoundException e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     @PutMapping("/{cityId}")
@@ -46,7 +52,11 @@ public class ControllerCity {
 
         BeanUtils.copyProperties(city, currentCity, "id");
 
-        return registrationCity.add(currentCity);
+        try {
+            return registrationCity.add(currentCity);
+        } catch (EntityNotFoundException e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{cityId}")
