@@ -16,20 +16,25 @@ import java.util.Optional;
 @Service
 public class CityRegistrationService {
 
+    public static final String MSG_CITY_NOT_FOUND = "There is no city registry with code %d";
+
+    public static final String MSG_CITY_BEING_USED = "City with the code %d cannot be removed," +
+            "because it is being used";
+
     @Autowired
     private RepositoryCity repositoryCity;
 
     @Autowired
     private RepositoryState repositoryState;
 
-    public City add(City city){
+    public City add(City city) {
 
         Long stateId = city.getState().getId();
         Optional<State> state = repositoryState.findById(stateId);
 
-        if (state.isEmpty()){
+        if (state.isEmpty()) {
             throw new EntityNotFoundException(
-                    String.format("There is no state registry with code %d", stateId));
+                    String.format(MSG_CITY_NOT_FOUND, stateId));
         }
 
         city.setState(state.get());
@@ -37,19 +42,23 @@ public class CityRegistrationService {
         return repositoryCity.save(city);
     }
 
-    public void remove(Long cityId){
+    public void remove(Long cityId) {
         try {
             repositoryCity.deleteById(cityId);
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException(
-                    String.format("There is no City with the code %d",
-                            cityId));
+                    String.format(MSG_CITY_NOT_FOUND, cityId));
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
-                    String.format("City with the code %d cannot be removed," +
-                            "because it is being used", cityId));
+                    String.format(MSG_CITY_BEING_USED, cityId));
         }
+    }
+
+    public City searchOrFail(Long cityId) {
+        return repositoryCity.findById(cityId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format(MSG_CITY_NOT_FOUND, cityId)));
     }
 }
