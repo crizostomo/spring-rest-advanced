@@ -38,62 +38,36 @@ public class ControllerRestaurant {
     }
 
     @GetMapping("/{restaurantId}")
-    public ResponseEntity<Restaurant> search(@PathVariable Long restaurantId) {
-        Optional<Restaurant> restaurant = repositoryRestaurant.findById(restaurantId);
-
-        if (restaurant.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(restaurant.get());
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public Restaurant search(@PathVariable Long restaurantId) {
+        return registrationRestaurant.searchOrFail(restaurantId);
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody Restaurant restaurant) {
-
-        try {
-            restaurant = repositoryRestaurant.save(restaurant);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(restaurant);
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @ResponseStatus(HttpStatus.CREATED)
+    public Restaurant add(@RequestBody Restaurant restaurant) {
+        return registrationRestaurant.add(restaurant);
     }
 
+
     @PutMapping("/{restaurantId}")
-    public ResponseEntity<?> update(@PathVariable Long restaurantId,
-                                             @RequestBody Restaurant restaurant) {
-        Optional<Restaurant> currentRestaurant = repositoryRestaurant.findById(restaurantId);
+    public Restaurant update(@PathVariable Long restaurantId,
+                             @RequestBody Restaurant restaurant) {
+        Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
 
-        try {
-            if (currentRestaurant.isPresent()) {
-                BeanUtils.copyProperties(restaurant, currentRestaurant.get(),
-                        "id", "payment", "address", "recordDate");
+        BeanUtils.copyProperties(restaurant, currentRestaurant,
+                "id", "payment", "address", "recordDate");
 
-                Restaurant savedRestaurant = registrationRestaurant.add(currentRestaurant.get());
-                return ResponseEntity.ok(savedRestaurant);
-            }
-
-            return ResponseEntity.notFound().build();
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return registrationRestaurant.add(currentRestaurant);
     }
 
     @PatchMapping("/{restaurantId}")
-    public ResponseEntity<?> partialUpdate(@PathVariable Long restaurantId,
-                                           @RequestBody Map<String, Object> fields){
-        Optional<Restaurant> currentRestaurant = repositoryRestaurant.findById(restaurantId);
+    public Restaurant partialUpdate(@PathVariable Long restaurantId,
+                                    @RequestBody Map<String, Object> fields) {
+        Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
 
-        if (currentRestaurant.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
+        merge(fields, currentRestaurant);
 
-        merge(fields, currentRestaurant.get());
-
-        return update(restaurantId, currentRestaurant.get());
+        return update(restaurantId, currentRestaurant);
     }
 
     private void merge(Map<String, Object> sourceData, Restaurant destinyRestaurant) { //destinyRestaurant = currentRestaurant
@@ -113,16 +87,8 @@ public class ControllerRestaurant {
     }
 
     @DeleteMapping("/{restaurantId}")
-    public ResponseEntity<Restaurant> delete(@PathVariable Long restaurantId) {
-        try {
-            registrationRestaurant.remove(restaurantId);
-            return ResponseEntity.noContent().build();
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-
-        } catch (EntityInUseException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long restaurantId) {
+        registrationRestaurant.remove(restaurantId);
     }
 }

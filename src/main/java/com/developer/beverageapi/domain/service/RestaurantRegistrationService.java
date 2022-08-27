@@ -14,38 +14,48 @@ import org.springframework.stereotype.Service;
 @Service
 public class RestaurantRegistrationService {
 
+    public static final String MSG_RESTAURANT_NOT_FOUND
+            = "There is no Restaurant with the code %d";
+
+    public static final String MSG_RESTAURANT_BEING_USED
+            = "Restaurant with the code %d cannot be removed, because it is being used";
+
     @Autowired
     private RepositoryRestaurant repositoryRestaurant;
 
     @Autowired
     private RepositoryKitchen repositoryKitchen;
 
-    public Restaurant add(Restaurant restaurant){
+    public Restaurant add(Restaurant restaurant) {
 
         Long kitchenId = restaurant.getKitchen().getId();
         Kitchen kitchen = repositoryKitchen
                 .findById(kitchenId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        String.format("There is no kitchen registry with code %d", kitchenId)));
+                        String.format(MSG_RESTAURANT_NOT_FOUND, kitchenId)));
 
         restaurant.setKitchen(kitchen);
 
         return repositoryRestaurant.save(restaurant);
     }
 
-    public void remove(Long restaurantId){
+    public void remove(Long restaurantId) {
         try {
             repositoryRestaurant.deleteById(restaurantId);
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException(
-                    String.format("There is no Restaurant with the code %d",
-                            restaurantId));
+                    String.format(MSG_RESTAURANT_NOT_FOUND, restaurantId));
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
-                    String.format("Restaurant with the code %d cannot be removed," +
-                            "because it is being used", restaurantId));
+                    String.format(MSG_RESTAURANT_BEING_USED, restaurantId));
         }
+    }
+
+    public Restaurant searchOrFail(Long restaurantId) {
+        return repositoryRestaurant.findById(restaurantId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format(MSG_RESTAURANT_NOT_FOUND, restaurantId)));
     }
 }
