@@ -1,6 +1,6 @@
 package com.developer.beverageapi.controller;
 
-import com.developer.beverageapi.domain.exception.EntityInUseException;
+import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
@@ -10,14 +10,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -45,7 +43,11 @@ public class ControllerRestaurant {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Restaurant add(@RequestBody Restaurant restaurant) {
-        return registrationRestaurant.add(restaurant);
+        try {
+            return registrationRestaurant.add(restaurant);
+        } catch (EntityNotFoundException e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
 
@@ -57,7 +59,11 @@ public class ControllerRestaurant {
         BeanUtils.copyProperties(restaurant, currentRestaurant,
                 "id", "payment", "address", "recordDate");
 
-        return registrationRestaurant.add(currentRestaurant);
+        try {
+            return registrationRestaurant.add(currentRestaurant);
+        } catch (EntityNotFoundException e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     @PatchMapping("/{restaurantId}")
