@@ -2,6 +2,7 @@ package com.developer.beverageapi.controller;
 
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
+import com.developer.beverageapi.domain.exception.StateNotFoundException;
 import com.developer.beverageapi.domain.model.City;
 import com.developer.beverageapi.domain.repository.RepositoryCity;
 import com.developer.beverageapi.domain.repository.RepositoryState;
@@ -41,8 +42,8 @@ public class ControllerCity {
     public City add(@RequestBody City city) {
         try {
             return registrationCity.add(city);
-        } catch (EntityNotFoundException e) {
-            throw new BusinessException(e.getMessage());
+        } catch (StateNotFoundException e) {
+            throw new BusinessException(e.getMessage(), e);
         }
     }
 
@@ -54,8 +55,8 @@ public class ControllerCity {
 
         try {
             return registrationCity.add(currentCity);
-        } catch (EntityNotFoundException e) {
-            throw new BusinessException(e.getMessage());
+        } catch (StateNotFoundException e) {
+            throw new BusinessException(e.getMessage(), e);
         }
     }
 
