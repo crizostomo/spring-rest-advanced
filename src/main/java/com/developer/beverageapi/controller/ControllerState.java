@@ -25,52 +25,34 @@ public class ControllerState {
     private StateRegistrationService registrationState;
 
     @GetMapping
-    public List<State> list(){
+    public List<State> list() {
         return repositoryState.findAll();
     }
 
     @GetMapping("/{stateId}")
-    public ResponseEntity<State> search(@PathVariable Long stateId) {
-        Optional<State> state = repositoryState.findById(stateId);
-
-        if (state.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(state.get());
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public State search(@PathVariable Long stateId) {
+        return registrationState.searchOrFail(stateId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public State add(@RequestBody State state){
-        return repositoryState.save(state);
+    public State add(@RequestBody State state) {
+        return registrationState.add(state);
     }
 
     @PutMapping("/{stateId}")
-    public ResponseEntity<State> update(@PathVariable Long stateId,
-                                        @RequestBody State state){
-        Optional<State> currentState = repositoryState.findById(stateId);
+    public State update(@PathVariable Long stateId,
+                                        @RequestBody State state) {
+        State currentState = registrationState.searchOrFail(stateId);
 
-        if (currentState.isPresent()) {
-            BeanUtils.copyProperties(state, currentState, "id");
+        BeanUtils.copyProperties(state, currentState, "id");
 
-            State savedState = registrationState.add(currentState.get());
-            return ResponseEntity.ok(savedState);
-        }
-        return ResponseEntity.notFound().build();
+        return registrationState.add(currentState);
     }
 
     @DeleteMapping("/{stateId}")
-    public ResponseEntity<State> delete(@PathVariable Long stateId){
-        try {
-            registrationState.remove(stateId);
-            return ResponseEntity.noContent().build();
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-
-        } catch (EntityInUseException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long stateId) {
+        registrationState.remove(stateId);
     }
 }

@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class StateRegistrationService {
 
+    public static final String MSG_STATE_NOT_FOUND = "There is no State with the code %d";
+
+    public static final String MSG_STATE_BEING_USED = "State with the code %d cannot be found" +
+            "because it is being used";
+
     @Autowired
     private RepositoryState repositoryState;
 
@@ -25,13 +30,17 @@ public class StateRegistrationService {
 
         } catch (EmptyResultDataAccessException e){
             throw new EntityNotFoundException(
-                    String.format("There is no State with the code %d",
-                            stateId));
+                    String.format(MSG_STATE_NOT_FOUND, stateId));
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
-                    String.format("State with the code %d cannot be found" +
-                            "because it is being used", stateId));
+                    String.format(MSG_STATE_BEING_USED, stateId));
         }
+    }
+
+    public State searchOrFail(Long stateId) {
+        return repositoryState.findById(stateId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format(MSG_STATE_NOT_FOUND, stateId)));
     }
 }
