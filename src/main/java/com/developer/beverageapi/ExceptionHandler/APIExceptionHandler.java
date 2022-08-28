@@ -1,6 +1,7 @@
 package com.developer.beverageapi.ExceptionHandler;
 
 import com.developer.beverageapi.domain.exception.BusinessException;
+import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,18 @@ public class APIExceptionHandler {
                 .message(e.getMessage()).build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(error);
+    }
+
+    @ExceptionHandler(EntityInUseException.class)
+    public ResponseEntity<?> handleEntityInUseException(
+            EntityInUseException e){
+
+        APIError error = APIError.builder()
+                .dateTime(LocalDateTime.now())
+                .message(e.getMessage()).build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(error);
     }
 
