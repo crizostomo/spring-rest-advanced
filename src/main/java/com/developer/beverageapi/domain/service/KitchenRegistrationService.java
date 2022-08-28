@@ -1,7 +1,7 @@
 package com.developer.beverageapi.domain.service;
 
 import com.developer.beverageapi.domain.exception.EntityInUseException;
-import com.developer.beverageapi.domain.exception.EntityNotFoundException;
+import com.developer.beverageapi.domain.exception.KitchenNotFoundException;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class KitchenRegistrationService {
-
-    public static final String MSG_KITCHEN_NOT_FOUND
-            = "There is no Kitchen with the code %d";
 
     public static final String MSG_KITCHEN_BEING_USED
             = "Kitchen with the code %d cannot be removed, because it is being used";
@@ -32,9 +29,7 @@ public class KitchenRegistrationService {
         } catch (EmptyResultDataAccessException e) {
 //            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
 //                    String.format("There is no Kitchen with the code %d", kitchenId));
-            throw new EntityNotFoundException(
-                    String.format(MSG_KITCHEN_NOT_FOUND,
-                            kitchenId));
+            throw new KitchenNotFoundException(kitchenId);
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
@@ -44,7 +39,6 @@ public class KitchenRegistrationService {
 
     public Kitchen searchOrFail(Long kitchenId) {
         return repositoryKitchen.findById(kitchenId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        String.format(MSG_KITCHEN_NOT_FOUND, kitchenId)));
+                .orElseThrow(() -> new KitchenNotFoundException(kitchenId));
     }
 }

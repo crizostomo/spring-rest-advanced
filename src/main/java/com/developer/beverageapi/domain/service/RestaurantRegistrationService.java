@@ -1,7 +1,7 @@
 package com.developer.beverageapi.domain.service;
 
 import com.developer.beverageapi.domain.exception.EntityInUseException;
-import com.developer.beverageapi.domain.exception.EntityNotFoundException;
+import com.developer.beverageapi.domain.exception.RestaurantNotFoundException;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RestaurantRegistrationService {
-
-    public static final String MSG_RESTAURANT_NOT_FOUND
-            = "There is no Restaurant with the code %d";
 
     public static final String MSG_RESTAURANT_BEING_USED
             = "Restaurant with the code %d cannot be removed, because it is being used";
@@ -45,8 +42,7 @@ public class RestaurantRegistrationService {
             repositoryRestaurant.deleteById(restaurantId);
 
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException(
-                    String.format(MSG_RESTAURANT_NOT_FOUND, restaurantId));
+            throw new RestaurantNotFoundException(restaurantId);
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
@@ -56,7 +52,6 @@ public class RestaurantRegistrationService {
 
     public Restaurant searchOrFail(Long restaurantId) {
         return repositoryRestaurant.findById(restaurantId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        String.format(MSG_RESTAURANT_NOT_FOUND, restaurantId)));
+                .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
     }
 }

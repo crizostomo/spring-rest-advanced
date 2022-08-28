@@ -1,7 +1,6 @@
 package com.developer.beverageapi.domain.service;
 
 import com.developer.beverageapi.domain.exception.EntityInUseException;
-import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.exception.StateNotFoundException;
 import com.developer.beverageapi.domain.model.State;
 import com.developer.beverageapi.domain.repository.RepositoryState;
