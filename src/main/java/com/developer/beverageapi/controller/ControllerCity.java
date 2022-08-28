@@ -68,28 +68,4 @@ public class ControllerCity {
     public void delete(@PathVariable Long cityId) {
         registrationCity.remove(cityId);
     }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> handleEntityNotFoundException(
-            EntityNotFoundException e){
-
-        APIError error = APIError.builder()
-                .dateTime(LocalDateTime.now())
-                .message(e.getMessage()).build();
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(error);
-    }
-
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<?> handleBusinessException(
-            BusinessException e){
-
-        APIError error = APIError.builder()
-                .dateTime(LocalDateTime.now())
-                .message(e.getMessage()).build();
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(error);
-    }
 }
