@@ -20,8 +20,21 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleEntityNotFoundException(
             EntityNotFoundException ex, WebRequest request) {
 
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(),
-                HttpStatus.NOT_FOUND, request);
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ProblemType problemType = ProblemType.ENTITY_NOT_FOUND;
+        String detail = ex.getMessage();
+
+        APIError error = createProblemBuilder(status, problemType, detail).build();
+
+//        APIError error = APIError.builder()
+//                .status(status.value())
+//                .type("https://google.com.br/entity-not-found-exception")
+//                .title("Entity not found")
+//                .detail(ex.getMessage())
+//                .build();
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(),
+                status, request);
     }
 
     @ExceptionHandler(BusinessException.class)
@@ -45,16 +58,24 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
         if (body == null) {
             body = APIError.builder()
-                    .dateTime(LocalDateTime.now())
-                    .message(status.getReasonPhrase())
+                    .title(status.getReasonPhrase())
+                    .status(status.value())
                     .build();
         } else if (body instanceof String) {
             body = APIError.builder()
-                    .dateTime(LocalDateTime.now())
-                    .message((String) body)
+                    .title((String) body)
+                    .status(status.value())
                     .build();
         }
 
         return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+    private APIError.APIErrorBuilder createProblemBuilder(HttpStatus status, ProblemType problemType, String detail) {
+        return APIError.builder()
+                .status(status.value())
+                .type(problemType.getUri())
+                .title(problemType.getTitle())
+                .detail(detail);
     }
 }
