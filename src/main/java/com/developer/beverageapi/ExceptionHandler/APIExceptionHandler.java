@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
-
 @ControllerAdvice
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -26,13 +24,6 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
         APIError error = createProblemBuilder(status, problemType, detail).build();
 
-//        APIError error = APIError.builder()
-//                .status(status.value())
-//                .type("https://google.com.br/entity-not-found-exception")
-//                .title("Entity not found")
-//                .detail(ex.getMessage())
-//                .build();
-
         return handleExceptionInternal(ex, error, new HttpHeaders(),
                 status, request);
     }
@@ -41,13 +32,25 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleBusinessException(
             BusinessException ex, WebRequest request) {
 
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(),
-                HttpStatus.BAD_REQUEST, request);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ProblemType problemType = ProblemType.INVALID_ENTITY;
+        String detail = ex.getMessage();
+
+        APIError error = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(),
+                status, request);
     }
 
     @ExceptionHandler(EntityInUseException.class)
     public ResponseEntity<?> handleEntityInUseException(
             EntityInUseException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.CONFLICT;
+        ProblemType problemType = ProblemType.ENTITY_IN_USE;
+        String detail = ex.getMessage();
+
+        APIError error = createProblemBuilder(status, problemType, detail).build();
 
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(),
                 HttpStatus.CONFLICT, request);
