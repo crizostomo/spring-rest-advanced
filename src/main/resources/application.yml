@@ -24,4 +24,7 @@ spring:
 #            scripts:
 #              action: create
               #create-target: src/main/resources/ddl.sql #We use this file just once to create the DB.
-
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+      fail-on-ignored-properties: true
