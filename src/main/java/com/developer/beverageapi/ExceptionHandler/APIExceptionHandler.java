@@ -3,6 +3,8 @@ package com.developer.beverageapi.ExceptionHandler;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +14,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.stream.Collectors;
+
 @ControllerAdvice
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        Throwable rootCause = ExceptionUtils.getRootCause(ex);
+        
+        if (rootCause instanceof InvalidFormatException) {
+            return handleInvalidFormatException((InvalidFormatException) rootCause,
+                    headers, status, request);
+        }
 
         ProblemType problemType = ProblemType.MESSAGE_NOT_READABLE;
         String detail = "The body is invalid. Verify syntax error";
@@ -24,6 +34,22 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         APIError error = createProblemBuilder(status, problemType, detail).build();
 
         return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
+    }
+
+    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        String path = ex.getPath().stream()
+                .map(ref -> ref.getFieldName())
+                .collect(Collectors.joining("."));
+
+        ProblemType problemType = ProblemType.MESSAGE_NOT_READABLE;
+        String detail = String.format("The property '%s' received the value" +
+                "'%s', which is invalid. Please correct it and inform a compatible" +
+                "value with the type %s.", path, ex.getValue(), ex.getTargetType());
+
+        APIError error = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, error, headers, status, request);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

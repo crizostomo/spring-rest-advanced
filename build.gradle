@@ -22,6 +22,8 @@ dependencies {
 
 	implementation group: 'org.flywaydb', name: 'flyway-mysql', version: '8.2.2'
 
+	implementation group: 'org.apache.commons', name: 'commons-lang3'
+
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 	annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 
