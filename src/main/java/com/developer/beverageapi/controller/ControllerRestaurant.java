@@ -6,13 +6,18 @@ import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -68,28 +73,39 @@ public class ControllerRestaurant {
 
     @PatchMapping("/{restaurantId}")
     public Restaurant partialUpdate(@PathVariable Long restaurantId,
-                                    @RequestBody Map<String, Object> fields) {
+                                    @RequestBody Map<String, Object> fields, HttpServletRequest request) {
         Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
 
-        merge(fields, currentRestaurant);
+        merge(fields, currentRestaurant, request);
 
         return update(restaurantId, currentRestaurant);
     }
 
-    private void merge(Map<String, Object> sourceData, Restaurant destinyRestaurant) { //destinyRestaurant = currentRestaurant
-        ObjectMapper objectMapper = new ObjectMapper();
-        Restaurant sourceRestaurant = objectMapper.convertValue(sourceData, Restaurant.class);
+    private void merge(Map<String, Object> sourceData, Restaurant destinyRestaurant,
+                       HttpServletRequest request) { //destinyRestaurant = currentRestaurant
+        ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
 
-        sourceData.forEach((propertyName, propertyValue) -> {
-            Field field = ReflectionUtils.findField(Restaurant.class, propertyName);
-            field.setAccessible(true); //Here, we "break" the private method in restaurant by accessing it
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
-            Object newValue = ReflectionUtils.getField(field, sourceRestaurant);
+            Restaurant sourceRestaurant = objectMapper.convertValue(sourceData, Restaurant.class);
 
-            System.out.println(propertyName + " = " + propertyValue);
+            sourceData.forEach((propertyName, propertyValue) -> {
+                Field field = ReflectionUtils.findField(Restaurant.class, propertyName);
+                field.setAccessible(true); //Here, we "break" the private method in restaurant by accessing it
 
-            ReflectionUtils.setField(field, destinyRestaurant, newValue);
-        });
+                Object newValue = ReflectionUtils.getField(field, sourceRestaurant);
+
+                System.out.println(propertyName + " = " + propertyValue);
+
+                ReflectionUtils.setField(field, destinyRestaurant, newValue);
+            });
+        } catch (IllegalArgumentException e) {
+            Throwable rootCause = ExceptionUtils.getRootCause(e);
+            throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
+        }
     }
 
     @DeleteMapping("/{restaurantId}")
