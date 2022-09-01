@@ -4,6 +4,7 @@ import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,9 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         if (rootCause instanceof InvalidFormatException) {
             return handleInvalidFormatException((InvalidFormatException) rootCause,
                     headers, status, request);
+        } else if (rootCause instanceof PropertyBindingException) {
+            return handlePropertyBindingException((PropertyBindingException) rootCause,
+                    headers, status, request);
         }
 
         ProblemType problemType = ProblemType.MESSAGE_NOT_READABLE;
@@ -44,8 +48,23 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemType problemType = ProblemType.MESSAGE_NOT_READABLE;
         String detail = String.format("The property '%s' received the value" +
-                "'%s', which is invalid. Please correct it and inform a compatible" +
+                "'%s', which is invalid. Please correct it and inform a compatible " +
                 "value with the type %s.", path, ex.getValue(), ex.getTargetType());
+
+        APIError error = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, error, headers, status, request);
+    }
+
+    private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        String path = ex.getPath().stream()
+                .map(ref -> ref.getFieldName())
+                .collect(Collectors.joining("."));
+
+        ProblemType problemType = ProblemType.FIELD_NOT_ALLOWED;
+        String detail = String.format("The property '%s' received the field value" +
+                "'%s', which is invalid. Please verify your input ", path, ex.getPropertyName());
 
         APIError error = createProblemBuilder(status, problemType, detail).build();
 
