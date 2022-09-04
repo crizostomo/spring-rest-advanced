@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
@@ -23,6 +24,18 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
+        String detail = String.format("The resource %s, that you tried to access does not exist.",
+                ex.getRequestURL());
+
+        APIError error = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, error, headers, status, request);
+    }
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
@@ -111,7 +124,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
             EntityNotFoundException ex, WebRequest request) {
 
         HttpStatus status = HttpStatus.NOT_FOUND;
-        ProblemType problemType = ProblemType.ENTITY_NOT_FOUND;
+        ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
         String detail = ex.getMessage();
 
         APIError error = createProblemBuilder(status, problemType, detail).build();
@@ -125,7 +138,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
             BusinessException ex, WebRequest request) {
 
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        ProblemType problemType = ProblemType.INVALID_ENTITY;
+        ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
         String detail = ex.getMessage();
 
         APIError error = createProblemBuilder(status, problemType, detail).build();
