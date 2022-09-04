@@ -9,7 +9,8 @@ public enum ProblemType {
     FIELD_NOT_ALLOWED("/field-not-allowed", "This field is not allowed"),
     INVALID_PARAMETER("/invalid-parameter", "Invalid Parameter"),
     MESSAGE_NOT_READABLE("/message-not-readable", "This message is not readable"),
-    RESOURCE_NOT_FOUND("/resource-not-found", "Resource not found");
+    RESOURCE_NOT_FOUND("/resource-not-found", "Resource not found"),
+    SYSTEM_ERROR("/system-error", "System Error");
 
     private String title;
     private String uri;

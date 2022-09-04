@@ -25,6 +25,21 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        ProblemType problemType = ProblemType.SYSTEM_ERROR;
+        String detail = "A System Error Has Occurred. Please Try Again Later. "
+                + "If the problem continues, contact us";
+
+        // Important to put the printStackTrace (At least for now, since we aren't doing any logging)
+        ex.printStackTrace();
+
+        APIError error = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
+    }
+
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
