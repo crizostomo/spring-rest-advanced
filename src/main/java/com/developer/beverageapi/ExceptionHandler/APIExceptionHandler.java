@@ -25,12 +25,14 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
+    public static final String GENERIC_MESSAGE_ERROR = "A System Error Has Occurred. Please Try Again Later. "
+            + "If the problem continues, contact us";
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ProblemType problemType = ProblemType.SYSTEM_ERROR;
-        String detail = "A System Error Has Occurred. Please Try Again Later. "
-                + "If the problem continues, contact us";
+        String detail = GENERIC_MESSAGE_ERROR;
 
         // Important to put the printStackTrace (At least for now, since we aren't doing any logging)
         ex.printStackTrace();
@@ -129,7 +131,9 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("The property '%s' received the field value" +
                 "'%s', which is invalid. Please verify your input ", path, ex.getPropertyName());
 
-        APIError error = createProblemBuilder(status, problemType, detail).build();
+        APIError error = createProblemBuilder(status, problemType, detail)
+                .userMessage(GENERIC_MESSAGE_ERROR)
+                .build();
 
         return handleExceptionInternal(ex, error, headers, status, request);
     }
