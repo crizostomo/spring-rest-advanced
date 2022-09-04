@@ -38,9 +38,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         // Important to put the printStackTrace (At least for now, since we aren't doing any logging)
         ex.printStackTrace();
 
-        APIError error = createProblemBuilder(status, problemType, detail)
-                .userMessage(GENERIC_MESSAGE_ERROR)
-                .build();
+        APIError error = getApiError(status, problemType, detail);
 
         return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
     }
@@ -52,9 +50,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("The resource %s, that you tried to access does not exist.",
                 ex.getRequestURL());
 
-        APIError error = createProblemBuilder(status, problemType, detail)
-                .userMessage(GENERIC_MESSAGE_ERROR)
-                .build();
+        APIError error = getApiError(status, problemType, detail);
 
         return handleExceptionInternal(ex, error, headers, status, request);
     }
@@ -81,9 +77,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
                 "'%s', which is invalid. Please correct it and inform a compatible " +
                 "value with the type %s.", ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName());
 
-        APIError error = createProblemBuilder(status, problemType, detail)
-                .userMessage(GENERIC_MESSAGE_ERROR)
-                .build();
+        APIError error = getApiError(status, problemType, detail);
 
         return handleExceptionInternal(ex, error, headers, status, request);
     }
@@ -91,7 +85,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Throwable rootCause = ExceptionUtils.getRootCause(ex);
-        
+
         if (rootCause instanceof InvalidFormatException) {
             return handleInvalidFormatException((InvalidFormatException) rootCause,
                     headers, status, request);
@@ -103,9 +97,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.MESSAGE_NOT_READABLE;
         String detail = "The body is invalid. Verify syntax error";
 
-        APIError error = createProblemBuilder(status, problemType, detail)
-                .userMessage(GENERIC_MESSAGE_ERROR)
-                .build();
+        APIError error = getApiError(status, problemType, detail);
 
         return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
     }
@@ -123,9 +115,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
                 "'%s', which is invalid. Please correct it and inform a compatible " +
                 "value with the type %s.", path, ex.getValue(), ex.getTargetType());
 
-        APIError error = createProblemBuilder(status, problemType, detail)
-                .userMessage(GENERIC_MESSAGE_ERROR)
-                .build();
+        APIError error = getApiError(status, problemType, detail);
 
         return handleExceptionInternal(ex, error, headers, status, request);
     }
@@ -142,9 +132,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("The property '%s' received the field value" +
                 "'%s', which is invalid. Please verify your input ", path, ex.getPropertyName());
 
-        APIError error = createProblemBuilder(status, problemType, detail)
-                .userMessage(GENERIC_MESSAGE_ERROR)
-                .build();
+        APIError error = getApiError(status, problemType, detail);
 
         return handleExceptionInternal(ex, error, headers, status, request);
     }
@@ -157,9 +145,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
         String detail = ex.getMessage();
 
-        APIError error = createProblemBuilder(status, problemType, detail)
-                .userMessage(GENERIC_MESSAGE_ERROR)
-                .build();
+        APIError error = getApiError(status, problemType, detail);
 
         return handleExceptionInternal(ex, error, new HttpHeaders(),
                 status, request);
@@ -173,9 +159,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
         String detail = ex.getMessage();
 
-        APIError error = createProblemBuilder(status, problemType, detail)
-                .userMessage(GENERIC_MESSAGE_ERROR)
-                .build();
+        APIError error = getApiError(status, problemType, detail);
 
         return handleExceptionInternal(ex, error, new HttpHeaders(),
                 status, request);
@@ -189,9 +173,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.ENTITY_IN_USE;
         String detail = ex.getMessage();
 
-        APIError error = createProblemBuilder(status, problemType, detail)
-                .userMessage(GENERIC_MESSAGE_ERROR)
-                .build();
+        APIError error = getApiError(status, problemType, detail);
 
         return handleExceptionInternal(ex, error, new HttpHeaders(),
                 HttpStatus.CONFLICT, request);
@@ -228,5 +210,11 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         return references.stream()
                 .map(ref -> ref.getFieldName())
                 .collect(Collectors.joining("."));
+    }
+
+    private APIError getApiError(HttpStatus status, ProblemType problemType, String detail) {
+        return createProblemBuilder(status, problemType, detail)
+                .userMessage(GENERIC_MESSAGE_ERROR)
+                .build();
     }
 }
