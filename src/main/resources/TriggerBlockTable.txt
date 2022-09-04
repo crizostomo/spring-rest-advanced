@@ -1,0 +1,18 @@
+-- Creating a DDL Trigger
+
+    CREATE OR ALTER TRIGGER TriggerBlockTable
+    ON DATABASE
+    FOR CREATE_TABLE, ALTER_TABLE, DROP_TABLE AS
+        BEGIN
+
+            PRINT 'Procedure not allowed. Contact the administrator'
+            ROLLBACK
+
+        END
+
+-- Test to Create a table after the creating the Trigger
+CREATE TABLE Test(ID INT, Name VARCHAR(MAX))
+
+-- Command to return to the previous permission
+
+    DROP TRIGGER TriggerBlockTable
