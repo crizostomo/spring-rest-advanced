@@ -18,6 +18,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class ControllerRestaurant {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurant add(@RequestBody Restaurant restaurant) {
+    public Restaurant add(@RequestBody @Valid Restaurant restaurant) {
         try {
             return registrationRestaurant.add(restaurant);
         } catch (EntityNotFoundException e) {
