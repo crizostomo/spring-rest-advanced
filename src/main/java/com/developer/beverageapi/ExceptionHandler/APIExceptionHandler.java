@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,7 +51,19 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.INVALID_DATA;
         String detail = "One or more fields are wrong. Fill them correctly and try again";
 
-        APIError error = getApiError(status, problemType, detail);
+        BindingResult bindingResult = ex.getBindingResult();
+
+        List<APIError.Field> problemFields = bindingResult.getFieldErrors().stream()
+                .map(fieldError -> APIError.Field.builder()
+                        .name(fieldError.getField())
+                        .userMessage(fieldError.getDefaultMessage())
+                        .build())
+                .collect(Collectors.toList());
+
+        APIError error = createProblemBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .fields(problemFields)
+                .build();
 
         return handleExceptionInternal(ex, error, headers, status, request);
     }
@@ -225,8 +238,11 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private APIError getApiError(HttpStatus status, ProblemType problemType, String detail) {
+        List<APIError.Field> errorFields = null;
+
         return createProblemBuilder(status, problemType, detail)
                 .userMessage(GENERIC_MESSAGE_ERROR)
+                .fields(errorFields)
                 .build();
     }
 }
