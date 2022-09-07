@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -38,6 +39,8 @@ public class Restaurant {
 
 //    @JsonIgnore
     @JsonIgnoreProperties("hibernateLazyInitializer")
+    @NotNull
+    @Valid
     @ManyToOne//(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
