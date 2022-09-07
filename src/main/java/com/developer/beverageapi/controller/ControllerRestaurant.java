@@ -1,5 +1,6 @@
 package com.developer.beverageapi.controller;
 
+import com.developer.beverageapi.Groups;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Restaurant;
@@ -15,10 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class ControllerRestaurant {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurant add(@RequestBody @Valid Restaurant restaurant) {
+    public Restaurant add(@RequestBody @Validated(Groups.RestaurantRecord.class) Restaurant restaurant) {
         try {
             return registrationRestaurant.add(restaurant);
         } catch (EntityNotFoundException e) {

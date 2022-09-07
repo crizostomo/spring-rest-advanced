@@ -1,5 +1,6 @@
 package com.developer.beverageapi.domain.model;
 
+import com.developer.beverageapi.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -28,18 +29,18 @@ public class Restaurant {
 
     @NotNull
     @NotEmpty
-    @NotBlank
+    @NotBlank(groups = Groups.RestaurantRecord.class)
     @Column (name = "name", nullable = false) //Optional if you want to use the same name
     private String name;
 
     //@DecimalMin("0")
-    @PositiveOrZero
+    @PositiveOrZero(groups = Groups.RestaurantRecord.class)
     @Column (name = "delivery", nullable = false)
     private BigDecimal delivery;
 
 //    @JsonIgnore
     @JsonIgnoreProperties("hibernateLazyInitializer")
-    @NotNull
+    @NotNull(groups = Groups.RestaurantRecord.class)
     @Valid
     @ManyToOne//(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
