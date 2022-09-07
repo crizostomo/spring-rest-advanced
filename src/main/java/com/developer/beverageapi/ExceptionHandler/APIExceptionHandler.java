@@ -8,6 +8,9 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,9 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String GENERIC_MESSAGE_ERROR = "A System Error Has Occurred. Please Try Again Later. "
             + "If the problem continues, contact us";
+
+    @Autowired
+    private MessageSource messageSource;
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
@@ -54,10 +60,14 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         BindingResult bindingResult = ex.getBindingResult();
 
         List<APIError.Field> problemFields = bindingResult.getFieldErrors().stream()
-                .map(fieldError -> APIError.Field.builder()
-                        .name(fieldError.getField())
-                        .userMessage(fieldError.getDefaultMessage())
-                        .build())
+                .map(fieldError -> {
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+
+                    return APIError.Field.builder()
+                            .name(fieldError.getField())
+                            .userMessage(message)
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         APIError error = createProblemBuilder(status, problemType, detail)
