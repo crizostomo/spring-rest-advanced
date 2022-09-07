@@ -2,5 +2,5 @@ package com.developer.beverageapi;
 
 public interface Groups {
 
-    public interface RestaurantRecord {}
+    public interface KitchenId {}
 }

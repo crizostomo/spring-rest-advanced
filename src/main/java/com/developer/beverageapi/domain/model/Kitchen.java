@@ -20,7 +20,7 @@ import java.util.List;
 public class Kitchen {
 
     @EqualsAndHashCode.Include
-    @NotNull(groups = Groups.RestaurantRecord.class)
+    @NotNull(groups = Groups.KitchenId.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

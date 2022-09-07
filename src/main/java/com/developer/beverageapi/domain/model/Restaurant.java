@@ -9,8 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,19 +30,19 @@ public class Restaurant {
 
     @NotNull
     @NotEmpty
-    @NotBlank(groups = Groups.RestaurantRecord.class)
+    @NotBlank
     @Column (name = "name", nullable = false) //Optional if you want to use the same name
     private String name;
 
     //@DecimalMin("0")
-    @PositiveOrZero(groups = Groups.RestaurantRecord.class)
+    @PositiveOrZero
     @Column (name = "delivery", nullable = false)
     private BigDecimal delivery;
 
 //    @JsonIgnore
     @JsonIgnoreProperties("hibernateLazyInitializer")
-    @NotNull(groups = Groups.RestaurantRecord.class)
-    @Valid
+    @NotNull
+    @ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
     @ManyToOne//(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
