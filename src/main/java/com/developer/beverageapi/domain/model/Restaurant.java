@@ -28,9 +28,7 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Name must be filled")
     @Column (name = "name", nullable = false) //Optional if you want to use the same name
     private String name;
 
