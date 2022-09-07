@@ -42,7 +42,7 @@ public class ControllerKitchen {
 
     @PutMapping("/{kitchenId}")
     public Kitchen update(@PathVariable Long kitchenId,
-                          @RequestBody Kitchen kitchen) {
+                          @RequestBody @Valid Kitchen kitchen) {
         Kitchen currentKitchen = registrationKitchen.searchOrFail(kitchenId);
 
         BeanUtils.copyProperties(kitchen, currentKitchen, "id"); //"It is ignoring the 'id' property

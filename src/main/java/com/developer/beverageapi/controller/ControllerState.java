@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,13 +37,13 @@ public class ControllerState {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public State add(@RequestBody State state) {
+    public State add(@RequestBody @Valid State state) {
         return registrationState.add(state);
     }
 
     @PutMapping("/{stateId}")
     public State update(@PathVariable Long stateId,
-                                        @RequestBody State state) {
+                                        @RequestBody @Valid State state) {
         State currentState = registrationState.searchOrFail(stateId);
 
         BeanUtils.copyProperties(state, currentState, "id");

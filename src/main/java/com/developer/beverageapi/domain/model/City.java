@@ -1,9 +1,14 @@
 package com.developer.beverageapi.domain.model;
 
+import com.developer.beverageapi.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -17,10 +22,12 @@ public class City {
     private Long id;
 
     @Column (name = "name", nullable = false) //Optional if you want to use the same name
+    @NotBlank
     private String name;
 
+    @NotNull
+    @ConvertGroup(from = Default.class, to = Groups.StateId.class)
     @ManyToOne//(fetch = FetchType.LAZY) //Many states have one city
     @JoinColumn(name = "state_id") //In JPA this is generated automatically if you don't put the name
     private State state;
-
 }
