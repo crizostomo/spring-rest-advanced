@@ -1,6 +1,6 @@
 package com.developer.beverageapi.domain.model;
 
-import com.developer.beverageapi.Groups;
+import com.developer.beverageapi.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

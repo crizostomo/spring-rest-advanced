@@ -1,6 +1,6 @@
 package com.developer.beverageapi.domain.model;
 
-import com.developer.beverageapi.Groups;
+import com.developer.beverageapi.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

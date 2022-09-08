@@ -1,4 +1,4 @@
-package com.developer.beverageapi;
+package com.developer.beverageapi.core.validation;
 
 public interface Groups {
 
