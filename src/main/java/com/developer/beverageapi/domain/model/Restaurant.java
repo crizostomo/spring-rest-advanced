@@ -1,5 +1,6 @@
 package com.developer.beverageapi.domain.model;
 
+import com.developer.beverageapi.core.validation.Delivery;
 import com.developer.beverageapi.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -37,6 +38,7 @@ public class Restaurant {
 
     //@DecimalMin("0")
     @PositiveOrZero
+    @Delivery
     @NotNull //PositiveOrZero does not validate if it is null
     @Column (name = "delivery", nullable = false)
     private BigDecimal delivery;
