@@ -9,7 +9,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
@@ -34,11 +37,13 @@ public class Restaurant {
 
     //@DecimalMin("0")
     @PositiveOrZero
+    @NotNull //PositiveOrZero does not validate if it is null
     @Column (name = "delivery", nullable = false)
     private BigDecimal delivery;
 
 //    @JsonIgnore
     @JsonIgnoreProperties("hibernateLazyInitializer")
+    @Valid
     @NotNull
     @ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
     @ManyToOne//(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
