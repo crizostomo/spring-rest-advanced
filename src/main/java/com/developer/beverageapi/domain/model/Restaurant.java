@@ -2,6 +2,7 @@ package com.developer.beverageapi.domain.model;
 
 import com.developer.beverageapi.core.validation.Delivery;
 import com.developer.beverageapi.core.validation.Groups;
+import com.developer.beverageapi.core.validation.Multiple;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -37,8 +38,9 @@ public class Restaurant {
     private String name;
 
     //@DecimalMin("0")
+//    @Delivery
+    @Multiple(number = 5)
     @PositiveOrZero
-    @Delivery
     @NotNull //PositiveOrZero does not validate if it is null
     @Column (name = "delivery", nullable = false)
     private BigDecimal delivery;
