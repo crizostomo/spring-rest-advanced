@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
@@ -25,6 +26,7 @@ public class City {
     @NotBlank
     private String name;
 
+    @Valid
     @NotNull
     @ConvertGroup(from = Default.class, to = Groups.StateId.class)
     @ManyToOne//(fetch = FetchType.LAZY) //Many states have one city
