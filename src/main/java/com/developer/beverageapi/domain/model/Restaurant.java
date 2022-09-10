@@ -1,8 +1,8 @@
 package com.developer.beverageapi.domain.model;
 
-import com.developer.beverageapi.core.validation.Delivery;
 import com.developer.beverageapi.core.validation.Groups;
 import com.developer.beverageapi.core.validation.Multiple;
+import com.developer.beverageapi.core.validation.ZeroValueIncludesDescription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ZeroValueIncludesDescription(fieldValue = "delivery",
+        fieldDescription = "name", mandatoryField = "Free Delivery")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
