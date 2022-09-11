@@ -1,5 +1,6 @@
 package com.developer.beverageapi.ExceptionHandler;
 
+import com.developer.beverageapi.core.validation.ExceptionValidation;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
@@ -38,6 +39,12 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     private MessageSource messageSource;
 
+    @ExceptionHandler({ ExceptionValidation.class })
+    public ResponseEntity<Object> handleValidacaoException(ExceptionValidation ex, WebRequest request) {
+        return handleValidationInternal(ex, ex.getBindingResult(), new HttpHeaders(),
+                HttpStatus.BAD_REQUEST, request);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -53,12 +60,15 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
+    }
 
+    private ResponseEntity<Object> handleValidationInternal(Exception ex, BindingResult bindingResult, HttpHeaders headers,
+                                                            HttpStatus status, WebRequest request) {
         ProblemType problemType = ProblemType.INVALID_DATA;
         String detail = "One or more fields are wrong. Fill them correctly and try again";
-
-        BindingResult bindingResult = ex.getBindingResult();
 
         List<APIError.Object> problemObjects = bindingResult.getAllErrors().stream()
                 .map(objectError -> {
@@ -77,12 +87,12 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
                 })
                 .collect(Collectors.toList());
 
-        APIError error = createProblemBuilder(status, problemType, detail)
+        APIError problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
                 .objects(problemObjects)
                 .build();
 
-        return handleExceptionInternal(ex, error, headers, status, request);
+        return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     @Override
