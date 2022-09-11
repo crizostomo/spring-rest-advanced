@@ -1,5 +1,6 @@
 package com.developer.beverageapi.controller;
 
+import com.developer.beverageapi.core.validation.ExceptionValidation;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Restaurant;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +38,9 @@ public class ControllerRestaurant {
 
     @Autowired
     private RepositoryKitchen repositoryKitchen;
+
+    @Autowired
+    private SmartValidator validator;
 
     @GetMapping
     public List<Restaurant> list() {
@@ -79,7 +85,19 @@ public class ControllerRestaurant {
 
         merge(fields, currentRestaurant, request);
 
+        validation(currentRestaurant, "restaurant");
+
         return update(restaurantId, currentRestaurant);
+    }
+
+    private void validation(Restaurant restaurant, String objectName) {
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurant, objectName);
+
+        validator.validate(restaurant, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            throw new ExceptionValidation(bindingResult);
+        }
     }
 
     private void merge(Map<String, Object> sourceData, Restaurant destinyRestaurant,
