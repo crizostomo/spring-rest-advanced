@@ -51,4 +51,16 @@ public class APIKitchenRegistrationIntegrationTest {
                 .body("", Matchers.hasSize(3))
                 .body("name", Matchers.hasItems("Japanese", "Indian"));
     }
+
+    @Test
+    public void mustReturnStatus201_WhenRecordingKitchen() {
+        RestAssured.given()
+                .body("{ \"name\": \"Indian\" }")
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post()
+                .then()
+                .statusCode(201);
+    }
 }
