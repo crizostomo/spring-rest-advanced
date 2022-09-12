@@ -1,5 +1,7 @@
 package com.developer.beverageapi;
 
+import com.developer.beverageapi.domain.exception.EntityInUseException;
+import com.developer.beverageapi.domain.exception.KitchenNotFoundException;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.service.KitchenRegistrationService;
 import org.assertj.core.api.Assertions;
@@ -49,4 +51,14 @@ public class KitchenRegistrationIntegrationTest {
 	 * Go again to Preferences -> Build, Execution, Deployment -> Gradle -> change "Run tests using" to "Gradle (default)".
 	 * Keep running your test, it is working now.
 	 */
+
+	@Test(expected = EntityInUseException.class)
+	public void mustFail_WhenDeletingKitchenInUse() {
+		kitchenRegistration.remove(1L);
+	}
+
+	@Test(expected = KitchenNotFoundException.class)
+	public void mustFail_WhenDeletingKitchenThatDoesNotExists() {
+		kitchenRegistration.remove(100L);
+	}
 }
