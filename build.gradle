@@ -14,8 +14,8 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'junit:junit:4.13.1'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
 
@@ -32,6 +32,10 @@ dependencies {
 
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation 'junit:junit:4.13.1'
+	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.0.0'
+
 }
 
 tasks.named('test') {
