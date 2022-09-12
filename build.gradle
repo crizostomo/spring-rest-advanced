@@ -14,7 +14,8 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'junit:junit:4.13.1'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
 
