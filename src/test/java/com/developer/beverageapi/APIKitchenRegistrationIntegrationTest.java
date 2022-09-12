@@ -2,6 +2,7 @@ package com.developer.beverageapi;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,4 +37,19 @@ public class APIKitchenRegistrationIntegrationTest {
      * Instead of: testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.2.0'
      */
 
+
+    @Test
+    public void mustContain3Kitchens_WhenConsultingKitchens() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+
+        RestAssured.given()
+                .basePath("/kitchens")
+                .port(port)
+                .accept(ContentType.JSON)
+                .when()
+                .get()
+                .then()
+                .body("", Matchers.hasSize(3))
+                .body("name", Matchers.hasItems("Japanese", "Indian"));
+    }
 }
