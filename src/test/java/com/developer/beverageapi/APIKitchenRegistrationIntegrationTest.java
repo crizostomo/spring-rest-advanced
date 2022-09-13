@@ -24,11 +24,11 @@ public class APIKitchenRegistrationIntegrationTest {
     @LocalServerPort
     private int port;
 
-//    @Autowired
-//    private Flyway flyway;
-
     @Autowired
-    private DatabaseCleaner databaseCleaner;
+    private Flyway flyway;
+
+//    @Autowired
+//    private DatabaseCleaner databaseCleaner;
 
     @Autowired
     private RepositoryKitchen repositoryKitchen;
@@ -46,9 +46,9 @@ public class APIKitchenRegistrationIntegrationTest {
         RestAssured.port = port;
         RestAssured.basePath = "/kitchens";
 
-        databaseCleaner.clearTables();
-        prepareData();
-//        flyway.migrate();
+//        databaseCleaner.clearTables();
+//        prepareData();
+        flyway.migrate();
     }
 
     @Test
@@ -89,6 +89,29 @@ public class APIKitchenRegistrationIntegrationTest {
                 .post()
                 .then()
                 .statusCode(201);
+    }
+
+    @Test
+    public void mustReturnAnswerAndStatusCorrectly_WhenConsultingExistentKitchen() {
+        RestAssured.given()
+                .pathParam("kitchenId", 2)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{kitchenId}")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.equalTo("American"));
+    }
+
+    @Test
+    public void mustReturnStatus404_WhenConsultingAKitchenThatDoesNotExist() {
+        RestAssured.given()
+                .pathParam("kitchenId", 100)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{kitchenId}")
+                .then()
+                .statusCode(404);
     }
 
     private void prepareData() {
