@@ -15,6 +15,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import util.DatabaseCleaner;
+import util.ResourceUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,6 +34,11 @@ public class APIKitchenRegistrationIntegrationTest {
     @Autowired
     private RepositoryKitchen repositoryKitchen;
 
+    private Kitchen americanKitchen;
+    private int recordedKitchenQuantity;
+    private String correctJsonIndianKitchen;
+
+
     /**
      * It was used the Flyway because if the test 'mustReturnStatus201_WhenRecordingKitchen', is executed first
      * the test 'mustContain3Kitchens_WhenConsultingKitchens' will fail because it will be expecting 3 kitchens
@@ -45,6 +51,9 @@ public class APIKitchenRegistrationIntegrationTest {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.port = port;
         RestAssured.basePath = "/kitchens";
+
+        correctJsonIndianKitchen = ResourceUtils.getContentFromResource(
+                "/json/correct/indian-kitchen.json");
 
 //        databaseCleaner.clearTables();
 //        prepareData();
@@ -69,20 +78,21 @@ public class APIKitchenRegistrationIntegrationTest {
      */
 
     @Test
-    public void mustContain3Kitchens_WhenConsultingKitchens() {
+    public void mustContainTheRightQuantityOfKitchens_WhenConsultingKitchens() {
         RestAssured.given()
                 .accept(ContentType.JSON)
                 .when()
                 .get()
                 .then()
-                .body("", Matchers.hasSize(3))
+                .body("", Matchers.hasSize(recordedKitchenQuantity))
                 .body("name", Matchers.hasItems("Japanese", "Indian"));
     }
 
     @Test
     public void mustReturnStatus201_WhenRecordingKitchen() {
         RestAssured.given()
-                .body("{ \"name\": \"Indian\" }")
+//                .body("{ \"name\": \"Indian\" }")
+                .body(correctJsonIndianKitchen)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
@@ -94,13 +104,13 @@ public class APIKitchenRegistrationIntegrationTest {
     @Test
     public void mustReturnAnswerAndStatusCorrectly_WhenConsultingExistentKitchen() {
         RestAssured.given()
-                .pathParam("kitchenId", 2)
+                .pathParam("kitchenId", americanKitchen.getId())
                 .accept(ContentType.JSON)
                 .when()
                 .get("/{kitchenId}")
                 .then()
                 .statusCode(200)
-                .body("name", Matchers.equalTo("American"));
+                .body("name", Matchers.equalTo(americanKitchen.getName()));
     }
 
     @Test
@@ -126,5 +136,7 @@ public class APIKitchenRegistrationIntegrationTest {
         Kitchen kitchen3 = new Kitchen();
         kitchen3.setName("Peruvian");
         repositoryKitchen.save(kitchen3);
+
+        recordedKitchenQuantity = (int) repositoryKitchen.count();
     }
 }
