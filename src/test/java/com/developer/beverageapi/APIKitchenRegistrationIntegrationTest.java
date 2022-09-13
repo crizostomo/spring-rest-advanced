@@ -1,5 +1,7 @@
 package com.developer.beverageapi;
 
+import com.developer.beverageapi.domain.model.Kitchen;
+import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.flywaydb.core.Flyway;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import util.DatabaseCleaner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -21,8 +24,14 @@ public class APIKitchenRegistrationIntegrationTest {
     @LocalServerPort
     private int port;
 
+//    @Autowired
+//    private Flyway flyway;
+
     @Autowired
-    private Flyway flyway;
+    private DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    private RepositoryKitchen repositoryKitchen;
 
     /**
      * It was used the Flyway because if the test 'mustReturnStatus201_WhenRecordingKitchen', is executed first
@@ -37,7 +46,9 @@ public class APIKitchenRegistrationIntegrationTest {
         RestAssured.port = port;
         RestAssured.basePath = "/kitchens";
 
-        flyway.migrate();
+        databaseCleaner.clearTables();
+        prepareData();
+//        flyway.migrate();
     }
 
     @Test
@@ -78,5 +89,19 @@ public class APIKitchenRegistrationIntegrationTest {
                 .post()
                 .then()
                 .statusCode(201);
+    }
+
+    private void prepareData() {
+        Kitchen kitchen1 = new Kitchen();
+        kitchen1.setName("Argentinian");
+        repositoryKitchen.save(kitchen1);
+
+        Kitchen kitchen2 = new Kitchen();
+        kitchen2.setName("American");
+        repositoryKitchen.save(kitchen2);
+
+        Kitchen kitchen3 = new Kitchen();
+        kitchen3.setName("Peruvian");
+        repositoryKitchen.save(kitchen3);
     }
 }
