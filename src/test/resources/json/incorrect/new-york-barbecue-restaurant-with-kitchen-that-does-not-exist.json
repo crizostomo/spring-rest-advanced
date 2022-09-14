@@ -1,0 +1,7 @@
+{
+  "name": "New York Barbecue",
+  "delivery": 12,
+  "kitchen": {
+    "id": 200
+  }
+}
