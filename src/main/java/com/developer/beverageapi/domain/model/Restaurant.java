@@ -48,7 +48,7 @@ public class Restaurant {
     private BigDecimal delivery;
 
 //    @JsonIgnore
-    @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "name"}, allowGetters = true)
+//    @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "name"}, allowGetters = true)
     @Valid
     @NotNull
     @ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
@@ -56,16 +56,16 @@ public class Restaurant {
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
 
-    @JsonIgnore
+//    @JsonIgnore
     @Embedded //This property is part of the restaurant entity
     private Address address;
 
-    @JsonIgnore
+//    @JsonIgnore
     @CreationTimestamp //The property must be salved with the current time
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime recordDate;
 
-    @JsonIgnore
+//    @JsonIgnore
     @UpdateTimestamp //The property must be salved with the current time when updated
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime updatedDate;
@@ -77,7 +77,7 @@ public class Restaurant {
     inverseJoinColumns = @JoinColumn(name = "payment_id"))
     private List<Payment> payments = new ArrayList<>();
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(mappedBy = "restaurant")
     private List<Product> products = new ArrayList<>();
 }
