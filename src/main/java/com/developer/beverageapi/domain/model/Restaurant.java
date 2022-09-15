@@ -48,7 +48,7 @@ public class Restaurant {
     private BigDecimal delivery;
 
 //    @JsonIgnore
-    @JsonIgnoreProperties("hibernateLazyInitializer")
+    @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "name"}, allowGetters = true)
     @Valid
     @NotNull
     @ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
