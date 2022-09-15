@@ -39,7 +39,7 @@ public class Restaurant {
     @Column (name = "name", nullable = false) //Optional if you want to use the same name
     private String name;
 
-    //@DecimalMin("0")
+//    @DecimalMin("0")
 //    @Delivery
     @Multiple(number = 5)
     @PositiveOrZero

@@ -1,6 +1,7 @@
 package com.developer.beverageapi.domain.model;
 
 import com.developer.beverageapi.core.validation.Groups;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -29,6 +30,7 @@ public class City {
     @Valid
     @NotNull
     @ConvertGroup(from = Default.class, to = Groups.StateId.class)
+    @JsonIgnoreProperties(value = "name", allowGetters = true)
     @ManyToOne//(fetch = FetchType.LAZY) //Many states have one city
     @JoinColumn(name = "state_id") //In JPA this is generated automatically if you don't put the name
     private State state;

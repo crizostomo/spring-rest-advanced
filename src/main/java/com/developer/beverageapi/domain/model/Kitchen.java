@@ -26,12 +26,12 @@ public class Kitchen {
     private Long id;
 
 //    @JsonIgnore - It ignores this property
-    @JsonProperty("name") //The representation in the API | Postman
+//    @JsonProperty("name") //The representation in the API | Postman
     @NotBlank
     @Column (name = "name", length = 30, nullable = false) //Optional if you want to use the same name
     private String name;
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(mappedBy = "kitchen")
     private List<Restaurant> restaurants = new ArrayList<>(); //new ArrayList<>() to start an empty list to avoid nullPointer exception
 }
