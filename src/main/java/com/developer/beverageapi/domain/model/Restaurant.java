@@ -3,8 +3,6 @@ package com.developer.beverageapi.domain.model;
 import com.developer.beverageapi.core.validation.Groups;
 import com.developer.beverageapi.core.validation.Multiple;
 import com.developer.beverageapi.core.validation.ZeroValueIncludesDescription;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,7 +16,7 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,12 +61,12 @@ public class Restaurant {
 //    @JsonIgnore
     @CreationTimestamp //The property must be salved with the current time
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime recordDate;
+    private OffsetDateTime recordDate;
 
 //    @JsonIgnore
     @UpdateTimestamp //The property must be salved with the current time when updated
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime updatedDate;
+    private OffsetDateTime updatedDate;
 
 //    @JsonIgnore
     @ManyToMany//(fetch = FetchType.EAGER) // Everything that finishes with ...ToMany uses the strategy 'Lazy Loading'
