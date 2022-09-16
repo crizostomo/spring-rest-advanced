@@ -1,13 +1,12 @@
 package com.developer.beverageapi.domain.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,16 +36,16 @@ public class Order {
 
     @CreationTimestamp
     @Column(nullable = false)
-    private LocalDateTime creationDate;
+    private OffsetDateTime creationDate;
 
     @CreationTimestamp
-    private LocalDateTime confirmationDate;
+    private OffsetDateTime confirmationDate;
 
     @CreationTimestamp
-    private LocalDateTime cancellationDate;
+    private OffsetDateTime cancellationDate;
 
     @CreationTimestamp
-    private LocalDateTime deliveryDate;
+    private OffsetDateTime deliveryDate;
 
     @ManyToOne
     @JoinColumn(nullable = false)
