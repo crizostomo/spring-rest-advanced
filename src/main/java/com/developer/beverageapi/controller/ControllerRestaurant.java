@@ -4,6 +4,7 @@ import com.developer.beverageapi.core.validation.ExceptionValidation;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Restaurant;
+import com.developer.beverageapi.domain.model.RestaurantModel;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
@@ -48,8 +49,12 @@ public class ControllerRestaurant {
     }
 
     @GetMapping("/{restaurantId}")
-    public Restaurant search(@PathVariable Long restaurantId) {
-        return registrationRestaurant.searchOrFail(restaurantId);
+    public RestaurantModel search(@PathVariable Long restaurantId) {
+        Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
+
+        RestaurantModel restaurantModel = null;
+
+        return restaurantModel;
     }
 
     @PostMapping
