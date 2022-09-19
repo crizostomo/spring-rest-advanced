@@ -3,9 +3,11 @@ package com.developer.beverageapi.controller;
 import com.developer.beverageapi.core.validation.ExceptionValidation;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
+import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.model.KitchenModel;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.model.RestaurantModel;
+import com.developer.beverageapi.domain.model.input.RestaurantInput;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
@@ -61,8 +63,10 @@ public class ControllerRestaurant {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RestaurantModel add(@RequestBody @Valid Restaurant restaurant) {
+    public RestaurantModel add(@RequestBody @Valid RestaurantInput restaurantInput) {
         try {
+            Restaurant restaurant = toDomainObject(restaurantInput);
+
             return toModel(registrationRestaurant.add(restaurant));
         } catch (EntityNotFoundException e) {
             throw new BusinessException(e.getMessage());
@@ -72,7 +76,8 @@ public class ControllerRestaurant {
 
     @PutMapping("/{restaurantId}")
     public RestaurantModel update(@PathVariable Long restaurantId,
-                             @RequestBody @Valid Restaurant restaurant) {
+                             @RequestBody @Valid RestaurantInput restaurantInput) {
+        Restaurant restaurant = toDomainObject(restaurantInput);
         Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
 
         BeanUtils.copyProperties(restaurant, currentRestaurant,
@@ -85,54 +90,55 @@ public class ControllerRestaurant {
         }
     }
 
-    @PatchMapping("/{restaurantId}")
-    public RestaurantModel partialUpdate(@PathVariable Long restaurantId,
-                                    @RequestBody Map<String, Object> fields, HttpServletRequest request) {
-        Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
-
-        merge(fields, currentRestaurant, request);
-
-        validation(currentRestaurant, "restaurant");
-
-        return update(restaurantId, currentRestaurant);
-    }
-
-    private void validation(Restaurant restaurant, String objectName) {
-        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurant, objectName);
-
-        validator.validate(restaurant, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            throw new ExceptionValidation(bindingResult);
-        }
-    }
-
-    private void merge(Map<String, Object> sourceData, Restaurant destinyRestaurant,
-                       HttpServletRequest request) { //destinyRestaurant = currentRestaurant
-        ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
-
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-
-            Restaurant sourceRestaurant = objectMapper.convertValue(sourceData, Restaurant.class);
-
-            sourceData.forEach((propertyName, propertyValue) -> {
-                Field field = ReflectionUtils.findField(Restaurant.class, propertyName);
-                field.setAccessible(true); //Here, we "break" the private method in restaurant by accessing it
-
-                Object newValue = ReflectionUtils.getField(field, sourceRestaurant);
-
-                System.out.println(propertyName + " = " + propertyValue);
-
-                ReflectionUtils.setField(field, destinyRestaurant, newValue);
-            });
-        } catch (IllegalArgumentException e) {
-            Throwable rootCause = ExceptionUtils.getRootCause(e);
-            throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
-        }
-    }
+//    @PatchMapping("/{restaurantId}")
+//    public Restaurant partialUpdate(@PathVariable Long restaurantId,
+//                                    @RequestBody Map<String, Object> fields, HttpServletRequest request) {
+//
+//        Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
+//
+//        merge(fields, currentRestaurant, request);
+//
+//        validation(currentRestaurant, "restaurant");
+//
+//        return update(restaurantId, currentRestaurant);
+//    }
+//
+//    private void validation(Restaurant restaurant, String objectName) {
+//        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurant, objectName);
+//
+//        validator.validate(restaurant, bindingResult);
+//
+//        if (bindingResult.hasErrors()) {
+//            throw new ExceptionValidation(bindingResult);
+//        }
+//    }
+//
+//    private void merge(Map<String, Object> sourceData, Restaurant destinyRestaurant,
+//                       HttpServletRequest request) { //destinyRestaurant = currentRestaurant
+//        ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
+//
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+//            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+//
+//            Restaurant sourceRestaurant = objectMapper.convertValue(sourceData, Restaurant.class);
+//
+//            sourceData.forEach((propertyName, propertyValue) -> {
+//                Field field = ReflectionUtils.findField(Restaurant.class, propertyName);
+//                field.setAccessible(true); //Here, we "break" the private method in restaurant by accessing it
+//
+//                Object newValue = ReflectionUtils.getField(field, sourceRestaurant);
+//
+//                System.out.println(propertyName + " = " + propertyValue);
+//
+//                ReflectionUtils.setField(field, destinyRestaurant, newValue);
+//            });
+//        } catch (IllegalArgumentException e) {
+//            Throwable rootCause = ExceptionUtils.getRootCause(e);
+//            throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
+//        }
+//    }
 
     @DeleteMapping("/{restaurantId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -158,6 +164,19 @@ public class ControllerRestaurant {
         return restaurants.stream()
                 .map(restaurant -> toModel(restaurant))
                 .collect(Collectors.toList());
+    }
+
+    private Restaurant toDomainObject(RestaurantInput restaurantInput) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.setName(restaurantInput.getName());
+        restaurant.setDelivery(restaurantInput.getDelivery());
+
+        Kitchen kitchen = new Kitchen();
+        kitchen.setId(restaurantInput.getKitchen().getId());
+
+        restaurant.setKitchen(kitchen);
+
+        return restaurant;
     }
 
 }
