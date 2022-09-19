@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Setter
 public class RestaurantModel {
 
-    private String id;
+    private Long id;
 
     private String name;
 

@@ -3,6 +3,7 @@ package com.developer.beverageapi.controller;
 import com.developer.beverageapi.core.validation.ExceptionValidation;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
+import com.developer.beverageapi.domain.model.KitchenModel;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.model.RestaurantModel;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
@@ -26,6 +27,7 @@ import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -44,24 +46,24 @@ public class ControllerRestaurant {
     private SmartValidator validator;
 
     @GetMapping
-    public List<Restaurant> list() {
-        return repositoryRestaurant.findAll();
+    public List<RestaurantModel> list() {
+        return toCollectionModel(repositoryRestaurant.findAll());
     }
 
     @GetMapping("/{restaurantId}")
     public RestaurantModel search(@PathVariable Long restaurantId) {
         Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
 
-        RestaurantModel restaurantModel = null;
+        RestaurantModel restaurantModel = toModel(restaurant);
 
-        return restaurantModel;
+        return toModel(restaurant);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurant add(@RequestBody @Valid Restaurant restaurant) {
+    public RestaurantModel add(@RequestBody @Valid Restaurant restaurant) {
         try {
-            return registrationRestaurant.add(restaurant);
+            return toModel(registrationRestaurant.add(restaurant));
         } catch (EntityNotFoundException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -69,7 +71,7 @@ public class ControllerRestaurant {
 
 
     @PutMapping("/{restaurantId}")
-    public Restaurant update(@PathVariable Long restaurantId,
+    public RestaurantModel update(@PathVariable Long restaurantId,
                              @RequestBody @Valid Restaurant restaurant) {
         Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
 
@@ -77,14 +79,14 @@ public class ControllerRestaurant {
                 "id", "payment", "address", "recordDate");
 
         try {
-            return registrationRestaurant.add(currentRestaurant);
+            return toModel(registrationRestaurant.add(currentRestaurant));
         } catch (EntityNotFoundException e) {
             throw new BusinessException(e.getMessage());
         }
     }
 
     @PatchMapping("/{restaurantId}")
-    public Restaurant partialUpdate(@PathVariable Long restaurantId,
+    public RestaurantModel partialUpdate(@PathVariable Long restaurantId,
                                     @RequestBody Map<String, Object> fields, HttpServletRequest request) {
         Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
 
@@ -137,4 +139,25 @@ public class ControllerRestaurant {
     public void delete(@PathVariable Long restaurantId) {
         registrationRestaurant.remove(restaurantId);
     }
+
+
+    private RestaurantModel toModel(Restaurant restaurant) {
+        KitchenModel kitchenModel = new KitchenModel();
+        kitchenModel.setId(restaurant.getKitchen().getId());
+        kitchenModel.setName(restaurant.getKitchen().getName());
+
+        RestaurantModel restaurantModel = new RestaurantModel();
+        restaurantModel.setId(restaurant.getId());
+        restaurantModel.setName(restaurant.getName());
+        restaurantModel.setDelivery(restaurant.getDelivery());
+        restaurantModel.setKitchen(kitchenModel);
+        return restaurantModel;
+    }
+
+    private List<RestaurantModel> toCollectionModel(List<Restaurant> restaurants) {
+        return restaurants.stream()
+                .map(restaurant -> toModel(restaurant))
+                .collect(Collectors.toList());
+    }
+
 }
