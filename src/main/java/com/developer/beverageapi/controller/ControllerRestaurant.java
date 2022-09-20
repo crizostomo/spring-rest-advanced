@@ -70,13 +70,15 @@ public class ControllerRestaurant {
     @PutMapping("/{restaurantId}")
     public RestaurantModel update(@PathVariable Long restaurantId,
                              @RequestBody @Valid RestaurantInput restaurantInput) {
-        Restaurant restaurant = restaurantInputDismantle.toDomainObject(restaurantInput);
+        try {
+//        Restaurant restaurant = restaurantInputDismantle.toDomainObject(restaurantInput);
         Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
 
-        BeanUtils.copyProperties(restaurant, currentRestaurant,
-                "id", "payment", "address", "recordDate");
+        restaurantInputDismantle.copyToDomainObject(restaurantInput, currentRestaurant);
 
-        try {
+//        BeanUtils.copyProperties(restaurant, currentRestaurant,
+//                "id", "payment", "address", "recordDate");
+
             return restaurantModelAssembler.toModel(registrationRestaurant.add(currentRestaurant));
         } catch (EntityNotFoundException e) {
             throw new BusinessException(e.getMessage());

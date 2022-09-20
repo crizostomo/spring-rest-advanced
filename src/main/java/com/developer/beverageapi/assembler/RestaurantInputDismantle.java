@@ -28,4 +28,12 @@ public class RestaurantInputDismantle {
 
         return modelMapper.map(restaurantInput, Restaurant.class);
     }
+
+    public void copyToDomainObject(RestaurantInput restaurantInput, Restaurant restaurant) {
+        // To avoid org.hinernate.HibernateExeception: identifier of an instance of
+        // com.beverage.domain.model.Kitchen was altered from 1 to 2
+        restaurant.setKitchen(new Kitchen());
+
+        modelMapper.map(restaurantInput, restaurant);
+    }
 }
