@@ -1,5 +1,6 @@
 package com.developer.beverageapi.controller;
 
+import com.developer.beverageapi.assembler.RestaurantModelAssembler;
 import com.developer.beverageapi.core.validation.ExceptionValidation;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
@@ -47,18 +48,21 @@ public class ControllerRestaurant {
     @Autowired
     private SmartValidator validator;
 
+    @Autowired
+    private RestaurantModelAssembler restaurantModelAssembler;
+
     @GetMapping
     public List<RestaurantModel> list() {
-        return toCollectionModel(repositoryRestaurant.findAll());
+        return restaurantModelAssembler.toCollectionModel(repositoryRestaurant.findAll());
     }
 
     @GetMapping("/{restaurantId}")
     public RestaurantModel search(@PathVariable Long restaurantId) {
         Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
 
-        RestaurantModel restaurantModel = toModel(restaurant);
+        RestaurantModel restaurantModel = restaurantModelAssembler.toModel(restaurant);
 
-        return toModel(restaurant);
+        return restaurantModelAssembler.toModel(restaurant);
     }
 
     @PostMapping
@@ -67,12 +71,11 @@ public class ControllerRestaurant {
         try {
             Restaurant restaurant = toDomainObject(restaurantInput);
 
-            return toModel(registrationRestaurant.add(restaurant));
+            return restaurantModelAssembler.toModel(registrationRestaurant.add(restaurant));
         } catch (EntityNotFoundException e) {
             throw new BusinessException(e.getMessage());
         }
     }
-
 
     @PutMapping("/{restaurantId}")
     public RestaurantModel update(@PathVariable Long restaurantId,
@@ -84,7 +87,7 @@ public class ControllerRestaurant {
                 "id", "payment", "address", "recordDate");
 
         try {
-            return toModel(registrationRestaurant.add(currentRestaurant));
+            return restaurantModelAssembler.toModel(registrationRestaurant.add(currentRestaurant));
         } catch (EntityNotFoundException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -144,26 +147,6 @@ public class ControllerRestaurant {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long restaurantId) {
         registrationRestaurant.remove(restaurantId);
-    }
-
-
-    private RestaurantModel toModel(Restaurant restaurant) {
-        KitchenModel kitchenModel = new KitchenModel();
-        kitchenModel.setId(restaurant.getKitchen().getId());
-        kitchenModel.setName(restaurant.getKitchen().getName());
-
-        RestaurantModel restaurantModel = new RestaurantModel();
-        restaurantModel.setId(restaurant.getId());
-        restaurantModel.setName(restaurant.getName());
-        restaurantModel.setDelivery(restaurant.getDelivery());
-        restaurantModel.setKitchen(kitchenModel);
-        return restaurantModel;
-    }
-
-    private List<RestaurantModel> toCollectionModel(List<Restaurant> restaurants) {
-        return restaurants.stream()
-                .map(restaurant -> toModel(restaurant))
-                .collect(Collectors.toList());
     }
 
     private Restaurant toDomainObject(RestaurantInput restaurantInput) {
