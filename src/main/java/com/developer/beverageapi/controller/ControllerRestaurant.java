@@ -1,36 +1,23 @@
 package com.developer.beverageapi.controller;
 
+import com.developer.beverageapi.assembler.RestaurantInputDismantle;
 import com.developer.beverageapi.assembler.RestaurantModelAssembler;
-import com.developer.beverageapi.core.validation.ExceptionValidation;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
-import com.developer.beverageapi.domain.model.Kitchen;
-import com.developer.beverageapi.domain.model.KitchenModel;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.model.RestaurantModel;
 import com.developer.beverageapi.domain.model.input.RestaurantInput;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.server.ServletServerHttpRequest;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -51,6 +38,9 @@ public class ControllerRestaurant {
     @Autowired
     private RestaurantModelAssembler restaurantModelAssembler;
 
+    @Autowired
+    private RestaurantInputDismantle restaurantInputDismantle;
+
     @GetMapping
     public List<RestaurantModel> list() {
         return restaurantModelAssembler.toCollectionModel(repositoryRestaurant.findAll());
@@ -69,7 +59,7 @@ public class ControllerRestaurant {
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantModel add(@RequestBody @Valid RestaurantInput restaurantInput) {
         try {
-            Restaurant restaurant = toDomainObject(restaurantInput);
+            Restaurant restaurant = restaurantInputDismantle.toDomainObject(restaurantInput);
 
             return restaurantModelAssembler.toModel(registrationRestaurant.add(restaurant));
         } catch (EntityNotFoundException e) {
@@ -80,7 +70,7 @@ public class ControllerRestaurant {
     @PutMapping("/{restaurantId}")
     public RestaurantModel update(@PathVariable Long restaurantId,
                              @RequestBody @Valid RestaurantInput restaurantInput) {
-        Restaurant restaurant = toDomainObject(restaurantInput);
+        Restaurant restaurant = restaurantInputDismantle.toDomainObject(restaurantInput);
         Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
 
         BeanUtils.copyProperties(restaurant, currentRestaurant,
@@ -148,18 +138,4 @@ public class ControllerRestaurant {
     public void delete(@PathVariable Long restaurantId) {
         registrationRestaurant.remove(restaurantId);
     }
-
-    private Restaurant toDomainObject(RestaurantInput restaurantInput) {
-        Restaurant restaurant = new Restaurant();
-        restaurant.setName(restaurantInput.getName());
-        restaurant.setDelivery(restaurantInput.getDelivery());
-
-        Kitchen kitchen = new Kitchen();
-        kitchen.setId(restaurantInput.getKitchen().getId());
-
-        restaurant.setKitchen(kitchen);
-
-        return restaurant;
-    }
-
 }
