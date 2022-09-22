@@ -1,12 +1,13 @@
-package com.developer.beverageapi.domain.model;
+package com.developer.beverageapi.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class KitchenModel {
+public class StateModel {
 
     private Long id;
+
     private String name;
 }

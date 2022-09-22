@@ -1,19 +1,15 @@
-package com.developer.beverageapi.controller;
+package com.developer.beverageapi.api.controller;
 
-import com.developer.beverageapi.domain.exception.EntityInUseException;
-import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.State;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.StateRegistrationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/states")

@@ -21,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import util.DatabaseCleaner;
 import util.ResourceUtils;
 
 @RunWith(SpringRunner.class)

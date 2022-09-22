@@ -1,4 +1,4 @@
-package com.developer.beverageapi.ExceptionHandler;
+package com.developer.beverageapi.api.exceptionHandler;
 
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.developer.beverageapi.controller;
+package com.developer.beverageapi.api.controller;
 
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;

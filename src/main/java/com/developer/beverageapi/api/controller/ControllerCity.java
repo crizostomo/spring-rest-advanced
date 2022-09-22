@@ -1,8 +1,6 @@
-package com.developer.beverageapi.controller;
+package com.developer.beverageapi.api.controller;
 
-import com.developer.beverageapi.ExceptionHandler.APIError;
 import com.developer.beverageapi.domain.exception.BusinessException;
-import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.exception.StateNotFoundException;
 import com.developer.beverageapi.domain.model.City;
 import com.developer.beverageapi.domain.repository.RepositoryCity;
@@ -11,11 +9,9 @@ import com.developer.beverageapi.domain.service.CityRegistrationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController

@@ -1,4 +1,4 @@
-package com.developer.beverageapi.domain.model;
+package com.developer.beverageapi.api.model;
 
 import lombok.Getter;
 import lombok.Setter;

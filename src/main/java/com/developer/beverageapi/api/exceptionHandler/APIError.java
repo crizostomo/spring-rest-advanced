@@ -1,4 +1,4 @@
-package com.developer.beverageapi.ExceptionHandler;
+package com.developer.beverageapi.api.exceptionHandler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

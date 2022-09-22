@@ -1,8 +1,7 @@
-package com.developer.beverageapi.assembler;
+package com.developer.beverageapi.api.assembler;
 
-import com.developer.beverageapi.domain.model.KitchenModel;
 import com.developer.beverageapi.domain.model.Restaurant;
-import com.developer.beverageapi.domain.model.RestaurantModel;
+import com.developer.beverageapi.api.model.RestaurantModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.developer.beverageapi.domain.model.input;
+package com.developer.beverageapi.api.model.input;
 
 import lombok.Getter;
 import lombok.Setter;

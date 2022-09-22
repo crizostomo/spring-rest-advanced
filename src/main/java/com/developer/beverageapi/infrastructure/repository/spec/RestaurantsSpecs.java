@@ -1,4 +1,4 @@
-package com.developer.beverageapi.infrasctructure.repository.spec;
+package com.developer.beverageapi.infrastructure.repository.spec;
 
 import com.developer.beverageapi.domain.model.Restaurant;
 import org.springframework.data.jpa.domain.Specification;

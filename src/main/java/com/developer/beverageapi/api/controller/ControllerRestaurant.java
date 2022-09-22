@@ -1,16 +1,15 @@
-package com.developer.beverageapi.controller;
+package com.developer.beverageapi.api.controller;
 
-import com.developer.beverageapi.assembler.RestaurantInputDismantle;
-import com.developer.beverageapi.assembler.RestaurantModelAssembler;
+import com.developer.beverageapi.api.assembler.RestaurantInputDismantle;
+import com.developer.beverageapi.api.assembler.RestaurantModelAssembler;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Restaurant;
-import com.developer.beverageapi.domain.model.RestaurantModel;
-import com.developer.beverageapi.domain.model.input.RestaurantInput;
+import com.developer.beverageapi.api.model.RestaurantModel;
+import com.developer.beverageapi.api.model.input.RestaurantInput;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.SmartValidator;
