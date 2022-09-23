@@ -1,5 +1,9 @@
 package com.developer.beverageapi.api.controller;
 
+import com.developer.beverageapi.api.assembler.StateInputDismantle;
+import com.developer.beverageapi.api.assembler.StateModelAssembler;
+import com.developer.beverageapi.api.model.StateModel;
+import com.developer.beverageapi.api.model.input.StateInput;
 import com.developer.beverageapi.domain.model.State;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.StateRegistrationService;
@@ -21,30 +25,46 @@ public class ControllerState {
     @Autowired
     private StateRegistrationService registrationState;
 
+    @Autowired
+    private StateModelAssembler stateModelAssembler;
+
+    @Autowired
+    private StateInputDismantle stateInputDismantle;
+
     @GetMapping
-    public List<State> list() {
-        return repositoryState.findAll();
+    public List<StateModel> list() {
+        List<State> allStates = repositoryState.findAll();
+
+        return stateModelAssembler.toCollectionModel(allStates);
     }
 
     @GetMapping("/{stateId}")
-    public State search(@PathVariable Long stateId) {
-        return registrationState.searchOrFail(stateId);
+    public StateModel search(@PathVariable Long stateId) {
+        State state = registrationState.searchOrFail(stateId);
+
+        return stateModelAssembler.toModel(state);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public State add(@RequestBody @Valid State state) {
-        return registrationState.add(state);
+    public StateModel add(@RequestBody @Valid StateInput stateInput) {
+        State state = stateInputDismantle.toDomainObject(stateInput);
+
+        state = registrationState.add(state);
+
+        return stateModelAssembler.toModel(state);
     }
 
     @PutMapping("/{stateId}")
-    public State update(@PathVariable Long stateId,
-                                        @RequestBody @Valid State state) {
+    public StateModel update(@PathVariable Long stateId,
+                             @RequestBody @Valid StateInput stateInput) {
         State currentState = registrationState.searchOrFail(stateId);
 
-        BeanUtils.copyProperties(state, currentState, "id");
+        stateInputDismantle.copyToDomainObject(stateInput, currentState);
 
-        return registrationState.add(currentState);
+        currentState = registrationState.add(currentState);
+
+        return stateModelAssembler.toModel(currentState);
     }
 
     @DeleteMapping("/{stateId}")

@@ -1,12 +1,15 @@
 package com.developer.beverageapi.api.controller;
 
+import com.developer.beverageapi.api.assembler.CityInputDismantle;
+import com.developer.beverageapi.api.assembler.CityModelAssembler;
+import com.developer.beverageapi.api.model.CityModel;
+import com.developer.beverageapi.api.model.input.CityInput;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.StateNotFoundException;
 import com.developer.beverageapi.domain.model.City;
 import com.developer.beverageapi.domain.repository.RepositoryCity;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.CityRegistrationService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,34 +30,50 @@ public class ControllerCity {
     @Autowired
     private RepositoryState repositoryState;
 
+    @Autowired
+    private CityModelAssembler cityModelAssembler;
+
+    @Autowired
+    private CityInputDismantle cityInputDismantle;
+
     @GetMapping
-    public List<City> list() {
-        return repositoryCity.findAll();
+    public List<CityModel> list() {
+        List<City> allCities = repositoryCity.findAll();
+
+        return cityModelAssembler.toCollectionModel(allCities);
     }
 
     @GetMapping("/{cityId}")
-    public City search(@PathVariable Long cityId) {
-        return registrationCity.searchOrFail(cityId);
+    public CityModel search(@PathVariable Long cityId) {
+        City city = registrationCity.searchOrFail(cityId);
+
+        return cityModelAssembler.toModel(city);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public City add(@RequestBody @Valid City city) {
+    public CityModel add(@RequestBody @Valid CityInput cityInput) {
         try {
-            return registrationCity.add(city);
+            City city = cityInputDismantle.toDomainObject(cityInput);
+
+            city = registrationCity.add(city);
+
+            return cityModelAssembler.toModel(city);
         } catch (StateNotFoundException e) {
             throw new BusinessException(e.getMessage(), e);
         }
     }
 
     @PutMapping("/{cityId}")
-    public City update(@PathVariable Long cityId, @RequestBody @Valid City city) {
-        City currentCity = registrationCity.searchOrFail(cityId);
-
-        BeanUtils.copyProperties(city, currentCity, "id");
-
+    public CityModel update(@PathVariable Long cityId, @RequestBody @Valid CityInput cityInput) {
         try {
-            return registrationCity.add(currentCity);
+            City currentCity = registrationCity.searchOrFail(cityId);
+
+            cityInputDismantle.copyToDomainObject(cityInput, currentCity);
+
+            currentCity = registrationCity.add(currentCity);
+
+            return cityModelAssembler.toModel(currentCity);
         } catch (StateNotFoundException e) {
             throw new BusinessException(e.getMessage(), e);
         }
