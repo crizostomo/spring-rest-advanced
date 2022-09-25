@@ -28,6 +28,7 @@ public class KitchenRegistrationService {
     public void remove(Long kitchenId) {
         try {
             repositoryKitchen.deleteById(kitchenId);
+            repositoryKitchen.flush();
 
         } catch (EmptyResultDataAccessException e) {
 //            throw new ResponseStatusException(HttpStatus.NOT_FOUND,

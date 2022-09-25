@@ -43,6 +43,7 @@ public class CityRegistrationService {
     public void remove(Long cityId) {
         try {
             repositoryCity.deleteById(cityId);
+            repositoryCity.flush();
 
         } catch (EmptyResultDataAccessException e) {
             throw new CityNotFoundException(cityId);
