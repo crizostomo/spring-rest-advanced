@@ -39,9 +39,9 @@ insert into city (id, name, state_id) values (2, 'Extrema', 2);
 insert into city (id, name, state_id) values (3, 'Salvador', 3);
 insert into city (id, name, state_id) values (4, 'Rio de Janeiro', 4);
 
-insert into restaurant (id, name, delivery, kitchen_id, record_date, updated_date, address_city_id, address_cep, address_street, address_number, address_neighborhood) values (1, 'Sucao_Jundiai', 15, 1, utc_timestamp, utc_timestamp, 1, '38400-999', 'Main Avenue', '555', 'Downtown');
-insert into restaurant (id, name, delivery, kitchen_id, record_date, updated_date) values (2, 'O_Matuto', 0, 1, utc_timestamp, utc_timestamp);
-insert into restaurant (id, name, delivery, kitchen_id, record_date, updated_date) values (3, 'Outback', 12, 3, utc_timestamp, utc_timestamp);
+insert into restaurant (id, name, delivery, kitchen_id, record_date, updated_date, active, address_city_id, address_cep, address_street, address_number, address_neighborhood) values (1, 'Sucao_Jundiai', 15, 1, utc_timestamp, utc_timestamp, true, 1, '38400-999', 'Main Avenue', '555', 'Downtown');
+insert into restaurant (id, name, delivery, kitchen_id, record_date, updated_date, active) values (2, 'O_Matuto', 0, 1, utc_timestamp, utc_timestamp, true);
+insert into restaurant (id, name, delivery, kitchen_id, record_date, updated_date, active) values (3, 'Outback', 12, 3, utc_timestamp, utc_timestamp, true);
 
 insert into payment (id, description) values (1, 'debit');
 insert into payment (id, description) values (2, 'cash');

@@ -10,10 +10,8 @@ import java.math.BigDecimal;
 public class RestaurantModel {
 
     private Long id;
-
     private String name;
-
     private BigDecimal delivery;
-
     private KitchenModel kitchen;
+    private Boolean active;
 }

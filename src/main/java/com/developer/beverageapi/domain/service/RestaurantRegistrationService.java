@@ -54,6 +54,20 @@ public class RestaurantRegistrationService {
         }
     }
 
+    @Transactional
+    public void active(Long restaurantId) {
+        Restaurant currentRestaurant = searchOrFail(restaurantId);
+
+        currentRestaurant.active();
+    }
+
+    @Transactional
+    public void inactive(Long restaurantId) {
+        Restaurant currentRestaurant = searchOrFail(restaurantId);
+
+        currentRestaurant.inactive();
+    }
+
     public Restaurant searchOrFail(Long restaurantId) {
         return repositoryRestaurant.findById(restaurantId)
                 .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));

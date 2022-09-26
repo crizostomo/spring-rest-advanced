@@ -33,23 +33,19 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column (name = "name", nullable = false) //Optional if you want to use the same name
     private String name;
 
 //    @DecimalMin("0")
 //    @Delivery
-    @Multiple(number = 5)
+//    @Multiple(number = 5)
     @PositiveOrZero
-    @NotNull //PositiveOrZero does not validate if it is null
     @Column (name = "delivery", nullable = false)
     private BigDecimal delivery;
 
 //    @JsonIgnore
 //    @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "name"}, allowGetters = true)
-    @Valid
-    @NotNull
-    @ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
+//    @ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
     @ManyToOne//(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
@@ -57,6 +53,8 @@ public class Restaurant {
 //    @JsonIgnore
     @Embedded //This property is part of the restaurant entity
     private Address address;
+
+    private Boolean active = Boolean.TRUE;
 
 //    @JsonIgnore
     @CreationTimestamp //The property must be salved with the current time
@@ -78,4 +76,12 @@ public class Restaurant {
 //    @JsonIgnore
     @OneToMany(mappedBy = "restaurant")
     private List<Product> products = new ArrayList<>();
+
+    public void active() {
+        setActive(true);
+    }
+
+    public void inactive() {
+        setActive(false);
+    }
 }
