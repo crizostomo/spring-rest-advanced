@@ -2,6 +2,7 @@ package com.developer.beverageapi.domain.service;
 
 import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.RestaurantNotFoundException;
+import com.developer.beverageapi.domain.model.City;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
@@ -27,14 +28,20 @@ public class RestaurantRegistrationService {
     @Autowired
     private KitchenRegistrationService registrationKitchen;
 
+    @Autowired
+    private CityRegistrationService cityRegistrationService;
+
     @Transactional
     public Restaurant add(Restaurant restaurant) {
 
         Long kitchenId = restaurant.getKitchen().getId();
+        Long cityId = restaurant.getAddress().getCity().getId();
 
         Kitchen kitchen = registrationKitchen.searchOrFail(kitchenId);
+        City city = cityRegistrationService.searchOrFail(cityId);
 
         restaurant.setKitchen(kitchen);
+        restaurant.getAddress().setCity(city);
 
         return repositoryRestaurant.save(restaurant);
     }

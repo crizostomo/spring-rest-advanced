@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.assembler;
 
+import com.developer.beverageapi.domain.model.City;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.api.model.input.RestaurantInput;
@@ -32,6 +33,10 @@ public class RestaurantInputDismantle {
         // To avoid org.hinernate.HibernateExeception: identifier of an instance of
         // com.beverage.domain.model.Kitchen was altered from 1 to 2
         restaurant.setKitchen(new Kitchen());
+
+        if (restaurant.getAddress() != null) {
+            restaurant.getAddress().setCity(new City());
+        }
 
         modelMapper.map(restaurantInput, restaurant);
     }

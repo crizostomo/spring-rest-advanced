@@ -3,7 +3,9 @@ package com.developer.beverageapi.api.controller;
 import com.developer.beverageapi.api.assembler.RestaurantInputDismantle;
 import com.developer.beverageapi.api.assembler.RestaurantModelAssembler;
 import com.developer.beverageapi.domain.exception.BusinessException;
+import com.developer.beverageapi.domain.exception.CityNotFoundException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
+import com.developer.beverageapi.domain.exception.KitchenNotFoundException;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.api.model.RestaurantModel;
 import com.developer.beverageapi.api.model.input.RestaurantInput;
@@ -61,7 +63,7 @@ public class ControllerRestaurant {
             Restaurant restaurant = restaurantInputDismantle.toDomainObject(restaurantInput);
 
             return restaurantModelAssembler.toModel(registrationRestaurant.add(restaurant));
-        } catch (EntityNotFoundException e) {
+        } catch (KitchenNotFoundException | CityNotFoundException e) {
             throw new BusinessException(e.getMessage());
         }
     }
@@ -79,7 +81,7 @@ public class ControllerRestaurant {
 //                "id", "payment", "address", "recordDate");
 
             return restaurantModelAssembler.toModel(registrationRestaurant.add(currentRestaurant));
-        } catch (EntityNotFoundException e) {
+        } catch (KitchenNotFoundException | CityNotFoundException e) {
             throw new BusinessException(e.getMessage());
         }
     }
