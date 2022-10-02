@@ -36,5 +36,13 @@ public class User {
     @ManyToMany
     @JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> grupos = new ArrayList<>();
+    private List<Group> groups = new ArrayList<>();
+
+    public boolean passwordEqualsTo(String password) {
+        return getPassword().equals(password);
+    }
+
+    public boolean passwordIsNotEqualsTo(String password) {
+        return !passwordEqualsTo(password);
+    }
 }

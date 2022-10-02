@@ -3,6 +3,8 @@ package com.developer.beverageapi.api.controller;
 import com.developer.beverageapi.api.assembler.UserInputDismantle;
 import com.developer.beverageapi.api.assembler.UserModelAssembler;
 import com.developer.beverageapi.api.model.UserModel;
+import com.developer.beverageapi.api.model.input.UserPasswordInput;
+import com.developer.beverageapi.api.model.input.UserWithPasswordInput;
 import com.developer.beverageapi.api.model.input.UserWithoutPasswordInput;
 import com.developer.beverageapi.domain.model.User;
 import com.developer.beverageapi.domain.repository.RepositoryUser;
@@ -46,8 +48,8 @@ public class ControllerUser {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserModel add(@RequestBody @Valid UserWithoutPasswordInput UserWithoutPasswordInput) {
-        User user = userInputDismantle.toDomainObjectWithoutPassword(UserWithoutPasswordInput);
+    public UserModel add(@RequestBody @Valid UserWithPasswordInput userWithPasswordInput) {
+        User user = userInputDismantle.toDomainObjectWithPassword(userWithPasswordInput);
 
         user = registrationUser.add(user);
 
@@ -64,6 +66,14 @@ public class ControllerUser {
         currentUser = registrationUser.add(currentUser);
 
         return userModelAssembler.toModel(currentUser);
+    }
+
+    @PutMapping("/{userId}/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updatePassword(@PathVariable Long userId,
+                            @RequestBody @Valid UserPasswordInput password) {
+
+        registrationUser.updatePassword(userId, password.getCurrentPassword(), password.getNewPassword());
     }
 
     @DeleteMapping("/{userId}")

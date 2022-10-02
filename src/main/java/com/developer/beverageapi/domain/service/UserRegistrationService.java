@@ -1,5 +1,6 @@
 package com.developer.beverageapi.domain.service;
 
+import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.UserNotFoundException;
 import com.developer.beverageapi.domain.model.User;
@@ -37,6 +38,16 @@ public class UserRegistrationService {
             throw new EntityInUseException(
                     String.format(MSG_USER_BEING_USED, userId));
         }
+    }
+
+    @Transactional
+    public void updatePassword(Long userId, String currentPassword, String newPassword) {
+        User user = searchOrFail(userId);
+
+        if (user.passwordIsNotEqualsTo(currentPassword)) {
+            throw new BusinessException("The current password informed is not equals to the user password.");
+        }
+        user.setPassword(newPassword);
     }
 
     public User searchOrFail(Long userId) {
