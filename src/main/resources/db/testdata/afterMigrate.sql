@@ -63,3 +63,6 @@ insert into product (id, name, description, price, active, restaurant_id) values
 insert into product (id, name, description, price, active, restaurant_id) values (2, 'Matutinho', 'Feijao, Arroz, Contra File e Batata Frita', 26, TRUE, 2);
 insert into product (id, name, description, price, active, restaurant_id) values (3, 'Costelinha', 'Costelinha de Porco Defumada', 85, TRUE, 3);
 
+insert into `user` (id, name, email, password, record_date) values (1, 'Roronoa Zoro', 'zoro.sword@onepice.com', 'sleep001', utc_timestamp);
+insert into `user` (id, name, email, password, record_date) values (2, 'Hashibira Inosuke', 'inosuke.hashibira@d-slayer.com', 'killer123', utc_timestamp);
+insert into `user` (id, name, email, password, record_date) values (3, 'Vegeta', 'vegeta.ssj@dragon-ball.com', 'buma123', utc_timestamp);

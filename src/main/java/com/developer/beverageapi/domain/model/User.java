@@ -12,6 +12,7 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Entity
+@Table(name = "`user`")
 public class User {
 
     @EqualsAndHashCode.Include
