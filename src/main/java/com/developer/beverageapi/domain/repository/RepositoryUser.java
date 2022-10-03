@@ -1,8 +1,11 @@
 package com.developer.beverageapi.domain.repository;
 
 import com.developer.beverageapi.domain.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RepositoryUser extends JpaRepository<User, Long> {
+import java.util.Optional;
+
+public interface RepositoryUser extends CustomJpaRepository<User, Long> {
+
+    Optional<User> findByEmail(String email);
 
 }
