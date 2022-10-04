@@ -1,7 +1,5 @@
 package com.developer.beverageapi.domain.model;
 
-import com.developer.beverageapi.core.validation.Groups;
-import com.developer.beverageapi.core.validation.Multiple;
 import com.developer.beverageapi.core.validation.ZeroValueIncludesDescription;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,16 +7,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @ZeroValueIncludesDescription(fieldValue = "delivery",
         fieldDescription = "name", mandatoryField = "Free Delivery")
@@ -71,7 +66,7 @@ public class Restaurant {
     @JoinTable(name = "restaurant_payment",
     joinColumns = @JoinColumn(name = "restaurant_id"),
     inverseJoinColumns = @JoinColumn(name = "payment_id"))
-    private List<Payment> payments = new ArrayList<>();
+    private Set<Payment> payments = new HashSet<>(); // It changed from List to Set because it does not accept duplicated items
 
 //    @JsonIgnore
     @OneToMany(mappedBy = "restaurant")
@@ -83,5 +78,13 @@ public class Restaurant {
 
     public void inactive() {
         setActive(false);
+    }
+
+    public boolean removePayment(Payment payment) {
+        return getPayments().remove(payment);
+    }
+
+    public boolean addPayment(Payment payment) {
+        return getPayments().add(payment);
     }
 }

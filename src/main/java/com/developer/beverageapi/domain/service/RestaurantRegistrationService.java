@@ -4,6 +4,7 @@ import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.RestaurantNotFoundException;
 import com.developer.beverageapi.domain.model.City;
 import com.developer.beverageapi.domain.model.Kitchen;
+import com.developer.beverageapi.domain.model.Payment;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
@@ -30,6 +31,9 @@ public class RestaurantRegistrationService {
 
     @Autowired
     private CityRegistrationService cityRegistrationService;
+
+    @Autowired
+    private PaymentRegistrationService paymentRegistrationService;
 
     @Transactional
     public Restaurant add(Restaurant restaurant) {
@@ -73,6 +77,22 @@ public class RestaurantRegistrationService {
         Restaurant currentRestaurant = searchOrFail(restaurantId);
 
         currentRestaurant.inactive();
+    }
+
+    @Transactional
+    public void removeAssociationWithPayments(Long restaurantId, Long paymentId) {
+        Restaurant restaurant = searchOrFail(restaurantId);
+        Payment payment = paymentRegistrationService.searchOrFail(paymentId);
+
+        restaurant.removePayment(payment);
+    }
+
+    @Transactional
+    public void associationWithPayments(Long restaurantId, Long paymentId) {
+        Restaurant restaurant = searchOrFail(restaurantId);
+        Payment payment = paymentRegistrationService.searchOrFail(paymentId);
+
+        restaurant.addPayment(payment);
     }
 
     public Restaurant searchOrFail(Long restaurantId) {
