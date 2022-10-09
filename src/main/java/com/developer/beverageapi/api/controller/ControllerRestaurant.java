@@ -98,6 +98,24 @@ public class ControllerRestaurant {
         registrationRestaurant.inactive(restaurantId);
     }
 
+    /**
+     * @PutMapping("/{restaurantId}/active") || @DeleteMapping("/{restaurantId}/inactive")
+     * They are one thing to do!
+     * @param restaurantId
+     */
+
+    @PutMapping("/{restaurantId}/opening")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void open(@PathVariable Long restaurantId) {
+        registrationRestaurant.open(restaurantId);
+    }
+
+    @PutMapping("/{restaurantId}/closing")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void close(@PathVariable Long restaurantId) {
+        registrationRestaurant.close(restaurantId);
+    }
+
 //    @PatchMapping("/{restaurantId}")
 //    public Restaurant partialUpdate(@PathVariable Long restaurantId,
 //                                    @RequestBody Map<String, Object> fields, HttpServletRequest request) {

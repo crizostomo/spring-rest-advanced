@@ -51,6 +51,8 @@ public class Restaurant {
 
     private Boolean active = Boolean.TRUE;
 
+    private Boolean open = Boolean.FALSE;
+
 //    @JsonIgnore
     @CreationTimestamp //The property must be salved with the current time
     @Column(nullable = false, columnDefinition = "datetime")
@@ -78,6 +80,14 @@ public class Restaurant {
 
     public void inactive() {
         setActive(false);
+    }
+
+    public void open() {
+        setOpen(true);
+    }
+
+    public void close() {
+        setOpen(false);
     }
 
     public boolean removePayment(Payment payment) {

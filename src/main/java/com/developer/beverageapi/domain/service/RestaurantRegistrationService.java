@@ -79,6 +79,21 @@ public class RestaurantRegistrationService {
         currentRestaurant.inactive();
     }
 
+
+    @Transactional
+    public void open(Long restaurantId) {
+        Restaurant currentRestaurant = searchOrFail(restaurantId);
+
+        currentRestaurant.open();
+    }
+
+    @Transactional
+    public void close(Long restaurantId) {
+        Restaurant currentRestaurant = searchOrFail(restaurantId);
+
+        currentRestaurant.close();
+    }
+
     @Transactional
     public void removeAssociationWithPayments(Long restaurantId, Long paymentId) {
         Restaurant restaurant = searchOrFail(restaurantId);
