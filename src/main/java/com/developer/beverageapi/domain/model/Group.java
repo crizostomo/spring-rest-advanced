@@ -27,4 +27,12 @@ public class Group {
     inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissions = new ArrayList<>();
 
+    public boolean removePermission(Permission permission) {
+        return getPermissions().remove(permission);
+    }
+
+    public boolean addPermission(Permission permission) {
+        return getPermissions().add(permission);
+    }
+
 }

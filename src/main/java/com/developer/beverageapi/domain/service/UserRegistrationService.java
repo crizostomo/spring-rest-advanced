@@ -3,6 +3,7 @@ package com.developer.beverageapi.domain.service;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.UserNotFoundException;
+import com.developer.beverageapi.domain.model.Group;
 import com.developer.beverageapi.domain.model.User;
 import com.developer.beverageapi.domain.repository.RepositoryUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class UserRegistrationService {
 
     @Autowired
     private RepositoryUser repositoryUser;
+
+    @Autowired
+    private GroupRegistrationService registrationGroup;
 
     @Transactional
     public User add(User user){
@@ -59,6 +63,22 @@ public class UserRegistrationService {
             throw new BusinessException("The current password informed is not equals to the user password.");
         }
         user.setPassword(newPassword);
+    }
+
+    @Transactional
+    public void removeAssociationGroup(Long userId, Long groupId) {
+        User user = searchOrFail(userId);
+        Group group = registrationGroup.searchOrFail(userId);
+
+        user.removeGroup(group);
+    }
+
+    @Transactional
+    public void addAssociationGroup(Long userId, Long groupId) {
+        User user = searchOrFail(userId);
+        Group group = registrationGroup.searchOrFail(userId);
+
+        user.addGroup(group);
     }
 
     public User searchOrFail(Long userId) {
