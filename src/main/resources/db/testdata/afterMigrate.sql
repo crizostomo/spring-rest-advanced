@@ -10,6 +10,7 @@ delete from permission;
 delete from product;
 delete from restaurant;
 delete from restaurant_payment;
+delete from restaurant_user_responsible;
 delete from `user`;
 delete from user_group;
 
@@ -73,3 +74,5 @@ insert into `user` (id, name, email, password, record_date) values
 (3, 'Vegeta', 'vegeta.ssj@dragon-ball.com', 'buma123', utc_timestamp);
 
 insert into user_group (user_id, group_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurant_user_responsible (restaurant_id, user_id) values (1, 2), (2, 3);

@@ -28,24 +28,25 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (name = "name", nullable = false) //Optional if you want to use the same name
+    @Column(name = "name", nullable = false) //Optional if you want to use the same name
     private String name;
 
-//    @DecimalMin("0")
+    //    @DecimalMin("0")
 //    @Delivery
 //    @Multiple(number = 5)
     @PositiveOrZero
-    @Column (name = "delivery", nullable = false)
+    @Column(name = "delivery", nullable = false)
     private BigDecimal delivery;
 
-//    @JsonIgnore
+    //    @JsonIgnore
 //    @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "name"}, allowGetters = true)
 //    @ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
-    @ManyToOne//(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
+    @ManyToOne
+//(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
     @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @Embedded //This property is part of the restaurant entity
     private Address address;
 
@@ -53,24 +54,30 @@ public class Restaurant {
 
     private Boolean open = Boolean.FALSE;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @CreationTimestamp //The property must be salved with the current time
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime recordDate;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @UpdateTimestamp //The property must be salved with the current time when updated
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime updatedDate;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @ManyToMany//(fetch = FetchType.EAGER) // Everything that finishes with ...ToMany uses the strategy 'Lazy Loading'
     @JoinTable(name = "restaurant_payment",
-    joinColumns = @JoinColumn(name = "restaurant_id"),
-    inverseJoinColumns = @JoinColumn(name = "payment_id"))
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "payment_id"))
     private Set<Payment> payments = new HashSet<>(); // It changed from List to Set because it does not accept duplicated items
 
-//    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "restaurant_user_responsible",
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> responsible = new HashSet<>();
+
+    //    @JsonIgnore
     @OneToMany(mappedBy = "restaurant")
     private List<Product> products = new ArrayList<>();
 
@@ -96,5 +103,13 @@ public class Restaurant {
 
     public boolean addPayment(Payment payment) {
         return getPayments().add(payment);
+    }
+
+    public boolean removeResponsible(User user) {
+        return getResponsible().remove(user);
+    }
+
+    public boolean addResponsible(User user) {
+        return getResponsible().add(user);
     }
 }

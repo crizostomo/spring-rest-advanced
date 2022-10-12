@@ -2,10 +2,7 @@ package com.developer.beverageapi.domain.service;
 
 import com.developer.beverageapi.domain.exception.EntityInUseException;
 import com.developer.beverageapi.domain.exception.RestaurantNotFoundException;
-import com.developer.beverageapi.domain.model.City;
-import com.developer.beverageapi.domain.model.Kitchen;
-import com.developer.beverageapi.domain.model.Payment;
-import com.developer.beverageapi.domain.model.Restaurant;
+import com.developer.beverageapi.domain.model.*;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,9 @@ public class RestaurantRegistrationService {
 
     @Autowired
     private PaymentRegistrationService paymentRegistrationService;
+
+    @Autowired
+    private UserRegistrationService userRegistrationService;
 
     @Transactional
     public Restaurant add(Restaurant restaurant) {
@@ -108,6 +108,22 @@ public class RestaurantRegistrationService {
         Payment payment = paymentRegistrationService.searchOrFail(paymentId);
 
         restaurant.addPayment(payment);
+    }
+
+    @Transactional
+    public void removeAssociationWithResponsible(Long restaurantId, Long userId) {
+        Restaurant restaurant = searchOrFail(restaurantId);
+        User user = userRegistrationService.searchOrFail(userId);
+
+        restaurant.removeResponsible(user);
+    }
+
+    @Transactional
+    public void associationWithResponsible(Long restaurantId, Long userId) {
+        Restaurant restaurant = searchOrFail(restaurantId);
+        User user = userRegistrationService.searchOrFail(userId);
+
+        restaurant.addResponsible(user);
     }
 
     public Restaurant searchOrFail(Long restaurantId) {
