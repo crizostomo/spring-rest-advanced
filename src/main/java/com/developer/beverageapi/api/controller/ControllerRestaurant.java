@@ -4,8 +4,8 @@ import com.developer.beverageapi.api.assembler.RestaurantInputDismantle;
 import com.developer.beverageapi.api.assembler.RestaurantModelAssembler;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.CityNotFoundException;
-import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.exception.KitchenNotFoundException;
+import com.developer.beverageapi.domain.exception.RestaurantNotFoundException;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.api.model.RestaurantModel;
 import com.developer.beverageapi.api.model.input.RestaurantInput;
@@ -85,6 +85,11 @@ public class ControllerRestaurant {
             throw new BusinessException(e.getMessage());
         }
     }
+    /**
+     * @PutMapping("/{restaurantId}/active") || @DeleteMapping("/{restaurantId}/inactive")
+     * They are one thing to do!
+     * @param restaurantId
+     */
 
     @PutMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -98,11 +103,25 @@ public class ControllerRestaurant {
         registrationRestaurant.inactive(restaurantId);
     }
 
-    /**
-     * @PutMapping("/{restaurantId}/active") || @DeleteMapping("/{restaurantId}/inactive")
-     * They are one thing to do!
-     * @param restaurantId
-     */
+    @PutMapping("/activations")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void activateMultiples(@RequestBody List<Long> restaurantIds) {
+        try {
+            registrationRestaurant.active(restaurantIds);
+        } catch (RestaurantNotFoundException e) {
+            throw new BusinessException(e.getMessage(), e);
+        }
+    }
+
+    @DeleteMapping("/activations")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deactivateMultiples(@RequestBody List<Long> restaurantIds) {
+        try {
+            registrationRestaurant.inactive(restaurantIds);
+        } catch (RestaurantNotFoundException e) {
+            throw new BusinessException(e.getMessage(), e);
+        }
+    }
 
     @PutMapping("/{restaurantId}/opening")
     @ResponseStatus(HttpStatus.NO_CONTENT)
