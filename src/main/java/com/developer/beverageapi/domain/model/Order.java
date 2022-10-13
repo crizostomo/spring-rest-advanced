@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "`order`")
 public class Order {
 
     @EqualsAndHashCode.Include
@@ -21,7 +22,7 @@ public class Order {
     private Long id;
 
     @Column(nullable = false)
-    private BigDecimal subTotal;
+    private BigDecimal subtotal;
 
     @Column(nullable = false)
     private BigDecimal delivery;
@@ -32,6 +33,7 @@ public class Order {
     @Embedded
     private Address deliveryAddress;
 
+    @Enumerated(EnumType.STRING) // This annotation converts a String to an Enum
     private OrderStatus status;
 
     @CreationTimestamp
@@ -42,7 +44,7 @@ public class Order {
     private OffsetDateTime confirmationDate;
 
     @CreationTimestamp
-    private OffsetDateTime cancellationDate;
+    private OffsetDateTime cancelledDate;
 
     @CreationTimestamp
     private OffsetDateTime deliveryDate;
@@ -61,4 +63,21 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> items = new ArrayList<>();
+
+    public void calculateTotal() {
+        this.subtotal = getItems()
+                .stream()
+                .map(orderItem -> orderItem.getTotal())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        this.total = this.subtotal.add(this.delivery);
+    }
+
+    public void defineDelivery() {
+        setDelivery(getRestaurant().getDelivery());
+    }
+
+    public void attribute() {
+        getItems().forEach(orderItem -> orderItem.setOrder(this));
+    }
 }
