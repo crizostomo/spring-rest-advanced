@@ -49,7 +49,7 @@ public class Order {
     @CreationTimestamp
     private OffsetDateTime deliveryDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // To reduce the quantity in consults - OrderSummaryModel does not have| 12.20
     @JoinColumn(nullable = false)
     private Payment payment;
 

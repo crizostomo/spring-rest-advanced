@@ -1,7 +1,9 @@
 package com.developer.beverageapi.api.controller;
 
 import com.developer.beverageapi.api.assembler.OrderModelAssembler;
+import com.developer.beverageapi.api.assembler.OrderSummaryModelAssembler;
 import com.developer.beverageapi.api.model.OrderModel;
+import com.developer.beverageapi.api.model.OrderSummaryModel;
 import com.developer.beverageapi.domain.model.Order;
 import com.developer.beverageapi.domain.repository.RepositoryOrder;
 import com.developer.beverageapi.domain.service.OrderIssuingRegistrationService;
@@ -26,11 +28,21 @@ public class ControllerOrder {
     @Autowired
     private OrderModelAssembler orderModelAssembler;
 
+    @Autowired
+    private OrderSummaryModelAssembler orderSummaryModelAssembler;
+
     @GetMapping
     public List<OrderModel> list() {
         List<Order> allOrders = repositoryOrder.findAll();
 
         return orderModelAssembler.toCollectionModel(allOrders);
+    }
+
+    @GetMapping("/summary")
+    public List<OrderSummaryModel> listSummary() {
+        List<Order> allOrders = repositoryOrder.findAll();
+
+        return orderSummaryModelAssembler.toCollectionModel(allOrders);
     }
 
     @GetMapping("/{orderId}")
