@@ -21,32 +21,22 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private BigDecimal subtotal;
-
-    @Column(nullable = false)
     private BigDecimal delivery;
-
-    @Column(nullable = false)
     private BigDecimal total;
 
     @Embedded
-    private Address deliveryAddress;
+    private Address address;
 
     @Enumerated(EnumType.STRING) // This annotation converts a String to an Enum
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.CREATED;
 
     @CreationTimestamp
     @Column(nullable = false)
     private OffsetDateTime creationDate;
 
-    @CreationTimestamp
     private OffsetDateTime confirmationDate;
-
-    @CreationTimestamp
     private OffsetDateTime cancelledDate;
-
-    @CreationTimestamp
     private OffsetDateTime deliveryDate;
 
     @ManyToOne(fetch = FetchType.LAZY) // To reduce the quantity in consults - OrderSummaryModel does not have| 12.20
@@ -61,23 +51,17 @@ public class Order {
     @JoinColumn(name = "user_client_id", nullable = false)
     private User client;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
 
     public void calculateTotal() {
+        getItems().forEach(OrderItem::calculateTotalPrice);
+
         this.subtotal = getItems()
                 .stream()
                 .map(orderItem -> orderItem.getTotal())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         this.total = this.subtotal.add(this.delivery);
-    }
-
-    public void defineDelivery() {
-        setDelivery(getRestaurant().getDelivery());
-    }
-
-    public void attribute() {
-        getItems().forEach(orderItem -> orderItem.setOrder(this));
     }
 }

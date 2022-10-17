@@ -15,8 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@ZeroValueIncludesDescription(fieldValue = "delivery",
-        fieldDescription = "name", mandatoryField = "Free Delivery")
+//@ZeroValueIncludesDescription(fieldValue = "delivery",
+//        fieldDescription = "name", mandatoryField = "Free Delivery")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -43,7 +43,7 @@ public class Restaurant {
 //    @ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
     @ManyToOne
 //(fetch = FetchType.LAZY) //Many restaurants own one kitchen | Everything that finishes with ...ToOne uses the strategy 'Eager Loading'
-    @JoinColumn(name = "kitchen_id") //In JPA this is generated automatically if you don't put the name
+    @JoinColumn(name = "kitchen_id", nullable = false) //In JPA this is generated automatically if you don't put the name
     private Kitchen kitchen;
 
     //    @JsonIgnore
@@ -111,5 +111,13 @@ public class Restaurant {
 
     public boolean addResponsible(User user) {
         return getResponsible().add(user);
+    }
+
+    public boolean acceptPayment(Payment payment) {
+        return getPayments().contains(payment);
+    }
+
+    public boolean doesNotAcceptPayment(Payment payment) {
+        return !acceptPayment(payment);
     }
 }

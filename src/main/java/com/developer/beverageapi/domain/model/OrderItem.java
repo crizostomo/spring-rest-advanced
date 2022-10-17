@@ -16,23 +16,31 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private Integer quantity;
-
-    @Column(nullable = false)
     private BigDecimal unitPrice;
-
-    @Column(nullable = false)
     private BigDecimal total;
-
-    @Column(nullable = false)
     private String observation;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Order order;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Product product;
+
+    public void calculateTotalPrice() {
+        BigDecimal unitPrice = this.getUnitPrice();
+        Integer quantity = this.getQuantity();
+
+        if (unitPrice == null) {
+            unitPrice = BigDecimal.ZERO;
+        }
+
+        if (quantity == null) {
+            quantity = 0;
+        }
+
+        this.setTotal(unitPrice.multiply(new BigDecimal(quantity)));
+    }
 }
