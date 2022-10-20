@@ -1,5 +1,6 @@
 package com.developer.beverageapi.domain.model;
 
+import com.developer.beverageapi.domain.exception.BusinessException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -63,5 +64,29 @@ public class Order {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         this.total = this.subtotal.add(this.delivery);
+    }
+
+    public void confirm() {
+        setStatus(OrderStatus.CONFIRMED);
+        setConfirmationDate(OffsetDateTime.now());
+    }
+
+    public void deliver() {
+        setStatus(OrderStatus.DELIVERED);
+        setDeliveryDate(OffsetDateTime.now());
+    }
+
+    public void cancel() {
+        setStatus(OrderStatus.CANCELLED);
+        setCancelledDate(OffsetDateTime.now());
+    }
+
+    private void setStatus(OrderStatus newStatus) {
+        if (getStatus().cannotBeAlteredToANewStatus(newStatus)) {
+            throw new BusinessException(
+                    String.format("Order status %d cannot be altered from %s to %s",
+                            getId(), getStatus().getDescription(), newStatus.getDescription()));
+        }
+        this.status = newStatus;
     }
 }

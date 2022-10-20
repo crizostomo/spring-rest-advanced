@@ -16,41 +16,20 @@ public class StatusOrderService {
     private OrderIssuingRegistrationService orderIssuing;
 
     @Transactional
-    public void confirm (Long orderId) {
+    public void confirm(Long orderId) {
         Order order = orderIssuing.searchOrFail(orderId);
-
-        if (!order.getStatus().equals(OrderStatus.CREATED)) {
-            throw new BusinessException(
-                    String.format("Order status %d cannot be altered from %s to %s",
-                            order.getId(), order.getStatus().getDescription(), OrderStatus.CONFIRMED.getDescription()));
-        }
-        order.setStatus(OrderStatus.CONFIRMED);
-        order.setConfirmationDate(OffsetDateTime.now());
+        order.confirm();
     }
 
     @Transactional
-    public void delivery (Long orderId) {
+    public void delivery(Long orderId) {
         Order order = orderIssuing.searchOrFail(orderId);
-
-        if (!order.getStatus().equals(OrderStatus.CONFIRMED)) {
-            throw new BusinessException(
-                    String.format("Order status %d cannot be altered from %s to %s",
-                            order.getId(), order.getStatus().getDescription(), OrderStatus.DELIVERED.getDescription()));
-        }
-        order.setStatus(OrderStatus.DELIVERED);
-        order.setConfirmationDate(OffsetDateTime.now());
+        order.deliver();
     }
 
     @Transactional
-    public void cancel (Long orderId) {
+    public void cancel(Long orderId) {
         Order order = orderIssuing.searchOrFail(orderId);
-
-        if (!order.getStatus().equals(OrderStatus.CREATED)) {
-            throw new BusinessException(
-                    String.format("Order status %d cannot be altered from %s to %s",
-                            order.getId(), order.getStatus().getDescription(), OrderStatus.CANCELLED.getDescription()));
-        }
-        order.setStatus(OrderStatus.CANCELLED);
-        order.setConfirmationDate(OffsetDateTime.now());
+        order.cancel();
     }
 }
