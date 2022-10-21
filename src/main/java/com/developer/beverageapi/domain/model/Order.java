@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -21,6 +22,8 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String code;
 
     private BigDecimal subtotal;
     private BigDecimal delivery;
@@ -85,8 +88,13 @@ public class Order {
         if (getStatus().cannotBeAlteredToANewStatus(newStatus)) {
             throw new BusinessException(
                     String.format("Order status %d cannot be altered from %s to %s",
-                            getId(), getStatus().getDescription(), newStatus.getDescription()));
+                            getCode(), getStatus().getDescription(), newStatus.getDescription()));
         }
         this.status = newStatus;
+    }
+
+    @PrePersist // Before inserting a new register order in DB execute this method
+    private void generateCode() {
+        setCode(UUID.randomUUID().toString());
     }
 }

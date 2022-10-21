@@ -81,10 +81,10 @@ insert into user_group (user_id, group_id) values (1, 1), (1, 2), (2, 2);
 
 insert into restaurant_user_responsible (restaurant_id, user_id) values (1, 2), (2, 3);
 
-insert into `order` (id, restaurant_id, user_client_id, payment_id, address_city_id, address_cep,
+insert into `order` (id, code, restaurant_id, user_client_id, payment_id, address_city_id, address_cep,
                     address_street, address_number, address_complement, address_neighborhood,
 	                status, creation_date, subtotal, delivery, total)
-values (1, 1, 1, 1, 1, '38400-000', 'Floriano Peixoto Street', '500', 'Apartment 801', 'Brazil',
+values (1, '92f00a93-f0aa-4a1c-b172-e0198d60d1d8', 1, 1, 1, 1, '38400-000', 'Floriano Peixoto Street', '500', 'Apartment 801', 'Brazil',
         'CREATED', utc_timestamp, 298.90, 10, 308.90);
 
 insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values
@@ -92,10 +92,10 @@ insert into order_item (id, order_id, product_id, quantity, unit_price, total, o
 (2, 1, 2, 2, 110, 220, 'Less spicy, please');
 
 
-insert into `order` (id, restaurant_id, user_client_id, payment_id, address_city_id, address_cep,
+insert into `order` (id, code, restaurant_id, user_client_id, payment_id, address_city_id, address_cep,
                     address_street, address_number, address_complement, address_neighborhood,
 	                status, creation_date, subtotal, delivery, total)
-values (2, 4, 1, 2, 1, '38400-111', 'Acre Street', '300', 'House 2', 'Downtown',
+values (2, uuid(), 4, 1, 2, 1, '38400-111', 'Acre Street', '300', 'House 2', 'Downtown',
         'CREATED', utc_timestamp, 79, 0, 79);
 
 insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values

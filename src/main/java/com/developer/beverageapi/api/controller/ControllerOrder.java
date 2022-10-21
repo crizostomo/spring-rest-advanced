@@ -70,9 +70,9 @@ public class ControllerOrder {
         }
     }
 
-    @GetMapping("/{orderId}")
-    public OrderModel search(@PathVariable Long orderId) {
-        Order order = issuingOrder.searchOrFail(orderId);
+    @GetMapping("/{codeOrder}")
+    public OrderModel search(@PathVariable String codeOrder) {
+        Order order = issuingOrder.searchOrFail(codeOrder);
 
         return orderModelAssembler.toModel(order);
     }

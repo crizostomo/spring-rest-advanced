@@ -5,9 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RepositoryOrder extends CustomJpaRepository<Order, Long> {
+
+//    @Query("from Order where code = :code") --> We don't need this because we have already in the class 'Order'
+    Optional<Order> findByCode(String code);
 
     @Query("from Order p join fetch p.client join fetch p.restaurant r join fetch r.kitchen")
     List<Order> findAll();

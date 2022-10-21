@@ -16,20 +16,20 @@ public class StatusOrderService {
     private OrderIssuingRegistrationService orderIssuing;
 
     @Transactional
-    public void confirm(Long orderId) {
-        Order order = orderIssuing.searchOrFail(orderId);
+    public void confirm(String codeOrder) {
+        Order order = orderIssuing.searchOrFail(codeOrder);
         order.confirm();
     }
 
     @Transactional
-    public void delivery(Long orderId) {
-        Order order = orderIssuing.searchOrFail(orderId);
+    public void delivery(String codeOrder) {
+        Order order = orderIssuing.searchOrFail(codeOrder);
         order.deliver();
     }
 
     @Transactional
-    public void cancel(Long orderId) {
-        Order order = orderIssuing.searchOrFail(orderId);
+    public void cancel(String codeOrder) {
+        Order order = orderIssuing.searchOrFail(codeOrder);
         order.cancel();
     }
 }
