@@ -3,12 +3,9 @@ package com.developer.beverageapi.api.controller;
 import com.developer.beverageapi.api.assembler.ProductInputDismantle;
 import com.developer.beverageapi.api.assembler.ProductModelAssembler;
 import com.developer.beverageapi.api.model.ProductModel;
-import com.developer.beverageapi.api.model.StateModel;
 import com.developer.beverageapi.api.model.input.ProductInput;
-import com.developer.beverageapi.api.model.input.StateInput;
 import com.developer.beverageapi.domain.model.Product;
 import com.developer.beverageapi.domain.model.Restaurant;
-import com.developer.beverageapi.domain.model.State;
 import com.developer.beverageapi.domain.repository.RepositoryProduct;
 import com.developer.beverageapi.domain.service.ProductRegistrationService;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
@@ -42,7 +39,24 @@ public class ControllerRestaurantProduct {
     public List<ProductModel> list(@PathVariable Long restaurantId) {
         Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
 
-        List<Product> allProducts = repositoryProduct.findByRestaurant(restaurant);
+        List<Product> allProducts = repositoryProduct.findProductsByRestaurant(restaurant);
+
+        return productModelAssembler.toCollectionModel(allProducts);
+    }
+
+    @GetMapping("/active-inactive")
+    public List<ProductModel> listActiveAndOrInactive(@PathVariable Long restaurantId,
+                                                      @RequestParam(required = false) boolean includeInactive) {
+        Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
+
+        List<Product> allProducts = null;
+
+        if (includeInactive) {
+            allProducts = repositoryProduct.findProductsByRestaurant(restaurant);
+        } else {
+            allProducts = repositoryProduct.findActivesByRestaurant(restaurant);
+        }
+
 
         return productModelAssembler.toCollectionModel(allProducts);
     }
