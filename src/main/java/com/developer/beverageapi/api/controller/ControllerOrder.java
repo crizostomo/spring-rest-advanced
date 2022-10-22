@@ -12,8 +12,12 @@ import com.developer.beverageapi.domain.model.Order;
 import com.developer.beverageapi.domain.model.User;
 import com.developer.beverageapi.domain.repository.RepositoryOrder;
 import com.developer.beverageapi.domain.service.OrderIssuingRegistrationService;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,6 +55,25 @@ public class ControllerOrder {
 
         return orderSummaryModelAssembler.toCollectionModel(allOrders);
     }
+
+//    @GetMapping("/summary-customized")
+//    public MappingJacksonValue listSummaryJackson(@RequestParam(required = false) String fields) {
+//        List<Order> allOrders = repositoryOrder.findAll();
+//        List<OrderSummaryModel> ordersModel = orderSummaryModelAssembler.toCollectionModel(allOrders);
+//
+//        MappingJacksonValue ordersWrapper = new MappingJacksonValue(ordersModel); // It allows customizing what you want
+//
+//        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+//        filterProvider.addFilter("orderFilter", SimpleBeanPropertyFilter.serializeAll());
+//
+//        if (StringUtils.isNotBlank(fields)) {
+//            filterProvider.addFilter("orderFilter", SimpleBeanPropertyFilter.filterOutAllExcept(fields.split(",")));
+//        }
+//
+//        ordersWrapper.setFilters(filterProvider);
+//
+//        return ordersWrapper;
+//    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
