@@ -110,3 +110,12 @@ values (3, uuid(), 3, 1, 2, 1, '38400-222', 'Sao Paulo Street', '322', 'Near the
 
 insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values
 (4, 2, 4, 1, 89, 99, 'Rare');
+
+insert into `order` (id, code, restaurant_id, user_client_id, payment_id, address_city_id, address_cep,
+                    address_street, address_number, address_complement, address_neighborhood,
+	                status, creation_date, confirmation_date, delivery_date, subtotal, delivery, total)
+values (4, uuid(), 3, 1, 2, 1, '38400-222', 'Rio de Janeiro Street', '122', null, 'Santana Park',
+        'DELIVERED', '2022-10-01 20:34:04', '2022-10-01 20:35:14', '2022-10-01 21:14:17', 89, 12, 99);
+
+insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values
+(5, 3, 4, 1, 89, 99, 'Extra French Fries');
