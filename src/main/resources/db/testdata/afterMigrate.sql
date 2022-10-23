@@ -100,3 +100,13 @@ values (2, uuid(), 4, 1, 2, 1, '38400-111', 'Acre Street', '300', 'House 2', 'Do
 
 insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values
 (3, 2, 6, 1, 79, 79, 'Well done');
+
+
+insert into `order` (id, code, restaurant_id, user_client_id, payment_id, address_city_id, address_cep,
+                    address_street, address_number, address_complement, address_neighborhood,
+	                status, creation_date, subtotal, delivery, total)
+values (3, uuid(), 3, 1, 2, 1, '38400-222', 'Sao Paulo Street', '322', 'Near the Mall', 'Beach Park',
+        'CREATED', utc_timestamp, 89, 12, 99);
+
+insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values
+(4, 2, 4, 1, 89, 99, 'Rare');

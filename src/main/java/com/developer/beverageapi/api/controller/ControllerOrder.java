@@ -11,7 +11,9 @@ import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Order;
 import com.developer.beverageapi.domain.model.User;
 import com.developer.beverageapi.domain.repository.RepositoryOrder;
+import com.developer.beverageapi.domain.repository.filter.OrderFilter;
 import com.developer.beverageapi.domain.service.OrderIssuingRegistrationService;
+import com.developer.beverageapi.infrastructure.repository.spec.OrderSpecs;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +47,13 @@ public class ControllerOrder {
     @GetMapping
     public List<OrderModel> list() {
         List<Order> allOrders = repositoryOrder.findAll();
+
+        return orderModelAssembler.toCollectionModel(allOrders);
+    }
+
+    @GetMapping("/filter")
+    public List<OrderModel> search(OrderFilter filter) {
+        List<Order> allOrders = repositoryOrder.findAll(OrderSpecs.usingFilter(filter));
 
         return orderModelAssembler.toCollectionModel(allOrders);
     }
