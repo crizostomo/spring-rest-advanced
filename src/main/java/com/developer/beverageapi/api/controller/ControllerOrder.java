@@ -18,6 +18,10 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
@@ -52,11 +56,22 @@ public class ControllerOrder {
     }
 
     @GetMapping("/filter")
-    public List<OrderModel> search(OrderFilter filter) {
-        List<Order> allOrders = repositoryOrder.findAll(OrderSpecs.usingFilter(filter));
+    public Page<OrderModel> search(OrderFilter filter, @PageableDefault(size = 10)Pageable pageable) {
+        Page<Order> ordersPage = repositoryOrder.findAll(OrderSpecs.usingFilter(filter), pageable);
 
-        return orderModelAssembler.toCollectionModel(allOrders);
+        List<OrderModel> orderSummaryModels = orderModelAssembler.toCollectionModel(ordersPage.getContent());
+
+        Page<OrderModel> orderModelsPage = new PageImpl<>(orderSummaryModels, pageable, ordersPage.getTotalElements());
+
+        return orderModelsPage;
     }
+
+//    @GetMapping("/filter")
+//    public List<OrderModel> search(OrderFilter filter) {
+//        List<Order> allOrders = repositoryOrder.findAll(OrderSpecs.usingFilter(filter));
+//
+//        return orderModelAssembler.toCollectionModel(allOrders);
+//    }
 
     @GetMapping("/summary")
     public List<OrderSummaryModel> listSummary() {
