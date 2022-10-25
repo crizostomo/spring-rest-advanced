@@ -8,6 +8,10 @@ import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.service.KitchenRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +37,14 @@ public class ControllerKitchen {
 
     //    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @GetMapping
-    public List<KitchenModel> list() {
-        List<Kitchen> allKitchens = repositoryKitchen.findAll();
+    public Page<KitchenModel> list(@PageableDefault(size = 10) Pageable pageable) {
+        Page<Kitchen> kitchensPaged = repositoryKitchen.findAll(pageable);
 
-        return kitchenModelAssembler.toCollectionModel(allKitchens);
+        List<KitchenModel> kitchenModels = kitchenModelAssembler.toCollectionModel(kitchensPaged.getContent());
+
+        Page<KitchenModel> kitchenModelsPage = new PageImpl<>(kitchenModels, pageable, kitchensPaged.getTotalElements());
+
+        return kitchenModelsPage;
     }
 
     //    @ResponseStatus(HttpStatus.CREATED)
