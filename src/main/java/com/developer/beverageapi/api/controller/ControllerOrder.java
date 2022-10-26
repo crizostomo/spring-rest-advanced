@@ -6,6 +6,7 @@ import com.developer.beverageapi.api.assembler.OrderSummaryModelAssembler;
 import com.developer.beverageapi.api.model.OrderModel;
 import com.developer.beverageapi.api.model.OrderSummaryModel;
 import com.developer.beverageapi.api.model.input.OrderInput;
+import com.developer.beverageapi.core.data.PageableTranslator;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Order;
@@ -16,6 +17,7 @@ import com.developer.beverageapi.domain.service.OrderIssuingRegistrationService;
 import com.developer.beverageapi.infrastructure.repository.spec.OrderSpecs;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -58,6 +60,7 @@ public class ControllerOrder {
     @GetMapping("/filter")
     public Page<OrderModel> search(OrderFilter filter, @PageableDefault(size = 10)Pageable pageable) {
         Page<Order> ordersPage = repositoryOrder.findAll(OrderSpecs.usingFilter(filter), pageable);
+        pageable = translatePageable(pageable);
 
         List<OrderModel> orderSummaryModels = orderModelAssembler.toCollectionModel(ordersPage.getContent());
 
@@ -122,5 +125,16 @@ public class ControllerOrder {
         Order order = issuingOrder.searchOrFail(codeOrder);
 
         return orderModelAssembler.toModel(order);
+    }
+
+    private Pageable translatePageable(Pageable apiPageable) {
+        var mapping = ImmutableMap.of(
+                "code", "code",
+                "restaurante.name", "restaurante.name",
+                "clienteName", "cliente.name",
+                "total", "total"
+        );
+
+        return PageableTranslator.translate(apiPageable, mapping);
     }
 }
