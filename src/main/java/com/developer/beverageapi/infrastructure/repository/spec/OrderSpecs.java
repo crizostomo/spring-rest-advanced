@@ -1,7 +1,7 @@
 package com.developer.beverageapi.infrastructure.repository.spec;
 
 import com.developer.beverageapi.domain.model.Order;
-import com.developer.beverageapi.domain.repository.filter.OrderFilter;
+import com.developer.beverageapi.domain.filter.OrderFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;

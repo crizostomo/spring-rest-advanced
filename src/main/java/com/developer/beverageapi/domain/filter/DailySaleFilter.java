@@ -1,4 +1,4 @@
-package com.developer.beverageapi.domain.repository.filter;
+package com.developer.beverageapi.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,9 +8,8 @@ import java.time.OffsetDateTime;
 
 @Setter
 @Getter
-public class OrderFilter {
+public class DailySaleFilter {
 
-    private Long clientId;
     private Long restaurantId;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
