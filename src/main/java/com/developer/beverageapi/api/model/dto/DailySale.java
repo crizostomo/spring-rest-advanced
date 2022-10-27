@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 
 
 @AllArgsConstructor
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 public class DailySale {
 
-    private LocalDate date;
+    private Date date;
     private Long totalSale;
     private BigDecimal totalInvoice;
 }
