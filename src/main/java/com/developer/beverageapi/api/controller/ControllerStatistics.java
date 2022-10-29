@@ -6,6 +6,7 @@ import com.developer.beverageapi.domain.service.SaleQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class ControllerStatistics {
     private SaleQueryService saleQueryService;
 
     @GetMapping("/daily-sale")
-    public List<DailySale> consultDailySale(DailySaleFilter filter) {
-        return saleQueryService.consultDailySale(filter);
+    public List<DailySale> consultDailySale(DailySaleFilter filter,
+                                            @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
+        return saleQueryService.consultDailySale(filter, timeOffset);
     }
 }

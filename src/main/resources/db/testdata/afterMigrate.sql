@@ -119,3 +119,21 @@ values (4, uuid(), 3, 1, 2, 1, '38400-222', 'Rio de Janeiro Street', '122', null
 
 insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values
 (5, 3, 4, 1, 89, 99, 'Extra French Fries');
+
+insert into `order` (id, code, restaurant_id, user_client_id, payment_id, address_city_id, address_cep,
+                    address_street, address_number, address_complement, address_neighborhood,
+	                status, creation_date, confirmation_date, delivery_date, subtotal, delivery, total)
+values (5, uuid(), 3, 1, 2, 1, '38345-231', 'Amapa Avenue', '532', null, 'Beatriz Square',
+        'DELIVERED', '2022-10-02 22:34:04', '2022-10-02 22:35:14', '2022-10-02 22:59:37', 65, 15, 129);
+
+insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values
+(6, 3, 2, 2, 89, 129, 'Extra sauce');
+
+insert into `order` (id, code, restaurant_id, user_client_id, payment_id, address_city_id, address_cep,
+                    address_street, address_number, address_complement, address_neighborhood,
+	                status, creation_date, confirmation_date, delivery_date, subtotal, delivery, total)
+values (6, uuid(), 3, 1, 2, 1, '18405-321', 'Santa Catarina Road', '222', null, 'Catarina Park',
+        'DELIVERED', '2022-10-03 21:14:04', '2022-10-03 21:15:24', '2022-10-03 21:45:47', 79, 10, 149);
+
+insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values
+(7, 2, 1, 2, 79, 149, 'Extra Bacon');

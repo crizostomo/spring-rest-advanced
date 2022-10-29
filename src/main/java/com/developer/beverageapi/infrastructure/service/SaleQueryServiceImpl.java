@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Predicate;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -21,13 +22,20 @@ public class SaleQueryServiceImpl implements SaleQueryService {
     private EntityManager manager;
 
     @Override
-    public List<DailySale> consultDailySale(DailySaleFilter filter) {
+    public List<DailySale> consultDailySale(DailySaleFilter filter, String timeOffset) {
         var builder = manager.getCriteriaBuilder();
         var query = builder.createQuery(DailySale.class);
         var root = query.from(Order.class);
         var predicates = new ArrayList<Predicate>();
 
-        var functionCreationDate = builder.function("date", LocalDate.class, root.get("creationDate"));
+        var functionConvertTzCreationDate = builder.function(
+                "convert_tz",
+                Date.class,
+                root.get("creationDate"),
+                builder.literal("+00:00"),
+                builder.literal(timeOffset));
+
+        var functionCreationDate = builder.function("date", Date.class, functionConvertTzCreationDate);
 
         var selection = builder.construct(DailySale.class,
                 functionCreationDate,
