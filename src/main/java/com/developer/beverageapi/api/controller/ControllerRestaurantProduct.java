@@ -4,6 +4,7 @@ import com.developer.beverageapi.api.assembler.ProductInputDismantle;
 import com.developer.beverageapi.api.assembler.ProductModelAssembler;
 import com.developer.beverageapi.api.model.ProductModel;
 import com.developer.beverageapi.api.model.input.ProductInput;
+import com.developer.beverageapi.api.model.input.ProductPhotoInput;
 import com.developer.beverageapi.domain.model.Product;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryProduct;
@@ -11,10 +12,13 @@ import com.developer.beverageapi.domain.service.ProductRegistrationService;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/restaurants/{restaurantId}/products")
@@ -92,6 +96,25 @@ public class ControllerRestaurantProduct {
         currentProduct = registrationProduct.add(currentProduct);
 
         return productModelAssembler.toModel(currentProduct);
+    }
+
+    @PutMapping(path = "/{productId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
+                            ProductPhotoInput productPhotoInput) {
+
+        var fileName = UUID.randomUUID().toString() + "_" + productPhotoInput.getFile().getOriginalFilename();
+
+        var filePhoto = Path.of("/Users/diogo/Documents", fileName);
+
+        System.out.println(productPhotoInput.getDescription());
+        System.out.println(filePhoto);
+        System.out.println(productPhotoInput.getFile().getContentType());
+
+        try {
+            productPhotoInput.getFile().transferTo(filePhoto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @DeleteMapping("/{productId}")
