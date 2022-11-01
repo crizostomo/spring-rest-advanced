@@ -1,6 +1,5 @@
 package com.developer.beverageapi.core.validation;
 
-import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintValidator;
