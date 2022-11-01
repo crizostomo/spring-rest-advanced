@@ -35,3 +35,8 @@ spring:
 
   resources:
     add-mappings: false
+
+#  servlet:
+#    multipart:
+#      max-file-size: 500KB
+

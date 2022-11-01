@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.assembler.ProductModelAssembler;
 import com.developer.beverageapi.api.model.ProductModel;
 import com.developer.beverageapi.api.model.input.ProductInput;
 import com.developer.beverageapi.api.model.input.ProductPhotoInput;
+import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.model.Product;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryProduct;
@@ -100,7 +101,7 @@ public class ControllerRestaurantProduct {
 
     @PutMapping(path = "/{productId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
-                            ProductPhotoInput productPhotoInput) {
+                            @Valid ProductPhotoInput productPhotoInput) {
 
         var fileName = UUID.randomUUID().toString() + "_" + productPhotoInput.getFile().getOriginalFilename();
 
