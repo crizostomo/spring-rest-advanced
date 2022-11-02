@@ -2,19 +2,24 @@ package com.developer.beverageapi.api.controller;
 
 import com.developer.beverageapi.api.assembler.ProductInputDismantle;
 import com.developer.beverageapi.api.assembler.ProductModelAssembler;
+import com.developer.beverageapi.api.assembler.ProductPhotoModelAssembler;
 import com.developer.beverageapi.api.model.ProductModel;
+import com.developer.beverageapi.api.model.ProductPhotoModel;
 import com.developer.beverageapi.api.model.input.ProductInput;
 import com.developer.beverageapi.api.model.input.ProductPhotoInput;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.model.Product;
+import com.developer.beverageapi.domain.model.ProductPhoto;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryProduct;
+import com.developer.beverageapi.domain.service.CatalogProductPhotoService;
 import com.developer.beverageapi.domain.service.ProductRegistrationService;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.nio.file.Path;
@@ -39,6 +44,15 @@ public class ControllerRestaurantProduct {
 
     @Autowired
     private ProductInputDismantle productInputDismantle;
+
+    @Autowired
+    private CatalogProductPhotoService catalogProductPhoto;
+
+    @Autowired
+    private ProductRegistrationService productRegistration;
+
+    @Autowired
+    private ProductPhotoModelAssembler productPhotoModelAssembler;
 
     @GetMapping
     public List<ProductModel> list(@PathVariable Long restaurantId) {
@@ -76,7 +90,7 @@ public class ControllerRestaurantProduct {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductModel add(@PathVariable Long restaurantId,
-            @RequestBody @Valid ProductInput productInput) {
+                            @RequestBody @Valid ProductInput productInput) {
         Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
 
         Product product = productInputDismantle.toDomainObject(productInput);
@@ -89,7 +103,7 @@ public class ControllerRestaurantProduct {
 
     @PutMapping("/{productId}")
     public ProductModel update(@PathVariable Long restaurantId, @PathVariable Long productId,
-                             @RequestBody @Valid ProductInput productInput) {
+                               @RequestBody @Valid ProductInput productInput) {
         Product currentProduct = registrationProduct.searchOrFail(restaurantId, productId);
 
         productInputDismantle.copyToDomainObject(productInput, currentProduct);
@@ -100,22 +114,37 @@ public class ControllerRestaurantProduct {
     }
 
     @PutMapping(path = "/{productId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
-                            @Valid ProductPhotoInput productPhotoInput) {
+    public ProductPhotoModel updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
+                                         @Valid ProductPhotoInput productPhotoInput) {
 
-        var fileName = UUID.randomUUID().toString() + "_" + productPhotoInput.getFile().getOriginalFilename();
+//        var fileName = UUID.randomUUID().toString() + "_" + productPhotoInput.getFile().getOriginalFilename();
+//
+//        var filePhoto = Path.of("/Users/diogo/Documents", fileName);
+//
+//        System.out.println(productPhotoInput.getDescription());
+//        System.out.println(filePhoto);
+//        System.out.println(productPhotoInput.getFile().getContentType());
+//
+//        try {
+//            productPhotoInput.getFile().transferTo(filePhoto);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
 
-        var filePhoto = Path.of("/Users/diogo/Documents", fileName);
+        Product product = productRegistration.searchOrFail(restaurantId, productId);
 
-        System.out.println(productPhotoInput.getDescription());
-        System.out.println(filePhoto);
-        System.out.println(productPhotoInput.getFile().getContentType());
+        MultipartFile file = productPhotoInput.getFile();
 
-        try {
-            productPhotoInput.getFile().transferTo(filePhoto);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        ProductPhoto photo = new ProductPhoto();
+        photo.setProduct(product);
+        photo.setDescription(productPhotoInput.getDescription());
+        photo.setContentType(file.getContentType());
+        photo.setSize(file.getSize());
+        photo.setFileName(file.getOriginalFilename());
+
+        ProductPhoto savedPhoto = catalogProductPhoto.save(photo);
+
+        return productPhotoModelAssembler.toModel(savedPhoto);
     }
 
     @DeleteMapping("/{productId}")

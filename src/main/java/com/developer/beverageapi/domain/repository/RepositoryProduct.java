@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RepositoryProduct extends JpaRepository<Product, Long> {
+public interface RepositoryProduct extends JpaRepository<Product, Long>, RepositoryProductQueries {
 
     @Query("from Product where restaurant.id = :restaurant and id = :product")
     Optional<Product> findById(@Param("restaurant") Long restaurantId,
