@@ -19,11 +19,21 @@ public class LocalPhotoStorageService implements PhotoStorageService {
     public void storage(NewPhoto newPhoto) {
 
         try {
-        Path filePath = getFilePath(newPhoto.getFileName());
+            Path filePath = getFilePath(newPhoto.getFileName());
 
             FileCopyUtils.copy(newPhoto.getInputStream(), Files.newOutputStream(filePath));
         } catch (Exception e) {
             throw new StorageException("It was not possible to storage the file.", e);
+        }
+    }
+
+    @Override
+    public void remove(String fileName) {
+        try {
+            Path filePath = getFilePath(fileName);
+            Files.deleteIfExists(filePath);
+        } catch (Exception e) {
+            throw new StorageException("It was not possible to exclude the file.", e);
         }
     }
 
