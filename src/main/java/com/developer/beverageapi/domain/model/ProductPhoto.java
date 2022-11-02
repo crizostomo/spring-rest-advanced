@@ -1,12 +1,9 @@
 package com.developer.beverageapi.domain.model;
 
-import com.developer.beverageapi.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -27,5 +24,10 @@ public class ProductPhoto {
     private String contentType;
     private Long size;
 
-
+    public Long getRestaurantId() {
+        if (getProduct() != null) {
+            return getProduct().getRestaurant().getId();
+        }
+        return null;
+    }
 }

@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class ProductRepositoryImpl implements RepositoryProductQueries {
+public class RepositoryProductImpl implements RepositoryProductQueries {
 
     @PersistenceContext
     private EntityManager manager;
@@ -18,5 +18,11 @@ public class ProductRepositoryImpl implements RepositoryProductQueries {
     @Override
     public ProductPhoto save(ProductPhoto photo) {
         return manager.merge(photo);
+    }
+
+    @Transactional
+    @Override
+    public void delete(ProductPhoto photo) {
+        manager.remove(photo);
     }
 }
