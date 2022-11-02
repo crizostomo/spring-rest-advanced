@@ -40,3 +40,8 @@ spring:
 #    multipart:
 #      max-file-size: 500KB
 
+beverage:
+  storage:
+    local:
+      photos-directory: /Users/diogo/Documents
+
