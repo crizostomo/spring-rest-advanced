@@ -43,5 +43,5 @@ spring:
 beverage:
   storage:
     local:
-      photos-directory: /Users/diogo/Documents
+      photos-directory: /Users/diogo/Documents/Catalog
 

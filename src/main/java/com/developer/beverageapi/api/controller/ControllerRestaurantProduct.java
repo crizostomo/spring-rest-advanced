@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
@@ -115,7 +116,7 @@ public class ControllerRestaurantProduct {
 
     @PutMapping(path = "/{productId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPhotoModel updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
-                                         @Valid ProductPhotoInput productPhotoInput) {
+                                         @Valid ProductPhotoInput productPhotoInput) throws IOException {
 
 //        var fileName = UUID.randomUUID().toString() + "_" + productPhotoInput.getFile().getOriginalFilename();
 //
@@ -142,7 +143,7 @@ public class ControllerRestaurantProduct {
         photo.setSize(file.getSize());
         photo.setFileName(file.getOriginalFilename());
 
-        ProductPhoto savedPhoto = catalogProductPhoto.save(photo);
+        ProductPhoto savedPhoto = catalogProductPhoto.save(photo, file.getInputStream());
 
         return productPhotoModelAssembler.toModel(savedPhoto);
     }
