@@ -8,21 +8,26 @@ import com.developer.beverageapi.api.model.ProductPhotoModel;
 import com.developer.beverageapi.api.model.input.ProductInput;
 import com.developer.beverageapi.api.model.input.ProductPhotoInput;
 import com.developer.beverageapi.domain.exception.BusinessException;
+import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Product;
 import com.developer.beverageapi.domain.model.ProductPhoto;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryProduct;
 import com.developer.beverageapi.domain.service.CatalogProductPhotoService;
+import com.developer.beverageapi.domain.service.PhotoStorageService;
 import com.developer.beverageapi.domain.service.ProductRegistrationService;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
@@ -54,6 +59,9 @@ public class ControllerRestaurantProduct {
 
     @Autowired
     private ProductPhotoModelAssembler productPhotoModelAssembler;
+
+    @Autowired
+    private PhotoStorageService photoStorageService;
 
     @GetMapping
     public List<ProductModel> list(@PathVariable Long restaurantId) {
@@ -114,11 +122,26 @@ public class ControllerRestaurantProduct {
         return productModelAssembler.toModel(currentProduct);
     }
 
-    @GetMapping(path = "/{productId}/photo")
+    @GetMapping(path = "/{productId}/photo", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductPhotoModel searchPhoto(@PathVariable Long restaurantId, @PathVariable Long productId) {
         ProductPhoto productPhoto = catalogProductPhoto.searchOrFail(restaurantId, productId);
 
         return productPhotoModelAssembler.toModel(productPhoto);
+    }
+
+    @GetMapping(path = "/{productId}/photo", produces = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
+    public ResponseEntity<InputStreamResource> servePhoto(@PathVariable Long restaurantId, @PathVariable Long productId) {
+        try {
+            ProductPhoto productPhoto = catalogProductPhoto.searchOrFail(restaurantId, productId);
+
+            InputStream inputStream = photoStorageService.recover(productPhoto.getFileName());
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(new InputStreamResource(inputStream));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping(path = "/{productId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
