@@ -10,6 +10,8 @@ public interface PhotoStorageService {
 
     void storage(NewPhoto newPhoto);
 
+    InputStream recover(String fileName);
+
     void remove(String fileName);
 
     default void substitute(String oldFileName, NewPhoto newPhoto) {
