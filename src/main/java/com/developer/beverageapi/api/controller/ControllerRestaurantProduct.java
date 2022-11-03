@@ -130,6 +130,12 @@ public class ControllerRestaurantProduct {
         return productPhotoModelAssembler.toModel(productPhoto);
     }
 
+    @DeleteMapping("/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long productId) {
+        registrationProduct.remove(productId);
+    }
+
     @GetMapping(path = "/{productId}/photo")
     public ResponseEntity<InputStreamResource> servePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
                                                           @RequestHeader(name = "accept") String acceptHeader)
@@ -196,9 +202,9 @@ public class ControllerRestaurantProduct {
         return productPhotoModelAssembler.toModel(savedPhoto);
     }
 
-    @DeleteMapping("/{productId}")
+    @DeleteMapping(path = "/{productId}/photo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long productId) {
-        registrationProduct.remove(productId);
+    public void delete(@PathVariable Long restaurantId, @PathVariable Long productId) {
+        catalogProductPhoto.delete(restaurantId, productId);
     }
 }
