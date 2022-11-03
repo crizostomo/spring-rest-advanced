@@ -1,5 +1,6 @@
 package com.developer.beverageapi.domain.service;
 
+import com.developer.beverageapi.domain.exception.ProductNotFoundException;
 import com.developer.beverageapi.domain.model.ProductPhoto;
 import com.developer.beverageapi.domain.repository.RepositoryProduct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class CatalogProductPhotoService {
     @Transactional
     public ProductPhoto save(ProductPhoto photo, InputStream filesData) {
 //        Long restaurantId  = photo.getProduct().getRestaurant().getId();
-        Long restaurantId  = photo.getRestaurantId();
+        Long restaurantId = photo.getRestaurantId();
         Long productId = photo.getProduct().getId();
         String newFileName = photoStorageService.generateFileName(photo.getFileName());
         String nameFileExisting = null;
@@ -48,5 +49,10 @@ public class CatalogProductPhotoService {
         photoStorageService.substitute(nameFileExisting, newPhoto);
 
         return photo;
+    }
+
+    public ProductPhoto searchOrFail(Long restaurantId, Long productId) {
+        return repositoryProduct.findPhotoById(restaurantId, productId)
+                .orElseThrow(() -> new ProductNotFoundException(restaurantId, productId));
     }
 }

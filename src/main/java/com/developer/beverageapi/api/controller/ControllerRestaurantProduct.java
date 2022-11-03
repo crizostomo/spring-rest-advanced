@@ -114,6 +114,13 @@ public class ControllerRestaurantProduct {
         return productModelAssembler.toModel(currentProduct);
     }
 
+    @GetMapping(path = "/{productId}/photo")
+    public ProductPhotoModel searchPhoto(@PathVariable Long restaurantId, @PathVariable Long productId) {
+        ProductPhoto productPhoto = catalogProductPhoto.searchOrFail(restaurantId, productId);
+
+        return productPhotoModelAssembler.toModel(productPhoto);
+    }
+
     @PutMapping(path = "/{productId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPhotoModel updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
                                          @Valid ProductPhotoInput productPhotoInput) throws IOException {
