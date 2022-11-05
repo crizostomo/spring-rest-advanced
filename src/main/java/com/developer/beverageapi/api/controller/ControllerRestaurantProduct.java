@@ -137,8 +137,8 @@ public class ControllerRestaurantProduct {
     }
 
     @GetMapping(path = "/{productId}/photo")
-    public ResponseEntity<InputStreamResource> servePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
-                                                          @RequestHeader(name = "accept") String acceptHeader)
+    public ResponseEntity<InputStreamResource> getFile(@PathVariable Long restaurantId, @PathVariable Long productId,
+                                                       @RequestHeader(name = "accept") String acceptHeader)
             throws HttpMediaTypeNotAcceptableException {
         try {
             ProductPhoto productPhoto = catalogProductPhoto.searchOrFail(restaurantId, productId);
