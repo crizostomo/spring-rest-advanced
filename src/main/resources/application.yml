@@ -45,3 +45,10 @@ beverage:
     local:
       photos-directory: /Users/diogo/Documents/Catalog
 
+    s3:
+      id-access-key: AcCeSs-KeY # Test Purposes
+      key-secret-access: SeCrEt-AcCeSs # Test Purposes
+      bucket: beverage-test
+      region: us-east-1
+      photos-directory: catalog
+

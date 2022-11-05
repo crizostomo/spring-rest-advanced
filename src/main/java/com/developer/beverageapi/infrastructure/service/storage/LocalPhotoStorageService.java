@@ -1,11 +1,11 @@
 package com.developer.beverageapi.infrastructure.service.storage;
 
+import com.developer.beverageapi.core.storage.StorageProperties;
 import com.developer.beverageapi.domain.service.PhotoStorageService;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,8 +13,8 @@ import java.nio.file.Path;
 @Service
 public class LocalPhotoStorageService implements PhotoStorageService {
 
-    @Value("${beverage.storage.local.photos-directory}")
-    private Path photosDirectory;
+    @Autowired
+    private StorageProperties storageProperties;
 
     @Override
     public void storage(NewPhoto newPhoto) {
@@ -49,6 +49,6 @@ public class LocalPhotoStorageService implements PhotoStorageService {
     }
 
     private Path getFilePath(String fileName) {
-        return photosDirectory.resolve(Path.of(fileName)); // resolve, to join/return the file path
+        return storageProperties.getLocal().getPhotosDirectory().resolve(Path.of(fileName)); // resolve, to join/return the file path
     }
 }
