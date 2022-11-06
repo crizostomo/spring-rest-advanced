@@ -39,6 +39,7 @@ public class CatalogProductPhotoService {
 
         PhotoStorageService.NewPhoto newPhoto = PhotoStorageService.NewPhoto.builder()
                 .fileName(photo.getFileName())
+                .contentType(photo.getContentType()) // Used for S3, in Metadata the Content-Type is application/octet-stream
                 .inputStream(filesData)
                 .build();
 
