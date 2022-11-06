@@ -1,5 +1,6 @@
 package com.developer.beverageapi.core.storage;
 
+import com.amazonaws.regions.Regions;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,6 +15,7 @@ import java.nio.file.Path;
 public class StorageProperties {
 
     private Local local = new Local();
+    private S3 s3 = new S3();
 
     @Getter
     @Setter
@@ -30,7 +32,7 @@ public class StorageProperties {
         private String idAccessKey;
         private String keySecretAccess;
         private String bucket;
-        private String region;
+        private Regions region;
         private String photosDirectory;
 
     }
