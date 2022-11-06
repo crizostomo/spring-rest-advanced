@@ -52,3 +52,6 @@ beverage:
       region: us-east-1
       photos-directory: catalog
 
+#    kind: S3
+#    kind: local
+

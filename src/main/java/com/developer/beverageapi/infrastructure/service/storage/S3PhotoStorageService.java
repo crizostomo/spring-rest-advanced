@@ -8,12 +8,9 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.developer.beverageapi.core.storage.StorageProperties;
 import com.developer.beverageapi.domain.service.PhotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
 import java.net.URL;
 
-@Service
 public class S3PhotoStorageService implements PhotoStorageService {
 
     @Autowired

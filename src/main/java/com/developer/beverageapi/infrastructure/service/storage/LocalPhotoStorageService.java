@@ -3,14 +3,11 @@ package com.developer.beverageapi.infrastructure.service.storage;
 import com.developer.beverageapi.core.storage.StorageProperties;
 import com.developer.beverageapi.domain.service.PhotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-//@Service
 public class LocalPhotoStorageService implements PhotoStorageService {
 
     @Autowired
