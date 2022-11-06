@@ -1,6 +1,6 @@
 package com.developer.beverageapi.api.controller;
 
-import com.developer.beverageapi.domain.service.StatusOrderService;
+import com.developer.beverageapi.domain.service.FlowOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class ControllerStatusOrder {
 
     @Autowired
-    private StatusOrderService statusOrder;
+    private FlowOrderService statusOrder;
 
     @PutMapping("/confirmation")
     @ResponseStatus(HttpStatus.NO_CONTENT)

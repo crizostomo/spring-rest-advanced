@@ -76,7 +76,8 @@ insert into product (id, name, description, price, active, restaurant_id) values
 insert into `user` (id, name, email, password, record_date) values
 (1, 'Roronoa Zoro', 'zoro.sword@onepice.com', 'sleep001', utc_timestamp),
 (2, 'Hashibira Inosuke', 'inosuke.hashibira@d-slayer.com', 'killer123', utc_timestamp),
-(3, 'Vegeta', 'vegeta.ssj@dragon-ball.com', 'buma123', utc_timestamp);
+(3, 'Vegeta', 'vegeta.ssj@dragon-ball.com', 'buma123', utc_timestamp),
+(4, 'Diogo', 'test@gmail.com', 'buma123', utc_timestamp);
 
 insert into user_group (user_id, group_id) values (1, 1), (1, 2), (2, 2);
 
@@ -85,7 +86,7 @@ insert into restaurant_user_responsible (restaurant_id, user_id) values (1, 2), 
 insert into `order` (id, code, restaurant_id, user_client_id, payment_id, address_city_id, address_cep,
                     address_street, address_number, address_complement, address_neighborhood,
 	                status, creation_date, subtotal, delivery, total)
-values (1, '92f00a93-f0aa-4a1c-b172-e0198d60d1d8', 1, 1, 1, 1, '38400-000', 'Floriano Peixoto Street', '500', 'Apartment 801', 'Brazil',
+values (1, '92f00a93-f0aa-4a1c-b172-e0198d60d1d8', 1, 4, 1, 1, '38400-000', 'Floriano Peixoto Street', '500', 'Apartment 801', 'Brazil',
         'CREATED', utc_timestamp, 298.90, 10, 308.90);
 
 insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values

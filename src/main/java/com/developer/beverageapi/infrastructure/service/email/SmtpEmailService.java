@@ -26,7 +26,7 @@ public class SmtpEmailService implements EmailService {
 
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
             helper.setFrom(emailProperties.getRecipient());
-            helper.setTo(message.getRecipient().toArray(new String[0]));
+            helper.setTo(message.getRecipients().toArray(new String[0]));
             helper.setSubject(message.getSubject());
             helper.setText(message.getBody(), true);
 

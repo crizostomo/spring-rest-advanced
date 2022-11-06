@@ -6,15 +6,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class StatusOrderService {
+public class FlowOrderService {
 
     @Autowired
     private OrderIssuingRegistrationService orderIssuing;
+
+    @Autowired
+    private EmailService emailService;
 
     @Transactional
     public void confirm(String codeOrder) {
         Order order = orderIssuing.searchOrFail(codeOrder);
         order.confirm();
+
+        var message = EmailService.Message.builder()
+                .subject(order.getRestaurant().getName() + " - Order Confirmed")
+                .body("The order with the code <strong>" + order.getCode() + "</strong> was confirmed!")
+                .recipient(order.getClient().getEmail())
+                .recipient("test@gmail.com")
+                .build();
     }
 
     @Transactional

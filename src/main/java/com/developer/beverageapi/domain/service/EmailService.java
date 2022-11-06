@@ -2,6 +2,7 @@ package com.developer.beverageapi.domain.service;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Singular;
 
 import java.util.Set;
 
@@ -13,7 +14,8 @@ public interface EmailService {
     @Builder
     class Message {
 
-        private Set<String> recipient;
+        @Singular
+        private Set<String> recipients;
         private String subject;
         private String body;
     }
