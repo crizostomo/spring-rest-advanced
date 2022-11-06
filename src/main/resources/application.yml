@@ -40,6 +40,12 @@ spring:
 #    multipart:
 #      max-file-size: 500KB
 
+  mail:
+    host: e-mail-smtp.us-east-1.amazonaws.com
+    port: 587
+    username: username
+    password: password
+
 beverage:
   storage:
     local:
