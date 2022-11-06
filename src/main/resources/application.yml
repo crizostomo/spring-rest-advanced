@@ -61,3 +61,5 @@ beverage:
 #    kind: S3
 #    kind: local
 
+  email:
+    recipient: Sender <no-reply@test.com.br>
