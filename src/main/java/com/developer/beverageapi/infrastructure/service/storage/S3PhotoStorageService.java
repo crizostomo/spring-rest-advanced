@@ -2,6 +2,7 @@ package com.developer.beverageapi.infrastructure.service.storage;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.developer.beverageapi.core.storage.StorageProperties;
@@ -53,6 +54,15 @@ public class S3PhotoStorageService implements PhotoStorageService {
 
     @Override
     public void remove(String fileName) {
+        try {
+            String filePath = getFilePath(fileName);
 
+            var deleteObjectRequest = new DeleteObjectRequest(
+                    storageProperties.getS3().getBucket(), filePath);
+
+            amazonS3.deleteObject(deleteObjectRequest);
+        } catch (Exception e) {
+            throw new StorageException("It was not possible to delete the file to Amazon S3", e);
+        }
     }
 }
