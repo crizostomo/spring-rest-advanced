@@ -10,7 +10,8 @@ public interface PhotoStorageService {
 
     void storage(NewPhoto newPhoto);
 
-    InputStream recover(String fileName);
+//    InputStream recover(String fileName);
+    PhotoRetrieved recover(String fileName); // For S3
 
     void remove(String fileName);
 
@@ -32,5 +33,21 @@ public interface PhotoStorageService {
         private String fileName;
         private String contentType;
         private InputStream inputStream;
+    }
+
+    @Builder
+    @Getter
+    class PhotoRetrieved {
+
+        private InputStream inputStream;
+        private String url;
+
+        public boolean isUrlPresent() {
+            return url != null;
+        }
+
+        public boolean isInputStreamPresent() {
+            return inputStream != null;
+        }
     }
 }
