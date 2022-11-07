@@ -63,3 +63,7 @@ beverage:
 
   email:
     recipient: Sender <no-reply@test.com.br>
+
+  freemarker:
+    settings:
+      locale: pt_BR
