@@ -21,7 +21,8 @@ public class FlowOrderService {
 
         var message = EmailService.Message.builder()
                 .subject(order.getRestaurant().getName() + " - Order Confirmed")
-                .body("The order with the code <strong>" + order.getCode() + "</strong> was confirmed!")
+                .body("order-confirmed.html")
+                .variable("order", order)
                 .recipient(order.getClient().getEmail())
                 .recipient("test@gmail.com")
                 .build();

@@ -53,6 +53,8 @@ dependencies {
 
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker'
+
 }
 
 tasks.named('test') {
