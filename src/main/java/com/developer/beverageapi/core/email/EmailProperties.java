@@ -15,6 +15,12 @@ import javax.validation.constraints.NotNull;
 @ConfigurationProperties("beverage.email")
 public class EmailProperties {
 
+    private Implementation impl = Implementation.FAKE;
+
 //    @NotNull
     private String recipient;
+
+    public enum Implementation {
+        SMTP, FAKE
+    }
 }

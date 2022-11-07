@@ -36,6 +36,10 @@ spring:
   resources:
     add-mappings: false
 
+  freemarker:
+    settings:
+      locale: pt_BR
+
 #  servlet:
 #    multipart:
 #      max-file-size: 500KB
@@ -63,7 +67,4 @@ beverage:
 
   email:
     recipient: Sender <no-reply@test.com.br>
-
-  freemarker:
-    settings:
-      locale: pt_BR
+    impl: fake
