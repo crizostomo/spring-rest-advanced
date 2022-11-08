@@ -20,6 +20,8 @@ public class EmailConfig {
                 return new FakeEmailService();
             case SMTP:
                 return new SmtpEmailService();
+            case SANDOX:
+                return new SandboxEmailService();
             default:
                 return null;
         }

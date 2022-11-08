@@ -66,5 +66,5 @@ beverage:
 #    kind: local
 
   email:
-    recipient: Sender <no-reply@test.com.br>
-    impl: fake
+    recipient: no-reply@test.com.br
+    impl: sandbox

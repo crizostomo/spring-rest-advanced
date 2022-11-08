@@ -16,11 +16,18 @@ import javax.validation.constraints.NotNull;
 public class EmailProperties {
 
     private Implementation impl = Implementation.FAKE;
+    private Sandbox sandbox = new Sandbox();
 
 //    @NotNull
     private String recipient;
 
     public enum Implementation {
-        SMTP, FAKE
+        SMTP, FAKE, SANDOX
+    }
+
+    @Getter
+    @Setter
+    public class Sandbox {
+        private String recipient;
     }
 }
