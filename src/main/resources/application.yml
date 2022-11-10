@@ -67,4 +67,4 @@ beverage:
 
   email:
     recipient: no-reply@test.com.br
-    impl: sandbox
+    impl: fake
