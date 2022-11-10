@@ -1,9 +1,11 @@
 package com.developer.beverageapi.domain.model;
 
+import com.developer.beverageapi.domain.event.OrderConfirmedEvent;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,9 +16,9 @@ import java.util.UUID;
 
 @Entity
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Table(name = "`order`")
-public class Order {
+public class Order extends AbstractAggregateRoot<Order> {
 
     @EqualsAndHashCode.Include
     @Id
@@ -72,6 +74,8 @@ public class Order {
     public void confirm() {
         setStatus(OrderStatus.CONFIRMED);
         setConfirmationDate(OffsetDateTime.now());
+
+        registerEvent(new OrderConfirmedEvent(this));
     }
 
     public void deliver() {

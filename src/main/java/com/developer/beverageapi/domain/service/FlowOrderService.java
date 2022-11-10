@@ -1,6 +1,7 @@
 package com.developer.beverageapi.domain.service;
 
 import com.developer.beverageapi.domain.model.Order;
+import com.developer.beverageapi.domain.repository.RepositoryOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,20 +13,14 @@ public class FlowOrderService {
     private OrderIssuingRegistrationService orderIssuing;
 
     @Autowired
-    private EmailService emailService;
+    private RepositoryOrder repositoryOrder;
 
     @Transactional
     public void confirm(String codeOrder) {
         Order order = orderIssuing.searchOrFail(codeOrder);
         order.confirm();
 
-        var message = EmailService.Message.builder()
-                .subject(order.getRestaurant().getName() + " - Order Confirmed")
-                .body("order-confirmed.html")
-                .variable("order", order)
-                .recipient(order.getClient().getEmail())
-                .recipient("test@gmail.com")
-                .build();
+        repositoryOrder.save(order);
     }
 
     @Transactional
