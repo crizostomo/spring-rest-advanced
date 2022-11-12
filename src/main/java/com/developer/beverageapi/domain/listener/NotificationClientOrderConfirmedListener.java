@@ -4,8 +4,9 @@ import com.developer.beverageapi.domain.event.OrderConfirmedEvent;
 import com.developer.beverageapi.domain.model.Order;
 import com.developer.beverageapi.domain.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 public class NotificationClientOrderConfirmedListener {
@@ -13,7 +14,7 @@ public class NotificationClientOrderConfirmedListener {
     @Autowired
     private EmailService emailService;
 
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void byConfirmingOrder(OrderConfirmedEvent event) {
         Order order = event.getOrder();
 
