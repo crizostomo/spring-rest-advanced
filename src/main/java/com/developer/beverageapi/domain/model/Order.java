@@ -1,5 +1,6 @@
 package com.developer.beverageapi.domain.model;
 
+import com.developer.beverageapi.domain.event.OrderCancelledEvent;
 import com.developer.beverageapi.domain.event.OrderConfirmedEvent;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import lombok.Data;
@@ -86,6 +87,8 @@ public class Order extends AbstractAggregateRoot<Order> {
     public void cancel() {
         setStatus(OrderStatus.CANCELLED);
         setCancelledDate(OffsetDateTime.now());
+
+        registerEvent(new OrderCancelledEvent(this));
     }
 
     private void setStatus(OrderStatus newStatus) {

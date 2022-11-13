@@ -33,5 +33,7 @@ public class FlowOrderService {
     public void cancel(String codeOrder) {
         Order order = orderIssuing.searchOrFail(codeOrder);
         order.cancel();
+
+        repositoryOrder.save(order);
     }
 }
