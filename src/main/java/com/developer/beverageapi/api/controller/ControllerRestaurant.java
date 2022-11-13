@@ -2,28 +2,27 @@ package com.developer.beverageapi.api.controller;
 
 import com.developer.beverageapi.api.assembler.RestaurantInputDismantle;
 import com.developer.beverageapi.api.assembler.RestaurantModelAssembler;
+import com.developer.beverageapi.api.model.RestaurantModel;
+import com.developer.beverageapi.api.model.input.RestaurantInput;
 import com.developer.beverageapi.api.model.input.view.RestaurantView;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.CityNotFoundException;
 import com.developer.beverageapi.domain.exception.KitchenNotFoundException;
 import com.developer.beverageapi.domain.exception.RestaurantNotFoundException;
 import com.developer.beverageapi.domain.model.Restaurant;
-import com.developer.beverageapi.api.model.RestaurantModel;
-import com.developer.beverageapi.api.model.input.RestaurantInput;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/restaurants")
 public class ControllerRestaurant {
@@ -47,19 +46,15 @@ public class ControllerRestaurant {
     private RestaurantInputDismantle restaurantInputDismantle;
 
     @GetMapping
-    public ResponseEntity<List<RestaurantModel>> list() {
-        List<RestaurantModel> restaurantModels = restaurantModelAssembler.toCollectionModel(repositoryRestaurant.findAll());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-                .body(restaurantModels);
+    public List<RestaurantModel> list() {
+        return restaurantModelAssembler.toCollectionModel(repositoryRestaurant.findAll());
     }
 
-//    @JsonView(RestaurantView.Summary.class)
-//    @GetMapping(params = "projection=summary")
-//    public List<RestaurantModel> listSummary() {
-//        return list();
-//    }
+    @JsonView(RestaurantView.Summary.class)
+    @GetMapping(params = "projection=summary")
+    public List<RestaurantModel> listSummary() {
+        return list();
+    }
 
     //	@GetMapping
 //	public MappingJacksonValue list(@RequestParam(required = false) String projection) {
