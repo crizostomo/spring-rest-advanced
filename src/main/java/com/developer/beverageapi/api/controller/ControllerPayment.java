@@ -8,11 +8,14 @@ import com.developer.beverageapi.domain.model.Payment;
 import com.developer.beverageapi.domain.repository.RepositoryPayment;
 import com.developer.beverageapi.domain.service.PaymentRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/payments")
@@ -31,10 +34,14 @@ public class ControllerPayment {
     private PaymentInputDismantle paymentInputDismantle;
 
     @GetMapping
-    public List<PaymentModel> list() {
+    public ResponseEntity<List<PaymentModel>> list() {
         List<Payment> allPayments = repositoryPayment.findAll();
 
-        return paymentModelAssembler.toCollectionModel(allPayments);
+        List<PaymentModel> paymentModels = paymentModelAssembler.toCollectionModel(allPayments);
+
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+                .body(paymentModels);
     }
 
     @GetMapping("/{paymentId}")
