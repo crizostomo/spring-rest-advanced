@@ -45,10 +45,14 @@ public class ControllerPayment {
     }
 
     @GetMapping("/{paymentId}")
-    public PaymentModel search(@PathVariable Long paymentId) {
+    public ResponseEntity<PaymentModel> search(@PathVariable Long paymentId) {
         Payment payment = registrationPayment.searchOrFail(paymentId);
 
-        return paymentModelAssembler.toModel(payment);
+        PaymentModel paymentModel = paymentModelAssembler.toModel(payment);
+
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+                .body(paymentModel);
     }
 
     @PostMapping
