@@ -35,6 +35,7 @@ public class ControllerPayment {
 
     @GetMapping
     public ResponseEntity<List<PaymentModel>> list() {
+
         List<Payment> allPayments = repositoryPayment.findAll();
 
         List<PaymentModel> paymentModels = paymentModelAssembler.toCollectionModel(allPayments);
@@ -42,9 +43,9 @@ public class ControllerPayment {
         return ResponseEntity.ok()
 //                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
 //                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
-                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
 //                .cacheControl(CacheControl.noCache())
 //                .cacheControl(CacheControl.noStore())
+                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
                 .body(paymentModels);
     }
 

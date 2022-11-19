@@ -50,9 +50,9 @@ insert into restaurant (id, name, delivery, kitchen_id, record_date, updated_dat
 insert into restaurant (id, name, delivery, kitchen_id, record_date, updated_date, active, `open`) values (3, 'O_Matuto', 15, 2, utc_timestamp, utc_timestamp, true, true);
 insert into restaurant (id, name, delivery, kitchen_id, record_date, updated_date, active, `open`) values (4, 'Outback', 12, 3, utc_timestamp, utc_timestamp, true, true);
 
-insert into payment (id, description) values (1, 'debit');
-insert into payment (id, description) values (2, 'cash');
-insert into payment (id, description) values (3, 'credit');
+insert into payment (id, description, update_date) values (1, 'debit', utc_timestamp);
+insert into payment (id, description, update_date) values (2, 'cash', utc_timestamp);
+insert into payment (id, description, update_date) values (3, 'credit', utc_timestamp);
 
 insert into `group` (id, name) values (1, 'Ouro');
 insert into `group` (id, name) values (2, 'Prata');
