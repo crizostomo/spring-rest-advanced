@@ -11,6 +11,7 @@ import com.developer.beverageapi.domain.repository.RepositoryCity;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.CityRegistrationService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,7 @@ public class ControllerCity {
     @Autowired
     private CityInputDismantle cityInputDismantle;
 
+    @ApiOperation(value = "List cities")
     @GetMapping
     public List<CityModel> list() {
         List<City> allCities = repositoryCity.findAll();
@@ -45,6 +47,7 @@ public class ControllerCity {
         return cityModelAssembler.toCollectionModel(allCities);
     }
 
+    @ApiOperation(value = "Search a city by id")
     @GetMapping("/{cityId}")
     public CityModel search(@PathVariable Long cityId) {
         City city = registrationCity.searchOrFail(cityId);
@@ -52,6 +55,7 @@ public class ControllerCity {
         return cityModelAssembler.toModel(city);
     }
 
+    @ApiOperation(value = "It records a city")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CityModel add(@RequestBody @Valid CityInput cityInput) {
@@ -66,6 +70,7 @@ public class ControllerCity {
         }
     }
 
+    @ApiOperation(value = "It updates a city by id")
     @PutMapping("/{cityId}")
     public CityModel update(@PathVariable Long cityId, @RequestBody @Valid CityInput cityInput) {
         try {
@@ -81,6 +86,8 @@ public class ControllerCity {
         }
     }
 
+
+    @ApiOperation(value = "It deletes a city by id")
     @DeleteMapping("/{cityId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long cityId) {
