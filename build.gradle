@@ -29,7 +29,9 @@ dependencies {
 
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
 
-	implementation group: 'com.github.bohnman', name: 'squiggly-filter-jackson', version: '1.3.18'
+	implementation group: 'com.github.bohnman', name: 'squiggly-filter-jackson', version: '1.3.18', {
+		exclude group: 'com.google.guava'
+	}
 
 	implementation group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.10.0'
 	implementation group: 'net.sf.jasperreports', name: 'jasperreports-functions', version: '6.10.0'
@@ -54,6 +56,9 @@ dependencies {
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker'
+
+	implementation 'io.springfox:springfox-swagger2:2.9.2'
+	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
 }
 
