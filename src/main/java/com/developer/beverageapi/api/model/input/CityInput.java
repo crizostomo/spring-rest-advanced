@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.model.input;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 @Setter
 public class CityInput {
 
+    @ApiModelProperty(example = "Sao Paulo")
     @NotBlank
     private String name;
 
