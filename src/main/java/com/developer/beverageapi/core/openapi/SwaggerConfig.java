@@ -1,5 +1,7 @@
 package com.developer.beverageapi.core.openapi;
 
+import com.developer.beverageapi.api.exceptionHandler.APIError;
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -30,6 +32,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     @Bean
     public Docket apiDocket() {
+        var typeResolver = new TypeResolver();
+
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.developer.beverageapi.api")) // It can be used Predicates.and
@@ -40,6 +44,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .globalResponseMessage(RequestMethod.POST, globalGetResponseMessages())
                 .globalResponseMessage(RequestMethod.PUT, globalGetResponseMessages())
                 .globalResponseMessage(RequestMethod.DELETE, globalGetResponseMessages())
+                .additionalModels(typeResolver.resolve(APIError.class))
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cities", "It runs cities"));
     }
