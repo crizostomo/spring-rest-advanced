@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Setter
 public class CityInput {
 
-    @ApiModelProperty(example = "Sao Paulo")
+    @ApiModelProperty(example = "Sao Paulo", required = true)
     @NotBlank
     private String name;
 
