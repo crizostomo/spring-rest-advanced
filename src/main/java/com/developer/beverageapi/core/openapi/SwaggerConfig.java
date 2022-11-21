@@ -37,6 +37,9 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .build()
                 .useDefaultResponseMessages(false)
                 .globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
+                .globalResponseMessage(RequestMethod.POST, globalGetResponseMessages())
+                .globalResponseMessage(RequestMethod.PUT, globalGetResponseMessages())
+                .globalResponseMessage(RequestMethod.DELETE, globalGetResponseMessages())
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cities", "It runs cities"));
     }
@@ -50,6 +53,41 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 new ResponseMessageBuilder()
                         .code(HttpStatus.NOT_ACCEPTABLE.value())
                         .message("Resource does not has representation acceptable by the client")
+                        .build()
+        );
+
+    }
+    private List<ResponseMessage> globalPostPutResponseMessages() {
+        return Arrays.asList(
+                new ResponseMessageBuilder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .message("Invalid Request (client error)")
+                        .build(),
+                new ResponseMessageBuilder()
+                        .code(HttpStatus.NOT_ACCEPTABLE.value())
+                        .message("Resource does not has representation acceptable by the client")
+                        .build(),
+                new ResponseMessageBuilder()
+                        .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .message("Internal Error")
+                        .build(),
+                new ResponseMessageBuilder()
+                        .code(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
+                        .message("Request refused because the body is in an invalid format")
+                        .build()
+        );
+    }
+
+
+    private List<ResponseMessage> globalDeleteResponseMessages() {
+        return Arrays.asList(
+                new ResponseMessageBuilder()
+                        .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .message("Internal Error")
+                        .build(),
+                new ResponseMessageBuilder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .message("Invalid Request (client error)")
                         .build()
         );
     }
