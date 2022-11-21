@@ -14,6 +14,7 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.ResponseMessage;
@@ -54,6 +55,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 new ResponseMessageBuilder()
                         .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .message("Internal Error")
+                        .responseModel(new ModelRef("APIError"))
                         .build(),
                 new ResponseMessageBuilder()
                         .code(HttpStatus.NOT_ACCEPTABLE.value())
@@ -67,6 +69,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 new ResponseMessageBuilder()
                         .code(HttpStatus.BAD_REQUEST.value())
                         .message("Invalid Request (client error)")
+                        .responseModel(new ModelRef("APIError"))
                         .build(),
                 new ResponseMessageBuilder()
                         .code(HttpStatus.NOT_ACCEPTABLE.value())
@@ -79,6 +82,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 new ResponseMessageBuilder()
                         .code(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
                         .message("Request refused because the body is in an invalid format")
+                        .responseModel(new ModelRef("APIError"))
                         .build()
         );
     }
@@ -89,10 +93,12 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 new ResponseMessageBuilder()
                         .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .message("Internal Error")
+                        .responseModel(new ModelRef("APIError"))
                         .build(),
                 new ResponseMessageBuilder()
                         .code(HttpStatus.BAD_REQUEST.value())
                         .message("Invalid Request (client error)")
+                        .responseModel(new ModelRef("APIError"))
                         .build()
         );
     }
