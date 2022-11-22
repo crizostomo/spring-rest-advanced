@@ -2,6 +2,7 @@ package com.developer.beverageapi.api.controller;
 
 import com.developer.beverageapi.api.assembler.GroupInputDismantle;
 import com.developer.beverageapi.api.assembler.GroupModelAssembler;
+import com.developer.beverageapi.api.controller.swaggerapi.ControllerGroupOpenApi;
 import com.developer.beverageapi.api.model.GroupModel;
 import com.developer.beverageapi.api.model.input.GroupInput;
 import com.developer.beverageapi.domain.model.Group;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/groups")
-public class ControllerGroup {
+public class ControllerGroup implements ControllerGroupOpenApi {
 
     @Autowired
     private RepositoryGroup repositoryGroup;

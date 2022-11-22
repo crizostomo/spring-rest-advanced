@@ -47,7 +47,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .globalResponseMessage(RequestMethod.DELETE, globalGetResponseMessages())
                 .additionalModels(typeResolver.resolve(APIError.class))
                 .apiInfo(apiInfo())
-                .tags(new Tag("Cities", "It runs cities"));
+                .tags(new Tag("Cities", "It runs cities"),
+                        new Tag("Groups", "It runs the users groups"));
     }
 
     private List<ResponseMessage> globalGetResponseMessages() {
