@@ -1,10 +1,13 @@
 package com.developer.beverageapi.core.openapi;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
+import com.developer.beverageapi.core.openapi.model.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -46,6 +49,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .globalResponseMessage(RequestMethod.PUT, globalGetResponseMessages())
                 .globalResponseMessage(RequestMethod.DELETE, globalGetResponseMessages())
                 .additionalModels(typeResolver.resolve(APIError.class))
+                .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) // It will substitute the pageable inside Controller Kitchen
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cities", "It runs cities"),
                         new Tag("Groups", "It runs the users groups"));
