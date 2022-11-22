@@ -59,7 +59,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 )) // It will substitute the Page properties for KitchenModel
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cities", "It runs cities"),
-                        new Tag("Groups", "It runs the users groups"));
+                        new Tag("Groups", "It runs the users groups"),
+                        new Tag("Kitchens", "It runs kitchens"));
     }
 
     private List<ResponseMessage> globalGetResponseMessages() {

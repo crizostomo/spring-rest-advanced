@@ -4,6 +4,7 @@ import com.developer.beverageapi.api.assembler.KitchenInputDismantle;
 import com.developer.beverageapi.api.assembler.KitchenModelAssembler;
 import com.developer.beverageapi.api.model.KitchenModel;
 import com.developer.beverageapi.api.model.input.KitchenInput;
+import com.developer.beverageapi.api.swaggerapi.controller.ControllerKitchenOpenApi;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.service.KitchenRegistrationService;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/kitchens", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ControllerKitchen {
+public class ControllerKitchen implements ControllerKitchenOpenApi {
 
     @Autowired
     private RepositoryKitchen repositoryKitchen;
