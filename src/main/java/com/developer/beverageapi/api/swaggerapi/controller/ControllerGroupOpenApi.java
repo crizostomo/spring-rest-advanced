@@ -1,4 +1,4 @@
-package com.developer.beverageapi.api.controller.swaggerapi;
+package com.developer.beverageapi.api.swaggerapi.controller;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.GroupModel;

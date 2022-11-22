@@ -2,7 +2,7 @@ package com.developer.beverageapi.api.controller;
 
 import com.developer.beverageapi.api.assembler.CityInputDismantle;
 import com.developer.beverageapi.api.assembler.CityModelAssembler;
-import com.developer.beverageapi.api.controller.swaggerapi.ControllerCityOpenApi;
+import com.developer.beverageapi.api.swaggerapi.controller.ControllerCityOpenApi;
 import com.developer.beverageapi.api.model.CityModel;
 import com.developer.beverageapi.api.model.input.CityInput;
 import com.developer.beverageapi.domain.exception.BusinessException;

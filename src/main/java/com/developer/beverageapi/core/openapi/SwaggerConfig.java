@@ -1,7 +1,9 @@
 package com.developer.beverageapi.core.openapi;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
-import com.developer.beverageapi.core.openapi.model.PageableModelOpenApi;
+import com.developer.beverageapi.api.model.KitchenModel;
+import com.developer.beverageapi.api.swaggerapi.model.KitchensModelOpenApi;
+import com.developer.beverageapi.api.swaggerapi.model.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,13 +12,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.AlternateTypeRule;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -50,6 +53,10 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .globalResponseMessage(RequestMethod.DELETE, globalGetResponseMessages())
                 .additionalModels(typeResolver.resolve(APIError.class))
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) // It will substitute the pageable inside Controller Kitchen
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(Page.class, KitchenModel.class),
+                        KitchensModelOpenApi.class
+                )) // It will substitute the Page properties for KitchenModel
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cities", "It runs cities"),
                         new Tag("Groups", "It runs the users groups"));

@@ -1,4 +1,4 @@
-package com.developer.beverageapi.core.openapi.model;
+package com.developer.beverageapi.api.swaggerapi.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 public class PageableModelOpenApi {
 
-    @ApiModelProperty(example = "0", value = "Page number (starts with 0")
+    @ApiModelProperty(example = "0", value = "Page number (starts with 0)")
     private int page;
     @ApiModelProperty(example = "10", value = "Quantity of elements by page")
     private int size;
