@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.builders.*;
 import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
@@ -52,6 +49,13 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .globalResponseMessage(RequestMethod.POST, globalGetResponseMessages())
                 .globalResponseMessage(RequestMethod.PUT, globalGetResponseMessages())
                 .globalResponseMessage(RequestMethod.DELETE, globalGetResponseMessages())
+                .globalOperationParameters(Arrays.asList(
+                        new ParameterBuilder()
+                                .name("fields")
+                                .description("Properties name to filter in the response, separated by comma") // For SquigglyConfig
+                                .parameterType("query")
+                                .modelRef(new ModelRef("string"))
+                                .build()))
                 .additionalModels(typeResolver.resolve(APIError.class))
                 .ignoredParameterTypes(ServletWebRequest.class)
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) // It will substitute the pageable inside Controller Kitchen
