@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -52,6 +53,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .globalResponseMessage(RequestMethod.PUT, globalGetResponseMessages())
                 .globalResponseMessage(RequestMethod.DELETE, globalGetResponseMessages())
                 .additionalModels(typeResolver.resolve(APIError.class))
+                .ignoredParameterTypes(ServletWebRequest.class)
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) // It will substitute the pageable inside Controller Kitchen
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(Page.class, KitchenModel.class),
