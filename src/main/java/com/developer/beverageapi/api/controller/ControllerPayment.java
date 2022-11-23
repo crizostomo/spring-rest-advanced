@@ -4,12 +4,14 @@ import com.developer.beverageapi.api.assembler.PaymentInputDismantle;
 import com.developer.beverageapi.api.assembler.PaymentModelAssembler;
 import com.developer.beverageapi.api.model.PaymentModel;
 import com.developer.beverageapi.api.model.input.PaymentInput;
+import com.developer.beverageapi.api.swaggerapi.controller.ControllerPaymentOpenApi;
 import com.developer.beverageapi.domain.model.Payment;
 import com.developer.beverageapi.domain.repository.RepositoryPayment;
 import com.developer.beverageapi.domain.service.PaymentRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -21,8 +23,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/payments")
-public class ControllerPayment {
+@RequestMapping(value = "/payments", produces = MediaType.APPLICATION_JSON_VALUE)
+public class ControllerPayment implements ControllerPaymentOpenApi {
 
     @Autowired
     private RepositoryPayment repositoryPayment;
