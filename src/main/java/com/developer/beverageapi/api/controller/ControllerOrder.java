@@ -16,6 +16,8 @@ import com.developer.beverageapi.domain.filter.OrderFilter;
 import com.developer.beverageapi.domain.service.OrderIssuingRegistrationService;
 import com.developer.beverageapi.infrastructure.repository.spec.OrderSpecs;
 import com.google.common.collect.ImmutableMap;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -53,6 +55,10 @@ public class ControllerOrder {
         return orderModelAssembler.toCollectionModel(allOrders);
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Properties name to filter in the response, separated by comma",
+            name = "fields", paramType = "query", type = "string")
+    })
     @GetMapping("/filter")
     public Page<OrderModel> search(OrderFilter filter, @PageableDefault(size = 10)Pageable pageable) {
         Page<Order> ordersPage = repositoryOrder.findAll(OrderSpecs.usingFilter(filter), pageable);
@@ -116,6 +122,10 @@ public class ControllerOrder {
         }
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Properties name to filter in the response, separated by comma",
+                    name = "fields", paramType = "query", type = "string")
+    })
     @GetMapping("/{codeOrder}")
     public OrderModel search(@PathVariable String codeOrder) {
         Order order = issuingOrder.searchOrFail(codeOrder);
