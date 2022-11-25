@@ -6,6 +6,7 @@ import com.developer.beverageapi.api.assembler.OrderSummaryModelAssembler;
 import com.developer.beverageapi.api.model.OrderModel;
 import com.developer.beverageapi.api.model.OrderSummaryModel;
 import com.developer.beverageapi.api.model.input.OrderInput;
+import com.developer.beverageapi.api.swaggerapi.controller.ControllerOrderOpenApi;
 import com.developer.beverageapi.core.data.PageableTranslator;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
@@ -24,14 +25,15 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
-public class ControllerOrder {
+@RequestMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
+public class ControllerOrder implements ControllerOrderOpenApi {
 
     @Autowired
     private OrderIssuingRegistrationService issuingOrder;
@@ -55,10 +57,6 @@ public class ControllerOrder {
         return orderModelAssembler.toCollectionModel(allOrders);
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Properties name to filter in the response, separated by comma",
-            name = "fields", paramType = "query", type = "string")
-    })
     @GetMapping("/filter")
     public Page<OrderModel> search(OrderFilter filter, @PageableDefault(size = 10)Pageable pageable) {
         Page<Order> ordersPage = repositoryOrder.findAll(OrderSpecs.usingFilter(filter), pageable);
@@ -122,10 +120,6 @@ public class ControllerOrder {
         }
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Properties name to filter in the response, separated by comma",
-                    name = "fields", paramType = "query", type = "string")
-    })
     @GetMapping("/{codeOrder}")
     public OrderModel search(@PathVariable String codeOrder) {
         Order order = issuingOrder.searchOrFail(codeOrder);

@@ -2,6 +2,7 @@ package com.developer.beverageapi.core.openapi;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.KitchenModel;
+import com.developer.beverageapi.api.model.OrderSummaryModel;
 import com.developer.beverageapi.api.swaggerapi.model.KitchensModelOpenApi;
 import com.developer.beverageapi.api.swaggerapi.model.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
@@ -61,13 +62,16 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) // It will substitute the pageable inside Controller Kitchen
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(Page.class, KitchenModel.class),
-                        KitchensModelOpenApi.class
-                )) // It will substitute the Page properties for KitchenModel
+                        KitchensModelOpenApi.class)) // It will substitute the Page properties for KitchenModel
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(Page.class, OrderSummaryModel.class),
+                        KitchensModelOpenApi.class)) // It will substitute the Page properties for OrderSummaryModel
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cities", "It runs cities"),
                         new Tag("Groups", "It runs the users groups"),
                         new Tag("Kitchens", "It runs kitchens"),
-                        new Tag("Payments", "It runs payments"));
+                        new Tag("Payments", "It runs payments"),
+                        new Tag("Orders", "It runs orders"));
     }
 
     private List<ResponseMessage> globalGetResponseMessages() {

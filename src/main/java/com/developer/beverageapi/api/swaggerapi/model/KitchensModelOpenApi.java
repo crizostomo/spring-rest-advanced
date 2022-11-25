@@ -4,6 +4,6 @@ import com.developer.beverageapi.api.model.KitchenModel;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel("KitchensModel")
-public class KitchensModelOpenApi extends PageModelOpenApi<KitchenModel> {
+public class KitchensModelOpenApi extends PagedModelOpenApi<KitchenModel> {
 
 }
