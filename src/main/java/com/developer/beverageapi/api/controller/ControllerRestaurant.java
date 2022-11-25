@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.assembler.RestaurantModelAssembler;
 import com.developer.beverageapi.api.model.RestaurantModel;
 import com.developer.beverageapi.api.model.input.RestaurantInput;
 import com.developer.beverageapi.api.model.input.view.RestaurantView;
+import com.developer.beverageapi.api.swaggerapi.model.BasicRestaurantModelSwaggerApi;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.CityNotFoundException;
 import com.developer.beverageapi.domain.exception.KitchenNotFoundException;
@@ -14,6 +15,7 @@ import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.SmartValidator;
@@ -44,11 +46,13 @@ public class ControllerRestaurant {
     @Autowired
     private RestaurantInputDismantle restaurantInputDismantle;
 
+//    @ApiOperation(value = "Restaurant Summary List", response = BasicRestaurantModelSwaggerApi.class)
     @GetMapping
     public List<RestaurantModel> list() {
         return restaurantModelAssembler.toCollectionModel(repositoryRestaurant.findAll());
     }
 
+//    @ApiOperation(value = "Restaurant Summary List", hidden = true)
     @JsonView(RestaurantView.Summary.class)
     @GetMapping(params = "projection=summary")
     public List<RestaurantModel> listSummary() {
