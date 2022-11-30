@@ -4,20 +4,22 @@ import com.developer.beverageapi.api.assembler.StateInputDismantle;
 import com.developer.beverageapi.api.assembler.StateModelAssembler;
 import com.developer.beverageapi.api.model.StateModel;
 import com.developer.beverageapi.api.model.input.StateInput;
+import com.developer.beverageapi.api.swaggerapi.controller.ControllerStateOpenApi;
 import com.developer.beverageapi.domain.model.State;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.StateRegistrationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/states")
-public class ControllerState {
+@RequestMapping(path = "/states", produces = MediaType.APPLICATION_JSON_VALUE)
+public class ControllerState implements ControllerStateOpenApi {
 
     @Autowired
     private RepositoryState repositoryState;
