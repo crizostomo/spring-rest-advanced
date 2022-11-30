@@ -21,7 +21,7 @@ public class AddressInput {
     @NotBlank
     private String street;
 
-    @ApiModelProperty(example = "123", required = true)
+    @ApiModelProperty(example = "\"1200\"", required = true)
     @NotBlank
     private String number;
 

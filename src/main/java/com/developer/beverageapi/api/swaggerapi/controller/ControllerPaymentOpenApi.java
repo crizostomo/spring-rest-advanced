@@ -20,14 +20,14 @@ public interface ControllerPaymentOpenApi {
             @ApiResponse(code = 400, message = "Payment id invalid", response = APIError.class),
             @ApiResponse(code = 404, message = "Payment not found", response = APIError.class)
     })
-    public ResponseEntity<PaymentModel> search(@ApiParam(value = "Payment Id", example = "1")
+    public ResponseEntity<PaymentModel> search(@ApiParam(value = "Payment Id", example = "1", required = true)
                                         Long paymentId);
 
     @ApiOperation(value = "It records a payment")
     @ApiResponses({
             @ApiResponse(code = 201, message = "Payment created")
     })
-    public PaymentModel add(@ApiParam(name = "body", value = "Payment Representation")
+    public PaymentModel add(@ApiParam(name = "body", value = "Payment Representation", required = true)
                                         PaymentInput paymentInput);
 
     @ApiOperation(value = "It updates a payment by id")
@@ -36,7 +36,7 @@ public interface ControllerPaymentOpenApi {
             @ApiResponse(code = 404, message = "Payment not found", response = APIError.class)
     })
     public PaymentModel update(@ApiParam(value = "City Id", example = "1") Long paymentId,
-                            @ApiParam(name = "body", value = "City Representation with new data")
+                            @ApiParam(name = "body", value = "City Representation with new data", required = true)
                                     PaymentInput paymentInput);
 
 
@@ -45,6 +45,6 @@ public interface ControllerPaymentOpenApi {
             @ApiResponse(code = 204, message = "Payment deleted"),
             @ApiResponse(code = 404, message = "Payment not found", response = APIError.class)
     })
-    public void delete(@ApiParam(value = "Payment Id", example = "1")
+    public void delete(@ApiParam(value = "Payment Id", example = "1", required = true)
                        Long paymentId);
 }

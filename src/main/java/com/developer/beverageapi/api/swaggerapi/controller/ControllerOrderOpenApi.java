@@ -51,7 +51,7 @@ public interface ControllerOrderOpenApi {
             @ApiResponse(code = 400, message = "Order id invalid", response = APIError.class),
             @ApiResponse(code = 404, message = "Order not found", response = APIError.class)
     })
-    public OrderModel search(String codeOrder);
-
+    public OrderModel search(@ApiParam(value = "Order Id", example = "f8881ca4-5a6e-1de3-bf04-933865dg3e55", required = true)
+                                         String codeOrder);
 }
 

@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.assembler.RestaurantModelAssembler;
 import com.developer.beverageapi.api.model.RestaurantModel;
 import com.developer.beverageapi.api.model.input.RestaurantInput;
 import com.developer.beverageapi.api.model.input.view.RestaurantView;
+import com.developer.beverageapi.api.swaggerapi.controller.ControllerRestaurantOpenApi;
 import com.developer.beverageapi.api.swaggerapi.model.BasicRestaurantModelSwaggerApi;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.CityNotFoundException;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +27,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurants")
-public class ControllerRestaurant {
+@RequestMapping(path = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
+public class ControllerRestaurant implements ControllerRestaurantOpenApi {
 
     @Autowired
     private RepositoryRestaurant repositoryRestaurant;
