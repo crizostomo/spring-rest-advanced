@@ -3,11 +3,12 @@ package com.developer.beverageapi.api.controller;
 import com.developer.beverageapi.domain.service.FlowOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/orders/{codeOrder}")
-public class ControllerStatusOrder {
+@RequestMapping(path = "/orders/{codeOrder}", produces = MediaType.APPLICATION_JSON_VALUE)
+public class ControllerOrderStatus {
 
     @Autowired
     private FlowOrderService statusOrder;
