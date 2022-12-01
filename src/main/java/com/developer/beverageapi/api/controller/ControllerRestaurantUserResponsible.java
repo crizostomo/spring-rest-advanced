@@ -3,19 +3,21 @@ package com.developer.beverageapi.api.controller;
 import com.developer.beverageapi.api.assembler.UserModelAssembler;
 import com.developer.beverageapi.api.model.GroupModel;
 import com.developer.beverageapi.api.model.UserModel;
+import com.developer.beverageapi.api.swaggerapi.controller.ControllerRestaurantUserResponsibleOpenApi;
 import com.developer.beverageapi.domain.exception.UserNotFoundException;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.model.User;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurants/{restaurantId}/responsible")
-public class ControllerRestaurantUserResponsible {
+@RequestMapping(path = "/restaurants/{restaurantId}/responsible", produces = MediaType.APPLICATION_JSON_VALUE)
+public class ControllerRestaurantUserResponsible implements ControllerRestaurantUserResponsibleOpenApi {
 
     @Autowired
     private RestaurantRegistrationService registrationRestaurant;
