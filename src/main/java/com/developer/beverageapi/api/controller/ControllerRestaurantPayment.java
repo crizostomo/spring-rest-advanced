@@ -6,12 +6,13 @@ import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurants/{restaurantId}/payments")
+@RequestMapping(path = "/restaurants/{restaurantId}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerRestaurantPayment {
 
     @Autowired
@@ -38,5 +39,4 @@ public class ControllerRestaurantPayment {
     public void removeAssociation(@PathVariable Long restaurantId, @PathVariable Long paymentId) {
             registrationRestaurant.removeAssociationWithPayments(restaurantId, paymentId);
     }
-
 }
