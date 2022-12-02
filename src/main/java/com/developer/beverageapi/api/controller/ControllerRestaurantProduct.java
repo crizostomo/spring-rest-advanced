@@ -124,6 +124,13 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productModelAssembler.toModel(currentProduct);
     }
 
+    @DeleteMapping("/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long productId) {
+        registrationProduct.remove(productId);
+    }
+
+    @Override()
     @GetMapping(path = "/{productId}/photo", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductPhotoModel searchPhoto(@PathVariable Long restaurantId, @PathVariable Long productId) {
         ProductPhoto productPhoto = catalogProductPhoto.searchOrFail(restaurantId, productId);
@@ -131,13 +138,8 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productPhotoModelAssembler.toModel(productPhoto);
     }
 
-    @DeleteMapping("/{productId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long productId) {
-        registrationProduct.remove(productId);
-    }
-
-    @GetMapping(path = "/{productId}/photo")
+    @Override()
+    @GetMapping(path = "/{productId}/photo", produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> getFile(@PathVariable Long restaurantId, @PathVariable Long productId,
                                                        @RequestHeader(name = "accept") String acceptHeader)
             throws HttpMediaTypeNotAcceptableException {
@@ -168,7 +170,8 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         }
     }
 
-    private void verifyCompatibilityMediaType(MediaType mediaTypePhoto, List<MediaType> mediaTypesAccepted) throws HttpMediaTypeNotAcceptableException {
+    private void verifyCompatibilityMediaType(MediaType mediaTypePhoto, List<MediaType> mediaTypesAccepted)
+            throws HttpMediaTypeNotAcceptableException {
 
         boolean compatible = mediaTypesAccepted.stream()
                 .anyMatch(mediaType -> mediaType.isCompatibleWith(mediaTypePhoto));
@@ -178,6 +181,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         }
     }
 
+    @Override()
     @PutMapping(path = "/{productId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPhotoModel updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
                                          @Valid ProductPhotoInput productPhotoInput) throws IOException {
@@ -212,9 +216,10 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productPhotoModelAssembler.toModel(savedPhoto);
     }
 
+    @Override()
     @DeleteMapping(path = "/{productId}/photo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long restaurantId, @PathVariable Long productId) {
+    public void deletePhoto(@PathVariable Long restaurantId, @PathVariable Long productId) {
         catalogProductPhoto.delete(restaurantId, productId);
     }
 }
