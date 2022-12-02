@@ -7,6 +7,7 @@ import com.developer.beverageapi.api.model.ProductModel;
 import com.developer.beverageapi.api.model.ProductPhotoModel;
 import com.developer.beverageapi.api.model.input.ProductInput;
 import com.developer.beverageapi.api.model.input.ProductPhotoInput;
+import com.developer.beverageapi.api.swaggerapi.controller.ControllerRestaurantProductOpenApi;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Product;
@@ -35,8 +36,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/restaurants/{restaurantId}/products")
-public class ControllerRestaurantProduct {
+@RequestMapping(path = "/restaurants/{restaurantId}/products", produces = MediaType.APPLICATION_JSON_VALUE)
+public class ControllerRestaurantProduct implements ControllerRestaurantProductOpenApi {
 
     @Autowired
     private RepositoryProduct repositoryProduct;
@@ -86,7 +87,6 @@ public class ControllerRestaurantProduct {
         } else {
             allProducts = repositoryProduct.findActivesByRestaurant(restaurant);
         }
-
 
         return productModelAssembler.toCollectionModel(allProducts);
     }
