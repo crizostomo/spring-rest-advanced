@@ -9,6 +9,7 @@ import com.developer.beverageapi.api.model.input.ProductPhotoInput;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -99,7 +100,9 @@ public interface ControllerRestaurantProductOpenApi {
                                                  Long restaurantId,
                                          @ApiParam(value = "Product Id", example = "1", required = true)
                                                  Long productId,
-                                         ProductPhotoInput productPhotoInput) throws IOException;
+                                         ProductPhotoInput productPhotoInput,
+                                         @ApiParam(value = "File of the product photo (max 500KB, only JPG and PNG", required = true)
+                                                     MultipartFile file) throws IOException;
 
     @ApiOperation(value = "It deletes a product photo of a restaurant")
     @ApiResponses({
