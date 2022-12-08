@@ -1,6 +1,7 @@
 package com.developer.beverageapi.api.controller;
 
 import com.developer.beverageapi.api.model.dto.DailySale;
+import com.developer.beverageapi.api.swaggerapi.controller.ControllerStatisticsOpenApi;
 import com.developer.beverageapi.domain.filter.DailySaleFilter;
 import com.developer.beverageapi.domain.service.SaleQueryService;
 import com.developer.beverageapi.domain.service.SaleReportService;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/statistics")
-public class ControllerStatistics {
+public class ControllerStatistics implements ControllerStatisticsOpenApi {
 
     @Autowired
     private SaleQueryService saleQueryService;
