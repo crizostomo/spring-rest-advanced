@@ -81,7 +81,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
                         new Tag("Orders", "It runs orders"),
                         new Tag ("Restaurants", "It runs restaurants"),
                         new Tag ("States", "It runs states"),
-                        new Tag("Products", "It runs restaurant products"));
+                        new Tag("Products", "It runs restaurant products"),
+                        new Tag ("Users", "It runs users"));
     }
 
     private List<ResponseMessage> globalGetResponseMessages() {

@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.model.input;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ public class UserWithPasswordInput {
     @NotBlank
     private String email;
 
+    @ApiModelProperty(example = "123", required = true)
     @NotBlank
     private String password;
 }

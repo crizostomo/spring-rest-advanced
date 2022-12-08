@@ -6,19 +6,21 @@ import com.developer.beverageapi.api.model.UserModel;
 import com.developer.beverageapi.api.model.input.UserPasswordInput;
 import com.developer.beverageapi.api.model.input.UserWithPasswordInput;
 import com.developer.beverageapi.api.model.input.UserWithoutPasswordInput;
+import com.developer.beverageapi.api.swaggerapi.controller.ControllerUserOpenApi;
 import com.developer.beverageapi.domain.model.User;
 import com.developer.beverageapi.domain.repository.RepositoryUser;
 import com.developer.beverageapi.domain.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
-public class ControllerUser {
+@RequestMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+public class ControllerUser implements ControllerUserOpenApi {
 
     @Autowired
     private RepositoryUser repositoryUser;
