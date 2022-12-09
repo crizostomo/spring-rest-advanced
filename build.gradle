@@ -61,6 +61,8 @@ dependencies {
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	implementation 'io.springfox:springfox-bean-validators:2.9.2' // It interprets Bean Validation Annotations
 
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
+
 }
 
 tasks.named('test') {
