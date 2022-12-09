@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.0'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.7.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 group = 'com.developer'
@@ -9,62 +9,64 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '16'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
 
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-	implementation group: 'org.flywaydb', name: 'flyway-mysql', version: '8.2.2'
+    implementation group: 'org.flywaydb', name: 'flyway-mysql', version: '8.2.2'
 
-	implementation group: 'org.apache.commons', name: 'commons-lang3'
+    implementation group: 'org.apache.commons', name: 'commons-lang3'
 
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.7.2'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.7.2'
 
-	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
 
-	implementation group: 'com.github.bohnman', name: 'squiggly-filter-jackson', version: '1.3.18', {
-		exclude group: 'com.google.guava'
-	}
+    implementation group: 'com.github.bohnman', name: 'squiggly-filter-jackson', version: '1.3.18', {
+        exclude group: 'com.google.guava'
+    }
 
-	implementation group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.10.0'
-	implementation group: 'net.sf.jasperreports', name: 'jasperreports-functions', version: '6.10.0'
-	repositories {
-		mavenCentral()
-		maven { url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/" }
-	}
+    implementation group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.10.0'
+    implementation group: 'net.sf.jasperreports', name: 'jasperreports-functions', version: '6.10.0'
+    repositories {
+        mavenCentral()
+        maven { url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/" }
+    }
 
-	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
-	annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 
-	runtimeOnly 'com.h2database:h2'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    runtimeOnly 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	implementation 'junit:junit:4.13.1'
-	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.0.0'
+    implementation 'junit:junit:4.13.1'
+    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.0.0'
 
-	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.336'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.336'
 
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.7.5'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.7.5'
 
-	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+    implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker'
 
-	implementation 'io.springfox:springfox-swagger2:2.9.2'
-	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
-	implementation 'io.springfox:springfox-bean-validators:2.9.2' // It interprets Bean Validation Annotations
+    implementation 'io.springfox:springfox-swagger2:2.9.2', {
+        exclude group: 'org.springframework.plugin:spring-plugin-core'
+    }
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    implementation 'io.springfox:springfox-bean-validators:2.9.2' // It interprets Bean Validation Annotations
 
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
 
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
