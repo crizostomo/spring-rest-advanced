@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.controller;
 
+import com.developer.beverageapi.api.ResourceUriHelper;
 import com.developer.beverageapi.api.assembler.CityInputDismantle;
 import com.developer.beverageapi.api.assembler.CityModelAssembler;
 import com.developer.beverageapi.api.swaggerapi.controller.ControllerCityOpenApi;
@@ -12,11 +13,17 @@ import com.developer.beverageapi.domain.repository.RepositoryCity;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.CityRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -60,7 +67,11 @@ public class ControllerCity implements ControllerCityOpenApi {
 
             city = registrationCity.add(city);
 
-            return cityModelAssembler.toModel(city);
+            CityModel cityModel = cityModelAssembler.toModel(city);
+
+            ResourceUriHelper.addUriInResponseHeader(cityModel.getId());
+
+            return cityModel;
         } catch (StateNotFoundException e) {
             throw new BusinessException(e.getMessage(), e);
         }
