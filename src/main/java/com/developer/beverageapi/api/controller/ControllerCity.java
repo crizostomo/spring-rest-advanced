@@ -14,6 +14,7 @@ import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.CityRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -59,11 +60,22 @@ public class ControllerCity implements ControllerCityOpenApi {
 
         CityModel cityModel = cityModelAssembler.toModel(city);
 
-        cityModel.add(Link.of("http://localhost:8080/cities/1"));
+        cityModel.add(WebMvcLinkBuilder.linkTo(ControllerCity.class)
+                .slash(cityModel.getId())
+                .withSelfRel());
 
-        cityModel.add(Link.of("http://localhost:8080/cities", "cities"));
+//        cityModel.add(Link.of("http://localhost:8080/cities/1"));
 
-        cityModel.getState().add(Link.of("http://localhost:8080/states/1"));
+        cityModel.add(WebMvcLinkBuilder.linkTo(ControllerCity.class)
+                .withRel("cities"));
+
+//        cityModel.add(Link.of("http://localhost:8080/cities", "cities"));
+
+        cityModel.getState().add(WebMvcLinkBuilder.linkTo(ControllerState.class)
+                .slash(cityModel.getState().getId())
+                .withSelfRel());
+
+//        cityModel.getState().add(Link.of("http://localhost:8080/states/1"));
 
         return cityModel;
     }
