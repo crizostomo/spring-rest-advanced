@@ -13,6 +13,7 @@ import com.developer.beverageapi.domain.repository.RepositoryCity;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.CityRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -56,7 +57,15 @@ public class ControllerCity implements ControllerCityOpenApi {
     public CityModel search(@PathVariable Long cityId) {
         City city = registrationCity.searchOrFail(cityId);
 
-        return cityModelAssembler.toModel(city);
+        CityModel cityModel = cityModelAssembler.toModel(city);
+
+        cityModel.add(Link.of("http://localhost:8080/cities/1"));
+
+        cityModel.add(Link.of("http://localhost:8080/cities", "cities"));
+
+        cityModel.getState().add(Link.of("http://localhost:8080/states/1"));
+
+        return cityModel;
     }
 
     @PostMapping
