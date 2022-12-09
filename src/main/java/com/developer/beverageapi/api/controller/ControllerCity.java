@@ -60,22 +60,26 @@ public class ControllerCity implements ControllerCityOpenApi {
 
         CityModel cityModel = cityModelAssembler.toModel(city);
 
-        cityModel.add(WebMvcLinkBuilder.linkTo(ControllerCity.class)
-                .slash(cityModel.getId())
+        cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
+                .search(cityModel.getId())).withSelfRel());
+
+//        cityModel.add(WebMvcLinkBuilder.linkTo(ControllerCity.class)
+//                .slash(cityModel.getId())
+//                .withSelfRel());
+
+        cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
+                .list()).withRel("cities"));
+
+//        cityModel.add(WebMvcLinkBuilder.linkTo(ControllerCity.class)
+//                .withRel("cities"));
+
+        cityModel.getState().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerState.class)
+                .search(cityModel.getState().getId()))
                 .withSelfRel());
 
-//        cityModel.add(Link.of("http://localhost:8080/cities/1"));
-
-        cityModel.add(WebMvcLinkBuilder.linkTo(ControllerCity.class)
-                .withRel("cities"));
-
-//        cityModel.add(Link.of("http://localhost:8080/cities", "cities"));
-
-        cityModel.getState().add(WebMvcLinkBuilder.linkTo(ControllerState.class)
-                .slash(cityModel.getState().getId())
-                .withSelfRel());
-
-//        cityModel.getState().add(Link.of("http://localhost:8080/states/1"));
+//        cityModel.getState().add(WebMvcLinkBuilder.linkTo(ControllerState.class)
+//                .slash(cityModel.getState().getId())
+//                .withSelfRel());
 
         return cityModel;
     }
