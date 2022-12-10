@@ -45,44 +45,14 @@ public class ControllerCity implements ControllerCityOpenApi {
     public CollectionModel<CityModel> list() {
         List<City> allCities = repositoryCity.findAll();
 
-        List<CityModel> cityModels = cityModelAssembler.toCollectionModel(allCities);
-
-        cityModels.forEach(cityModel -> {
-            cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
-                    .search(cityModel.getId())).withSelfRel());
-
-            cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
-                    .list()).withRel("cities"));
-
-            cityModel.getState().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerState.class)
-                            .search(cityModel.getState().getId()))
-                    .withSelfRel());
-        });
-
-        CollectionModel<CityModel> cityModelCollection = CollectionModel.of(cityModels);
-
-        cityModelCollection.add(WebMvcLinkBuilder.linkTo(ControllerCity.class).withSelfRel());
-
-        return cityModelCollection;
+        return cityModelAssembler.toCollectionModel(allCities);
     }
 
     @GetMapping("/{cityId}")
     public CityModel search(@PathVariable Long cityId) {
         City city = registrationCity.searchOrFail(cityId);
 
-        CityModel cityModel = cityModelAssembler.toModel(city);
-
-        cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
-                .search(cityModel.getId())).withSelfRel());
-
-        cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
-                .list()).withRel("cities"));
-
-        cityModel.getState().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerState.class)
-                .search(cityModel.getState().getId()))
-                .withSelfRel());
-
-        return cityModel;
+        return cityModelAssembler.toModel(city);
     }
 
     @PostMapping
