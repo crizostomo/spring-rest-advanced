@@ -8,6 +8,7 @@ import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,13 @@ public class ControllerRestaurantUserResponsible implements ControllerRestaurant
             throw new UserNotFoundException("The user was not found");
         }
 
-        return userModelAssembler.toCollectionModel(restaurant.getResponsible());
+        return userModelAssembler.toCollectionModel(restaurant.getResponsible())
+                .removeLinks()
+                .add(WebMvcLinkBuilder
+                        .linkTo(WebMvcLinkBuilder
+                                .methodOn(ControllerRestaurantUserResponsible.class)
+                                .list(restaurantId))
+                        .withSelfRel());
     }
 
     @PutMapping("/{userId}")
