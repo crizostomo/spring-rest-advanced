@@ -4,14 +4,13 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.CityModel;
 import com.developer.beverageapi.api.model.input.CityInput;
 import io.swagger.annotations.*;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Cities")
 public interface ControllerCityOpenApi {
 
     @ApiOperation(value = "List cities")
-    public List<CityModel> list();
+    public CollectionModel<CityModel> list();
 
     @ApiOperation(value = "Search a city by id")
     @ApiResponses({

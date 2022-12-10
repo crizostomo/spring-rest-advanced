@@ -13,19 +13,13 @@ import com.developer.beverageapi.domain.repository.RepositoryCity;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.CityRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -48,10 +42,28 @@ public class ControllerCity implements ControllerCityOpenApi {
     private CityInputDismantle cityInputDismantle;
 
     @GetMapping
-    public List<CityModel> list() {
+    public CollectionModel<CityModel> list() {
         List<City> allCities = repositoryCity.findAll();
 
-        return cityModelAssembler.toCollectionModel(allCities);
+        List<CityModel> cityModels = cityModelAssembler.toCollectionModel(allCities);
+
+        cityModels.forEach(cityModel -> {
+            cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
+                    .search(cityModel.getId())).withSelfRel());
+
+            cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
+                    .list()).withRel("cities"));
+
+            cityModel.getState().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerState.class)
+                            .search(cityModel.getState().getId()))
+                    .withSelfRel());
+        });
+
+        CollectionModel<CityModel> cityModelCollection = CollectionModel.of(cityModels);
+
+        cityModelCollection.add(WebMvcLinkBuilder.linkTo(ControllerCity.class).withSelfRel());
+
+        return cityModelCollection;
     }
 
     @GetMapping("/{cityId}")
@@ -63,23 +75,12 @@ public class ControllerCity implements ControllerCityOpenApi {
         cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
                 .search(cityModel.getId())).withSelfRel());
 
-//        cityModel.add(WebMvcLinkBuilder.linkTo(ControllerCity.class)
-//                .slash(cityModel.getId())
-//                .withSelfRel());
-
         cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
                 .list()).withRel("cities"));
-
-//        cityModel.add(WebMvcLinkBuilder.linkTo(ControllerCity.class)
-//                .withRel("cities"));
 
         cityModel.getState().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerState.class)
                 .search(cityModel.getState().getId()))
                 .withSelfRel());
-
-//        cityModel.getState().add(WebMvcLinkBuilder.linkTo(ControllerState.class)
-//                .slash(cityModel.getState().getId())
-//                .withSelfRel());
 
         return cityModel;
     }
