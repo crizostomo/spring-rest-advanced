@@ -11,6 +11,7 @@ import com.developer.beverageapi.domain.model.User;
 import com.developer.beverageapi.domain.repository.RepositoryUser;
 import com.developer.beverageapi.domain.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class ControllerUser implements ControllerUserOpenApi {
     private UserInputDismantle userInputDismantle;
 
     @GetMapping
-    public List<UserModel> list() {
+    public CollectionModel<UserModel> list() {
         List<User> userList = repositoryUser.findAll();
 
         return userModelAssembler.toCollectionModel(userList);

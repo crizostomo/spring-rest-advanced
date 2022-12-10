@@ -1,21 +1,18 @@
 package com.developer.beverageapi.api.swaggerapi.controller;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
-import com.developer.beverageapi.api.model.CityModel;
 import com.developer.beverageapi.api.model.UserModel;
-import com.developer.beverageapi.api.model.input.CityInput;
 import com.developer.beverageapi.api.model.input.UserPasswordInput;
 import com.developer.beverageapi.api.model.input.UserWithPasswordInput;
 import com.developer.beverageapi.api.model.input.UserWithoutPasswordInput;
 import io.swagger.annotations.*;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Users")
 public interface ControllerUserOpenApi {
 
     @ApiOperation(value = "List the users")
-    public List<UserModel> list();
+    public CollectionModel<UserModel> list();
 
     @ApiOperation(value = "Search a user by id")
     @ApiResponses({

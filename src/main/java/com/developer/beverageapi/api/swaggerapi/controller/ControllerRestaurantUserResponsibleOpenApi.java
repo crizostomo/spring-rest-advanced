@@ -1,11 +1,9 @@
 package com.developer.beverageapi.api.swaggerapi.controller;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
-import com.developer.beverageapi.api.model.PaymentModel;
 import com.developer.beverageapi.api.model.UserModel;
 import io.swagger.annotations.*;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Restaurants")
 public interface ControllerRestaurantUserResponsibleOpenApi {
@@ -14,7 +12,7 @@ public interface ControllerRestaurantUserResponsibleOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
     })
-    public List<UserModel> list(@ApiParam(value = "Restaurant ID", example = "1", required = true)
+    public CollectionModel<UserModel> list(@ApiParam(value = "Restaurant ID", example = "1", required = true)
                                         Long restaurantId);
 
     @ApiOperation(value = "Restaurant Association with the user")
