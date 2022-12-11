@@ -4,14 +4,13 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.StateModel;
 import com.developer.beverageapi.api.model.input.StateInput;
 import io.swagger.annotations.*;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "States")
 public interface ControllerStateOpenApi {
 
     @ApiOperation(value = "List states")
-    public List<StateModel> list();
+    public CollectionModel<StateModel> list();
 
     @ApiOperation(value = "Search a state by id")
     @ApiResponses({

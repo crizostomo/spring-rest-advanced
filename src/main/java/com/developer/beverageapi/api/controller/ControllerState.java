@@ -8,8 +8,8 @@ import com.developer.beverageapi.api.swaggerapi.controller.ControllerStateOpenAp
 import com.developer.beverageapi.domain.model.State;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.StateRegistrationService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,7 @@ public class ControllerState implements ControllerStateOpenApi {
     private StateInputDismantle stateInputDismantle;
 
     @GetMapping
-    public List<StateModel> list() {
+    public CollectionModel<StateModel> list() {
         List<State> allStates = repositoryState.findAll();
 
         return stateModelAssembler.toCollectionModel(allStates);
