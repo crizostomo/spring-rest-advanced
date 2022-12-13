@@ -7,6 +7,7 @@ import com.developer.beverageapi.api.model.OrderModel;
 import com.developer.beverageapi.api.model.OrderSummaryModel;
 import com.developer.beverageapi.api.model.input.OrderInput;
 import com.developer.beverageapi.api.swaggerapi.controller.ControllerOrderOpenApi;
+import com.developer.beverageapi.core.data.PageWrapper;
 import com.developer.beverageapi.core.data.PageableTranslator;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
@@ -63,10 +64,11 @@ public class ControllerOrder implements ControllerOrderOpenApi {
     @Override
     @GetMapping("/filter")
     public PagedModel<OrderSummaryModel> search(OrderFilter filter, @PageableDefault(size = 10)Pageable pageable) {
-        Page<Order> ordersPage = repositoryOrder.findAll(OrderSpecs.usingFilter(filter), pageable);
-        pageable = translatePageable(pageable);
+        Pageable translatedPageable = translatePageable(pageable);
 
-        Page<Order> orderModelsPage = repositoryOrder.findAll(OrderSpecs.usingFilter(filter), pageable);
+        Page<Order> ordersPage = repositoryOrder.findAll(OrderSpecs.usingFilter(filter), translatedPageable);
+
+        ordersPage = new PageWrapper<>(ordersPage, pageable);
 
         return pagedResourcesAssembler.toModel(ordersPage, orderSummaryModelAssembler);
     }
