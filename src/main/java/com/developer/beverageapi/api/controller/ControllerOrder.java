@@ -17,13 +17,13 @@ import com.developer.beverageapi.domain.filter.OrderFilter;
 import com.developer.beverageapi.domain.service.OrderIssuingRegistrationService;
 import com.developer.beverageapi.infrastructure.repository.spec.OrderSpecs;
 import com.google.common.collect.ImmutableMap;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -50,23 +50,25 @@ public class ControllerOrder implements ControllerOrderOpenApi {
     @Autowired
     private OrderInputDismantle orderInputDismantle;
 
+    @Autowired
+    private PagedResourcesAssembler<Order> pagedResourcesAssembler;
+
     @GetMapping
     public List<OrderModel> list() {
         List<Order> allOrders = repositoryOrder.findAll();
 
-        return orderModelAssembler.toCollectionModel(allOrders);
+        return orderModelAssembler.toCollectionModelList(allOrders);
     }
 
+    @Override
     @GetMapping("/filter")
-    public Page<OrderModel> search(OrderFilter filter, @PageableDefault(size = 10)Pageable pageable) {
+    public PagedModel<OrderSummaryModel> search(OrderFilter filter, @PageableDefault(size = 10)Pageable pageable) {
         Page<Order> ordersPage = repositoryOrder.findAll(OrderSpecs.usingFilter(filter), pageable);
         pageable = translatePageable(pageable);
 
-        List<OrderModel> orderSummaryModels = orderModelAssembler.toCollectionModel(ordersPage.getContent());
+        Page<Order> orderModelsPage = repositoryOrder.findAll(OrderSpecs.usingFilter(filter), pageable);
 
-        Page<OrderModel> orderModelsPage = new PageImpl<>(orderSummaryModels, pageable, ordersPage.getTotalElements());
-
-        return orderModelsPage;
+        return pagedResourcesAssembler.toModel(ordersPage, orderSummaryModelAssembler);
     }
 
 //    @GetMapping("/filter")
@@ -77,7 +79,7 @@ public class ControllerOrder implements ControllerOrderOpenApi {
 //    }
 
     @GetMapping("/summary")
-    public List<OrderSummaryModel> listSummary() {
+    public CollectionModel<OrderSummaryModel> listSummary() {
         List<Order> allOrders = repositoryOrder.findAll();
 
         return orderSummaryModelAssembler.toCollectionModel(allOrders);

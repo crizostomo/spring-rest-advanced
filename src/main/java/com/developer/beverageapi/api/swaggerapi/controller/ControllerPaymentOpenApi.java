@@ -21,7 +21,7 @@ public interface ControllerPaymentOpenApi {
             @ApiResponse(code = 404, message = "Payment not found", response = APIError.class)
     })
     public ResponseEntity<PaymentModel> search(@ApiParam(value = "Payment Id", example = "1", required = true)
-                                        Long paymentId);
+                                        Long paymentId, ServletWebRequest request);
 
     @ApiOperation(value = "It records a payment")
     @ApiResponses({

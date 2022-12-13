@@ -6,8 +6,9 @@ import com.developer.beverageapi.api.model.OrderSummaryModel;
 import com.developer.beverageapi.api.model.input.OrderInput;
 import com.developer.beverageapi.domain.filter.OrderFilter;
 import io.swagger.annotations.*;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 
 import java.util.List;
 
@@ -26,14 +27,14 @@ public interface ControllerOrderOpenApi {
             @ApiResponse(code = 400, message = "Order id invalid", response = APIError.class),
             @ApiResponse(code = 404, message = "Order not found", response = APIError.class)
     })
-    public Page<OrderModel> search(OrderFilter filter, Pageable pageable);
+    public PagedModel<OrderSummaryModel> search(OrderFilter filter, Pageable pageable);
 
     @ApiOperation(value = "Search an order by id summarized")
     @ApiResponses({
             @ApiResponse(code = 400, message = "Order id invalid", response = APIError.class),
             @ApiResponse(code = 404, message = "Order not found", response = APIError.class)
     })
-    public List<OrderSummaryModel> listSummary();
+    public CollectionModel<OrderSummaryModel> listSummary();
 
     @ApiOperation(value = "It records an order")
     @ApiResponses({

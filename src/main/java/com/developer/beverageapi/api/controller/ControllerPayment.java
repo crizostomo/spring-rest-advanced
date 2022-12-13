@@ -69,14 +69,29 @@ public class ControllerPayment implements ControllerPaymentOpenApi {
                 .body(paymentModels);
     }
 
-    @GetMapping("/{paymentId}")
-    public ResponseEntity<PaymentModel> search(@PathVariable Long paymentId) {
+    @GetMapping(value = "/{paymentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PaymentModel> search(@PathVariable Long paymentId, ServletWebRequest request) {
+        ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+
+        String eTag = "0";
+
+        OffsetDateTime updateDate = repositoryPayment.getUpdateDateById(paymentId);
+
+        if (updateDate != null) {
+            eTag = String.valueOf(updateDate.toEpochSecond());
+        }
+
+        if (request.checkNotModified(eTag)) {
+            return null;
+        }
+
         Payment payment = registrationPayment.searchOrFail(paymentId);
 
         PaymentModel paymentModel = paymentModelAssembler.toModel(payment);
 
         return ResponseEntity.ok()
-                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+                .eTag(eTag)
                 .body(paymentModel);
     }
 
@@ -92,7 +107,7 @@ public class ControllerPayment implements ControllerPaymentOpenApi {
 
     @PutMapping("/{paymentId}")
     public PaymentModel update(@PathVariable Long paymentId,
-                             @RequestBody @Valid PaymentInput paymentInput) {
+                               @RequestBody @Valid PaymentInput paymentInput) {
         Payment currentPayment = registrationPayment.searchOrFail(paymentId);
 
         paymentInputDismantle.copyToDomainObject(paymentInput, currentPayment);
