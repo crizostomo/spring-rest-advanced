@@ -5,6 +5,10 @@ import com.developer.beverageapi.api.model.OrderModel;
 import com.developer.beverageapi.domain.model.Order;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.TemplateVariable;
+import org.springframework.hateoas.TemplateVariables;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -26,7 +30,16 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
         OrderModel orderModel = createModelWithId(order.getCode(), order);
         modelMapper.map(order, orderModel);
 
-        orderModel.add(WebMvcLinkBuilder.linkTo(ControllerOrder.class).withRel("orders"));
+//        orderModel.add(WebMvcLinkBuilder.linkTo(ControllerOrder.class).withRel("orders"));
+
+        TemplateVariables templateVariables = new TemplateVariables(
+                new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
+
+        String ordersUrl = WebMvcLinkBuilder.linkTo(ControllerOrder.class).toUri().toString();
+
+        orderModel.add(Link.of(UriTemplate.of(ordersUrl, templateVariables), "orders"));
 
         orderModel.getRestaurant().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class)
                 .search(order.getRestaurant().getId())).withSelfRel());
