@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.assembler;
 
+import com.developer.beverageapi.api.InstantiateLinks;
 import com.developer.beverageapi.api.controller.ControllerState;
 import com.developer.beverageapi.api.model.StateModel;
 import com.developer.beverageapi.domain.model.State;
@@ -16,6 +17,9 @@ public class StateModelAssembler extends RepresentationModelAssemblerSupport<Sta
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private InstantiateLinks instantiateLinks;
+
     public StateModelAssembler() {
         super(ControllerState.class, StateModel.class);
     }
@@ -25,7 +29,7 @@ public class StateModelAssembler extends RepresentationModelAssemblerSupport<Sta
 
         modelMapper.map(state, stateModel);
 
-        stateModel.add(WebMvcLinkBuilder.linkTo(ControllerState.class).withRel("states"));
+        stateModel.add(instantiateLinks.linkToStates("states"));
 
         return stateModel;
     }

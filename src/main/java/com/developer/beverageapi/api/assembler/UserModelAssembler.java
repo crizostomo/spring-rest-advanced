@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.assembler;
 
+import com.developer.beverageapi.api.InstantiateLinks;
 import com.developer.beverageapi.api.controller.ControllerCity;
 import com.developer.beverageapi.api.controller.ControllerState;
 import com.developer.beverageapi.api.controller.ControllerUser;
@@ -24,6 +25,9 @@ public class UserModelAssembler extends RepresentationModelAssemblerSupport<User
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private InstantiateLinks instantiateLinks;
+
     public UserModelAssembler() {
         super(ControllerUser.class, UserModel.class);
     }
@@ -33,10 +37,9 @@ public class UserModelAssembler extends RepresentationModelAssemblerSupport<User
 
         modelMapper.map(user, userModel);
 
-        userModel.add(WebMvcLinkBuilder.linkTo(ControllerUser.class).withRel("users"));
+        userModel.add(instantiateLinks.linkToUsers("users"));
 
-        userModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerUserGroup.class)
-                        .list(userModel.getId())).withRel("users-group"));
+        userModel.add(instantiateLinks.linkToUserGroups(userModel.getId(), "users-group"));
 
         return userModel;
     }

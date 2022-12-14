@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.controller;
 
+import com.developer.beverageapi.api.InstantiateLinks;
 import com.developer.beverageapi.api.assembler.UserModelAssembler;
 import com.developer.beverageapi.api.model.UserModel;
 import com.developer.beverageapi.api.swaggerapi.controller.ControllerRestaurantUserResponsibleOpenApi;
@@ -23,6 +24,9 @@ public class ControllerRestaurantUserResponsible implements ControllerRestaurant
     @Autowired
     private UserModelAssembler userModelAssembler;
 
+    @Autowired
+    private InstantiateLinks instantiateLinks;
+
     @GetMapping
     public CollectionModel<UserModel> list(@PathVariable Long restaurantId) {
         Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
@@ -33,11 +37,7 @@ public class ControllerRestaurantUserResponsible implements ControllerRestaurant
 
         return userModelAssembler.toCollectionModel(restaurant.getResponsible())
                 .removeLinks()
-                .add(WebMvcLinkBuilder
-                        .linkTo(WebMvcLinkBuilder
-                                .methodOn(ControllerRestaurantUserResponsible.class)
-                                .list(restaurantId))
-                        .withSelfRel());
+                .add(instantiateLinks.linkToRestaurantResponsible(restaurantId));
     }
 
     @PutMapping("/{userId}")

@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.assembler;
 
+import com.developer.beverageapi.api.InstantiateLinks;
 import com.developer.beverageapi.api.controller.ControllerOrder;
 import com.developer.beverageapi.api.controller.ControllerRestaurant;
 import com.developer.beverageapi.api.controller.ControllerUser;
@@ -20,6 +21,9 @@ public class OrderSummaryModelAssembler extends RepresentationModelAssemblerSupp
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private InstantiateLinks instantiateLinks;
+
     public OrderSummaryModelAssembler() {
         super(ControllerOrder.class, OrderSummaryModel.class);
     }
@@ -30,13 +34,11 @@ public class OrderSummaryModelAssembler extends RepresentationModelAssemblerSupp
 
         modelMapper.map(order, orderSummaryModel);
 
-        orderSummaryModel.add(WebMvcLinkBuilder.linkTo(ControllerOrder.class).withRel("orders"));
+        orderSummaryModel.add(instantiateLinks.linkToOrders());
 
-        orderSummaryModel.getRestaurant().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class)
-                .search(order.getRestaurant().getId())).withSelfRel());
+        orderSummaryModel.getRestaurant().add(instantiateLinks.linkToRestaurant(order.getRestaurant().getId()));
 
-        orderSummaryModel.getClient().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerUser.class)
-                .search(order.getClient().getId())).withSelfRel());
+        orderSummaryModel.getClient().add(instantiateLinks.linkToUser(order.getClient().getId()));
 
         return orderSummaryModel;
     }

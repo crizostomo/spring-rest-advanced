@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.assembler;
 
+import com.developer.beverageapi.api.InstantiateLinks;
 import com.developer.beverageapi.api.controller.ControllerKitchen;
 import com.developer.beverageapi.api.model.KitchenModel;
 import com.developer.beverageapi.domain.model.Kitchen;
@@ -18,6 +19,9 @@ public class KitchenModelAssembler extends RepresentationModelAssemblerSupport<K
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private InstantiateLinks instantiateLinks;
+
     public KitchenModelAssembler() {
         super(ControllerKitchen.class, KitchenModel.class);
     }
@@ -27,7 +31,7 @@ public class KitchenModelAssembler extends RepresentationModelAssemblerSupport<K
         KitchenModel kitchenModel = createModelWithId(kitchen.getId(), kitchen);
         modelMapper.map(kitchen, KitchenModel.class);
 
-        kitchenModel.add(WebMvcLinkBuilder.linkTo(ControllerKitchen.class).withRel("kitchens"));
+        kitchenModel.add(instantiateLinks.linkToKitchens("kitchens"));
 
         return kitchenModel;
     }

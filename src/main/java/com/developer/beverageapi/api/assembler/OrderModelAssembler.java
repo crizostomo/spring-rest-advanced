@@ -36,21 +36,16 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
 
         orderModel.add(instantiateLinks.linkToOrders());
 
-        orderModel.getRestaurant().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class)
-                .search(order.getRestaurant().getId())).withSelfRel());
+        orderModel.getRestaurant().add(instantiateLinks.linkToRestaurant(order.getRestaurant().getId()));
 
-        orderModel.getClient().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerUser.class)
-                .search(order.getClient().getId())).withSelfRel());
+        orderModel.getClient().add(instantiateLinks.linkToUser(order.getClient().getId()));
 
-        orderModel.getPayment().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerPayment.class)
-                .search(order.getPayment().getId(), null)).withSelfRel());
+        orderModel.getPayment().add(instantiateLinks.linkToPayment(order.getPayment().getId()));
 
-        orderModel.getDeliveryAddress().getCity().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
-                .search(order.getAddress().getCity().getId())).withSelfRel());
+        orderModel.getDeliveryAddress().getCity().add(instantiateLinks.linkToCity(order.getAddress().getCity().getId()));
 
         orderModel.getItems().forEach(item -> {
-            item.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurantProduct.class)
-                    .search(orderModel.getRestaurant().getId(), item.getId())).withRel("product"));
+            item.add(instantiateLinks.linkToProduct(orderModel.getRestaurant().getId(), item.getId(),"product"));
         });
 
         return orderModel;

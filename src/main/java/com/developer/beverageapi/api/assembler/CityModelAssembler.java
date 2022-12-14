@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.assembler;
 
+import com.developer.beverageapi.api.InstantiateLinks;
 import com.developer.beverageapi.api.controller.ControllerCity;
 import com.developer.beverageapi.api.controller.ControllerState;
 import com.developer.beverageapi.api.model.CityModel;
@@ -20,6 +21,9 @@ public class CityModelAssembler extends RepresentationModelAssemblerSupport<City
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private InstantiateLinks instantiateLinks;
+
     public CityModelAssembler() {
         super(ControllerCity.class, CityModel.class);
     }
@@ -30,12 +34,9 @@ public class CityModelAssembler extends RepresentationModelAssemblerSupport<City
 
         modelMapper.map(city, cityModel);
 
-        cityModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerCity.class)
-                .list()).withRel("cities"));
+        cityModel.add(instantiateLinks.linkToCities("cities"));
 
-        cityModel.getState().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerState.class)
-                        .search(cityModel.getState().getId()))
-                .withSelfRel());
+        cityModel.getState().add(instantiateLinks.linkToState(cityModel.getState().getId()));
 
         return cityModel;
     }
