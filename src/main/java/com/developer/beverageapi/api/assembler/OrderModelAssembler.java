@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.assembler;
 
+import com.developer.beverageapi.api.InstantiateLinks;
 import com.developer.beverageapi.api.controller.*;
 import com.developer.beverageapi.api.model.OrderModel;
 import com.developer.beverageapi.domain.model.Order;
@@ -22,6 +23,9 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private InstantiateLinks instantiateLinks;
+
     public OrderModelAssembler() {
         super(ControllerOrder.class, OrderModel.class);
     }
@@ -30,22 +34,7 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
         OrderModel orderModel = createModelWithId(order.getCode(), order);
         modelMapper.map(order, orderModel);
 
-//        orderModel.add(WebMvcLinkBuilder.linkTo(ControllerOrder.class).withRel("orders"));
-
-        TemplateVariables templateVariables = new TemplateVariables(
-                new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
-
-        TemplateVariables filterVariables = new TemplateVariables(
-                new TemplateVariable("clientId", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("restaurantId", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("creationDateStart", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("creationDateEnd", TemplateVariable.VariableType.REQUEST_PARAM));
-
-        String ordersUrl = WebMvcLinkBuilder.linkTo(ControllerOrder.class).toUri().toString();
-
-        orderModel.add(Link.of(UriTemplate.of(ordersUrl, templateVariables.concat(filterVariables)), "orders"));
+        orderModel.add(instantiateLinks.linkToOrders());
 
         orderModel.getRestaurant().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class)
                 .search(order.getRestaurant().getId())).withSelfRel());
