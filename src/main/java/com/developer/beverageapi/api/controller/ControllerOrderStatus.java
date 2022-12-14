@@ -4,6 +4,7 @@ import com.developer.beverageapi.domain.service.FlowOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,19 +16,25 @@ public class ControllerOrderStatus {
 
     @PutMapping("/confirmation")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void confirm(@PathVariable String codeOrder) {
+    public ResponseEntity<Void> confirm(@PathVariable String codeOrder) {
         statusOrder.confirm(codeOrder);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/cancellation")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancel(@PathVariable String codeOrder) {
+    public ResponseEntity<Void> cancel(@PathVariable String codeOrder) {
         statusOrder.cancel(codeOrder);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/delivery")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delivery(@PathVariable String codeOrder) {
+    public ResponseEntity<Void> delivery(@PathVariable String codeOrder) {
         statusOrder.delivery(codeOrder);
+
+        return ResponseEntity.noContent().build();
     }
 }

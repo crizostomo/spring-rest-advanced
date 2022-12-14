@@ -124,7 +124,7 @@ public class ControllerOrder implements ControllerOrderOpenApi {
         }
     }
 
-    @GetMapping("/{codeOrder}")
+    @GetMapping(value = "/{codeOrder}", produces = MediaType.APPLICATION_JSON_VALUE)
     public OrderModel search(@PathVariable String codeOrder) {
         Order order = issuingOrder.searchOrFail(codeOrder);
 
