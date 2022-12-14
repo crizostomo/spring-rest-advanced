@@ -37,9 +37,15 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
                 new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
                 new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
 
+        TemplateVariables filterVariables = new TemplateVariables(
+                new TemplateVariable("clientId", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("restaurantId", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("creationDateStart", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("creationDateEnd", TemplateVariable.VariableType.REQUEST_PARAM));
+
         String ordersUrl = WebMvcLinkBuilder.linkTo(ControllerOrder.class).toUri().toString();
 
-        orderModel.add(Link.of(UriTemplate.of(ordersUrl, templateVariables), "orders"));
+        orderModel.add(Link.of(UriTemplate.of(ordersUrl, templateVariables.concat(filterVariables)), "orders"));
 
         orderModel.getRestaurant().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class)
                 .search(order.getRestaurant().getId())).withSelfRel());
