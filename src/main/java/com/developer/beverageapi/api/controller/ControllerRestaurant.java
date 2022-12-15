@@ -1,12 +1,12 @@
 package com.developer.beverageapi.api.controller;
 
+import com.developer.beverageapi.api.assembler.RestaurantBasicModelAssembler;
 import com.developer.beverageapi.api.assembler.RestaurantInputDismantle;
 import com.developer.beverageapi.api.assembler.RestaurantModelAssembler;
+import com.developer.beverageapi.api.assembler.RestaurantSummaryModelAssembler;
 import com.developer.beverageapi.api.model.RestaurantModel;
 import com.developer.beverageapi.api.model.input.RestaurantInput;
-import com.developer.beverageapi.api.model.input.view.RestaurantView;
 import com.developer.beverageapi.api.swaggerapi.controller.ControllerRestaurantOpenApi;
-import com.developer.beverageapi.api.swaggerapi.model.BasicRestaurantModelSwaggerApi;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.CityNotFoundException;
 import com.developer.beverageapi.domain.exception.KitchenNotFoundException;
@@ -15,11 +15,11 @@ import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.repository.RepositoryRestaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
-import com.fasterxml.jackson.annotation.JsonView;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,16 +48,22 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
     @Autowired
     private RestaurantInputDismantle restaurantInputDismantle;
 
+    @Autowired
+    private RestaurantBasicModelAssembler restaurantBasicModelAssembler;
+
+    @Autowired
+    private RestaurantSummaryModelAssembler restaurantSummaryModelAssembler;
+
 //    @ApiOperation(value = "Restaurant Summary List", response = BasicRestaurantModelSwaggerApi.class)
     @GetMapping
-    public List<RestaurantModel> list() {
+    public CollectionModel<RestaurantModel> list() {
         return restaurantModelAssembler.toCollectionModel(repositoryRestaurant.findAll());
     }
 
 //    @ApiOperation(value = "Restaurant Summary List", hidden = true)
-    @JsonView(RestaurantView.Summary.class)
+//    @JsonView(RestaurantView.Summary.class)
     @GetMapping(params = "projection=summary")
-    public List<RestaurantModel> listSummary() {
+    public CollectionModel<RestaurantModel> listSummary() {
         return list();
     }
 
@@ -121,18 +127,23 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
      * @PutMapping("/{restaurantId}/active") || @DeleteMapping("/{restaurantId}/inactive")
      * They are one thing to do!
      * @param restaurantId
+     * @return
      */
 
     @PutMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void active(@PathVariable Long restaurantId) {
+    public ResponseEntity<Void> active(@PathVariable Long restaurantId) {
         registrationRestaurant.active(restaurantId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{restaurantId}/inactive")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void inactive(@PathVariable Long restaurantId) {
+    public ResponseEntity<Void> inactive(@PathVariable Long restaurantId) {
         registrationRestaurant.inactive(restaurantId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/activations")
@@ -157,14 +168,18 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
 
     @PutMapping("/{restaurantId}/opening")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void open(@PathVariable Long restaurantId) {
+    public ResponseEntity<Void> open(@PathVariable Long restaurantId) {
         registrationRestaurant.open(restaurantId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{restaurantId}/closing")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void close(@PathVariable Long restaurantId) {
+    public ResponseEntity<Void> close(@PathVariable Long restaurantId) {
         registrationRestaurant.close(restaurantId);
+
+        return ResponseEntity.noContent().build();
     }
 
 //    @PatchMapping("/{restaurantId}")

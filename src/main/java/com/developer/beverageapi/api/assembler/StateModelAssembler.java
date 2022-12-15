@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -36,7 +35,6 @@ public class StateModelAssembler extends RepresentationModelAssemblerSupport<Sta
 
     @Override
     public CollectionModel<StateModel> toCollectionModel(Iterable<? extends State> entities) {
-        return super.toCollectionModel(entities)
-                .add(WebMvcLinkBuilder.linkTo(ControllerState.class).withSelfRel());
+        return super.toCollectionModel(entities).add(instantiateLinks.linkToStates());
     }
 }

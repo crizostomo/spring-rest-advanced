@@ -1,39 +1,48 @@
 package com.developer.beverageapi.api.assembler;
 
+import com.developer.beverageapi.api.InstantiateLinks;
+import com.developer.beverageapi.api.controller.ControllerRestaurant;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.api.model.RestaurantModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class RestaurantModelAssembler {
+public class RestaurantModelAssembler extends RepresentationModelAssemblerSupport<Restaurant, RestaurantModel> {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public RestaurantModel toModel(Restaurant restaurant) {
-//        KitchenModel kitchenModel = new KitchenModel();
-//        kitchenModel.setId(restaurant.getKitchen().getId());
-//        kitchenModel.setName(restaurant.getKitchen().getName());
-//
-//        RestaurantModel restaurantModel = new RestaurantModel();
-//        restaurantModel.setId(restaurant.getId());
-//        restaurantModel.setName(restaurant.getName());
-//        restaurantModel.setDelivery(restaurant.getDelivery());
-//        restaurantModel.setKitchen(kitchenModel);
-//        return restaurantModel;
+    @Autowired
+    private InstantiateLinks instantiateLinks;
 
-        return modelMapper.map(restaurant, RestaurantModel.class);
-
+    public RestaurantModelAssembler() {
+        super(ControllerRestaurant.class, RestaurantModel.class);
     }
 
-    public List<RestaurantModel> toCollectionModel(List<Restaurant> restaurants) {
-        return restaurants.stream()
-                .map(restaurant -> toModel(restaurant))
-                .collect(Collectors.toList());
+    @Override
+    public RestaurantModel toModel(Restaurant restaurant) {
+        RestaurantModel restaurantModel = createModelWithId(restaurant.getId(), restaurant);
+        modelMapper.map(restaurant, restaurantModel);
+
+        restaurantModel.add(instantiateLinks.linkToRestaurants("restaurants"));
+
+//        restaurantModel.getKitchen().add(instantiateLinks.linkToCity(restaurant.getAddress().getCity().getId()));
+
+        restaurantModel.add(instantiateLinks.linkToRestaurantPayment(restaurant.getId(), "payments"));
+
+        restaurantModel.add(instantiateLinks.linkToRestaurantResponsible(restaurantModel.getId(), "responsible"));
+
+        return restaurantModel;
+    }
+
+    public CollectionModel<RestaurantModel> toCollectionModel(Iterable<? extends Restaurant> entities) {
+        return super.toCollectionModel(entities).add(instantiateLinks.linkToRestaurants());
     }
 }

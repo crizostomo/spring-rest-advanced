@@ -2,18 +2,13 @@ package com.developer.beverageapi.api.assembler;
 
 import com.developer.beverageapi.api.InstantiateLinks;
 import com.developer.beverageapi.api.controller.ControllerCity;
-import com.developer.beverageapi.api.controller.ControllerState;
 import com.developer.beverageapi.api.model.CityModel;
 import com.developer.beverageapi.domain.model.City;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class CityModelAssembler extends RepresentationModelAssemblerSupport<City, CityModel> {
@@ -43,8 +38,7 @@ public class CityModelAssembler extends RepresentationModelAssemblerSupport<City
 
     @Override
     public CollectionModel<CityModel> toCollectionModel(Iterable<? extends City> entities) {
-        return super.toCollectionModel(entities)
-                .add(WebMvcLinkBuilder.linkTo(ControllerCity.class).withSelfRel());
+        return super.toCollectionModel(entities).add(instantiateLinks.linkToCities());
     }
 
     //    public List<CityModel> toCollectionModel(List<City> cities) {
