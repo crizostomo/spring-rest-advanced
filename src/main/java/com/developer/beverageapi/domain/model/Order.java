@@ -91,6 +91,18 @@ public class Order extends AbstractAggregateRoot<Order> {
         registerEvent(new OrderCancelledEvent(this));
     }
 
+    public boolean canBeConfirmed() {
+        return getStatus().canBeAlteredToANewStatus(OrderStatus.CONFIRMED);
+    }
+
+    public boolean canBeCancelled() {
+        return getStatus().canBeAlteredToANewStatus(OrderStatus.CANCELLED);
+    }
+
+    public boolean canBeDelivered() {
+        return getStatus().canBeAlteredToANewStatus(OrderStatus.DELIVERED);
+    }
+
     private void setStatus(OrderStatus newStatus) {
         if (getStatus().cannotBeAlteredToANewStatus(newStatus)) {
             throw new BusinessException(

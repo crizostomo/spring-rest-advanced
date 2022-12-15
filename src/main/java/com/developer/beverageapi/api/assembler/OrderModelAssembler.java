@@ -31,11 +31,17 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
 
         orderModel.add(instantiateLinks.linkToOrders());
 
-        orderModel.add(instantiateLinks.linkToOrderConfirmation(order.getCode(), "confirm"));
+        if (order.canBeConfirmed()) {
+            orderModel.add(instantiateLinks.linkToOrderConfirmation(order.getCode(), "confirm"));
+        }
 
-        orderModel.add(instantiateLinks.linkToOrderCancellation(order.getCode(), "cancel"));
+        if (order.canBeCancelled()) {
+            orderModel.add(instantiateLinks.linkToOrderCancellation(order.getCode(), "cancel"));
+        }
 
-        orderModel.add(instantiateLinks.linkToOrderDelivery(order.getCode(), "delivery"));
+        if (order.canBeDelivered()) {
+            orderModel.add(instantiateLinks.linkToOrderDelivery(order.getCode(), "delivery"));
+        }
 
         orderModel.getRestaurant().add(instantiateLinks.linkToRestaurant(order.getRestaurant().getId()));
 
@@ -47,7 +53,7 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
         // when calling the endpoint orders/{codeOrder}
 
         orderModel.getItems().forEach(item -> {
-            item.add(instantiateLinks.linkToProduct(orderModel.getRestaurant().getId(), item.getId(),"product"));
+            item.add(instantiateLinks.linkToProduct(orderModel.getRestaurant().getId(), item.getId(), "product"));
         });
 
         return orderModel;
