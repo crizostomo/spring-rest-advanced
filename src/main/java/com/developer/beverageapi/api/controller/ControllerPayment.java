@@ -9,6 +9,7 @@ import com.developer.beverageapi.domain.model.Payment;
 import com.developer.beverageapi.domain.repository.RepositoryPayment;
 import com.developer.beverageapi.domain.service.PaymentRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,8 +39,9 @@ public class ControllerPayment implements ControllerPaymentOpenApi {
     @Autowired
     private PaymentInputDismantle paymentInputDismantle;
 
+    @Override
     @GetMapping
-    public ResponseEntity<List<PaymentModel>> list(ServletWebRequest request) {
+    public ResponseEntity<CollectionModel<PaymentModel>> list(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
         String eTag = "0";
@@ -56,7 +58,7 @@ public class ControllerPayment implements ControllerPaymentOpenApi {
 
         List<Payment> allPayments = repositoryPayment.findAll();
 
-        List<PaymentModel> paymentModels = paymentModelAssembler.toCollectionModel(allPayments);
+        CollectionModel<PaymentModel> paymentModels = paymentModelAssembler.toCollectionModel(allPayments);
 
         return ResponseEntity.ok()
 //                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))

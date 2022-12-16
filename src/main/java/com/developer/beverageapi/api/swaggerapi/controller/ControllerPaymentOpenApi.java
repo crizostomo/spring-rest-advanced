@@ -4,16 +4,15 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.PaymentModel;
 import com.developer.beverageapi.api.model.input.PaymentInput;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.ServletWebRequest;
-
-import java.util.List;
 
 @Api(tags = "Payments")
 public interface ControllerPaymentOpenApi {
 
     @ApiOperation(value = "List payments")
-    public ResponseEntity<List<PaymentModel>> list(ServletWebRequest request);
+    public ResponseEntity<CollectionModel<PaymentModel>> list(ServletWebRequest request);
 
     @ApiOperation(value = "Search a payment by id")
     @ApiResponses({

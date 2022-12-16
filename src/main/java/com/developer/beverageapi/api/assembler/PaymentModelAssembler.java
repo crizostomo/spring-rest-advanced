@@ -1,29 +1,40 @@
 package com.developer.beverageapi.api.assembler;
 
+import com.developer.beverageapi.api.InstantiateLinks;
+import com.developer.beverageapi.api.controller.ControllerPayment;
 import com.developer.beverageapi.api.model.PaymentModel;
 import com.developer.beverageapi.domain.model.Payment;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
-public class PaymentModelAssembler {
+public class PaymentModelAssembler extends RepresentationModelAssemblerSupport<Payment, PaymentModel> {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public PaymentModel toModel(Payment payment) {
+    @Autowired
+    private InstantiateLinks instantiateLinks;
 
-        return modelMapper.map(payment, PaymentModel.class);
+    public PaymentModelAssembler() {
+        super(ControllerPayment.class, PaymentModel.class);
     }
 
-    public List<PaymentModel> toCollectionModel(Collection<Payment> payments) {
-        return payments.stream()
-                .map(payment -> toModel(payment))
-                .collect(Collectors.toList());
+    @Override
+    public PaymentModel toModel(Payment payment) {
+        PaymentModel paymentModel = createModelWithId(payment.getId(), payment);
+
+        modelMapper.map(payment, paymentModel);
+
+        paymentModel.add(instantiateLinks.linkToPayment("payments"));
+
+        return paymentModel;
+    }
+
+    public CollectionModel<PaymentModel> toCollectionModel(Iterable<? extends Payment> entities) {
+        return super.toCollectionModel(entities).add(instantiateLinks.linkToPayment());
     }
 }

@@ -3,8 +3,7 @@ package com.developer.beverageapi.api.swaggerapi.controller;
 import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.PaymentModel;
 import io.swagger.annotations.*;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Payments")
 public interface ControllerRestaurantPaymentOpenApi {
@@ -13,7 +12,7 @@ public interface ControllerRestaurantPaymentOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
     })
-    public List<PaymentModel> list(@ApiParam(value = "Restaurant ID", example = "1", required = true)
+    public CollectionModel<PaymentModel> list(@ApiParam(value = "Restaurant ID", example = "1", required = true)
                        Long restaurantId);
 
     @ApiOperation(value = "Restaurant Association with Payment")

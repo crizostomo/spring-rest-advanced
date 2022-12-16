@@ -59,6 +59,10 @@ public class InstantiateLinks {
                 .withRel(rel);
     }
 
+    public Link linkToRestaurantPayment(Long restaurantId) {
+        return linkToRestaurantPayment(restaurantId, IanaLinkRelations.SELF.value());
+    }
+
     public Link linkToKitchen(Long kitchenId, String rel) {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerKitchen.class).search(kitchenId)).withRel(rel);
     }
@@ -126,6 +130,14 @@ public class InstantiateLinks {
     public Link linkToPayment(Long paymentId, String rel) {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerPayment.class)
                 .search(paymentId, null)).withRel(rel);
+    }
+
+    public Link linkToPayment(String rel) {
+        return WebMvcLinkBuilder.linkTo(ControllerPayment.class).withRel(rel);
+    }
+
+    public Link linkToPayment() {
+        return linkToPayment(IanaLinkRelations.SELF.value());
     }
 
     public Link linkToPayment(Long paymentId) {
