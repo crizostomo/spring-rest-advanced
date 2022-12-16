@@ -13,8 +13,10 @@ public class InstantiateLinks {
             new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
             new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
 
-    public Link linkToOrders() {
+    public static final TemplateVariables PROJECTION_VARIABLES = new TemplateVariables(
+            new TemplateVariable("projection", TemplateVariable.VariableType.REQUEST_PARAM));
 
+    public Link linkToOrders(String rel) {
         TemplateVariables filterVariables = new TemplateVariables(
                 new TemplateVariable("clientId", TemplateVariable.VariableType.REQUEST_PARAM),
                 new TemplateVariable("restaurantId", TemplateVariable.VariableType.REQUEST_PARAM),
@@ -23,7 +25,7 @@ public class InstantiateLinks {
 
         String ordersUrl = WebMvcLinkBuilder.linkTo(ControllerOrder.class).toUri().toString();
 
-        return Link.of(UriTemplate.of(ordersUrl, PAGINATION_VARIABLES.concat(filterVariables)), "orders");
+        return Link.of(UriTemplate.of(ordersUrl, PAGINATION_VARIABLES.concat(filterVariables)), rel);
     }
 
     public Link linkToRestaurantOpening(Long restaurantId, String rel) {
@@ -43,7 +45,9 @@ public class InstantiateLinks {
     }
 
     public Link linkToRestaurants(String rel) {
-        return WebMvcLinkBuilder.linkTo(ControllerRestaurant.class).withRel(rel);
+        String restaurantsUrl = WebMvcLinkBuilder.linkTo(ControllerRestaurant.class).toUri().toString();
+
+        return Link.of(UriTemplate.of(restaurantsUrl, PROJECTION_VARIABLES), rel);
     }
 
     public Link linkToRestaurants() {

@@ -34,7 +34,7 @@ public class OrderSummaryModelAssembler extends RepresentationModelAssemblerSupp
 
         modelMapper.map(order, orderSummaryModel);
 
-        orderSummaryModel.add(instantiateLinks.linkToOrders());
+        orderSummaryModel.add(instantiateLinks.linkToOrders("orders"));
 
         orderSummaryModel.getRestaurant().add(instantiateLinks.linkToRestaurant(order.getRestaurant().getId()));
 
