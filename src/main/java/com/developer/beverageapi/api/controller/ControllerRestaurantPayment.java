@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,9 +29,16 @@ public class ControllerRestaurantPayment {
     public CollectionModel<PaymentModel> list(@PathVariable Long restaurantId) {
         Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
 
-        return paymentModelAssembler.toCollectionModel(restaurant.getPayments())
+        CollectionModel<PaymentModel> paymentModels = paymentModelAssembler.toCollectionModel(restaurant.getPayments())
                 .removeLinks()
                 .add(instantiateLinks.linkToRestaurantPayment(restaurantId));
+
+        paymentModels.getContent().forEach(paymentModel -> {
+            paymentModel.add(instantiateLinks
+                    .linkToRestaurantPaymentRemoveAssociation(restaurantId, paymentModel.getId(), "removeAssociation"));
+        });
+
+        return paymentModels;
     }
 
     @PutMapping("/{paymentId}")
@@ -41,7 +49,9 @@ public class ControllerRestaurantPayment {
 
     @DeleteMapping("/{paymentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeAssociation(@PathVariable Long restaurantId, @PathVariable Long paymentId) {
+    public ResponseEntity<Void> removeAssociation(@PathVariable Long restaurantId, @PathVariable Long paymentId) {
         registrationRestaurant.removeAssociationWithPayments(restaurantId, paymentId);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -63,6 +63,11 @@ public class InstantiateLinks {
         return linkToRestaurantPayment(restaurantId, IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToRestaurantPaymentRemoveAssociation(Long restaurantId, Long paymentId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurantPayment.class)
+                .removeAssociation(restaurantId, paymentId)).withRel(rel);
+    }
+
     public Link linkToKitchen(Long kitchenId, String rel) {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerKitchen.class).search(kitchenId)).withRel(rel);
     }
