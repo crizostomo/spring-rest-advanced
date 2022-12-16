@@ -26,6 +26,22 @@ public class InstantiateLinks {
         return Link.of(UriTemplate.of(ordersUrl, PAGINATION_VARIABLES.concat(filterVariables)), "orders");
     }
 
+    public Link linkToRestaurantOpening(Long restaurantId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class).open(restaurantId)).withRel(rel);
+    }
+
+    public Link linkToRestaurantClosing(Long restaurantId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class).close(restaurantId)).withRel(rel);
+    }
+
+    public Link linkToRestaurantInactive(Long restaurantId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class).inactive(restaurantId)).withRel(rel);
+    }
+
+    public Link linkToRestaurantActive(Long restaurantId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class).active(restaurantId)).withRel(rel);
+    }
+
     public Link linkToRestaurants(String rel) {
         return WebMvcLinkBuilder.linkTo(ControllerRestaurant.class).withRel(rel);
     }
@@ -148,7 +164,7 @@ public class InstantiateLinks {
 
     public Link linkToProduct(Long restaurantId, Long productId, String rel) {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurantProduct.class)
-                .search(restaurantId, productId))
+                        .search(restaurantId, productId))
                 .withRel(rel);
     }
 
