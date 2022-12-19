@@ -31,7 +31,8 @@ public class ControllerRestaurantPayment {
 
         CollectionModel<PaymentModel> paymentModels = paymentModelAssembler.toCollectionModel(restaurant.getPayments())
                 .removeLinks()
-                .add(instantiateLinks.linkToRestaurantPayment(restaurantId));
+                .add(instantiateLinks.linkToRestaurantPayment(restaurantId))
+                .add(instantiateLinks.linkToRestaurantPaymentAssociation(restaurantId, "association"));
 
         paymentModels.getContent().forEach(paymentModel -> {
             paymentModel.add(instantiateLinks
@@ -43,8 +44,10 @@ public class ControllerRestaurantPayment {
 
     @PutMapping("/{paymentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void association(@PathVariable Long restaurantId, @PathVariable Long paymentId) {
+    public ResponseEntity<Void> association(@PathVariable Long restaurantId, @PathVariable Long paymentId) {
         registrationRestaurant.associationWithPayments(restaurantId, paymentId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{paymentId}")
