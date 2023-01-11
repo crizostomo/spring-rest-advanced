@@ -4,6 +4,7 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.UserModel;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Restaurants")
 public interface ControllerRestaurantUserResponsibleOpenApi {
@@ -20,9 +21,9 @@ public interface ControllerRestaurantUserResponsibleOpenApi {
             @ApiResponse(code = 204, message = "Association done successfully"),
             @ApiResponse(code = 404, message = "Restaurant or user not found", response = APIError.class)
     })
-    public void association(@ApiParam(value = "Restaurant Id", example = "1", required = true)
+    public ResponseEntity association(@ApiParam(value = "Restaurant Id", example = "1", required = true)
                                     Long restaurantId,
-                            @ApiParam(value = "User Id", example = "1", required = true)
+                                      @ApiParam(value = "User Id", example = "1", required = true)
                                     Long userId);
 
     @ApiOperation(value = "Removal of Restaurant Association with User")
@@ -30,8 +31,8 @@ public interface ControllerRestaurantUserResponsibleOpenApi {
             @ApiResponse(code = 204, message = "Association Removal done successfully"),
             @ApiResponse(code = 404, message = "Restaurant or user not found", response = APIError.class)
     })
-    public void removeAssociation(@ApiParam(value = "Restaurant Id", example = "1", required = true)
+    public ResponseEntity removeAssociation(@ApiParam(value = "Restaurant Id", example = "1", required = true)
                                           Long restaurantId,
-                                  @ApiParam(value = "User Id", example = "1", required = true)
+                                            @ApiParam(value = "User Id", example = "1", required = true)
                                           Long userId);
 }
