@@ -55,6 +55,14 @@ public class RestaurantModelAssembler extends RepresentationModelAssemblerSuppor
             restaurantModel.add(instantiateLinks.linkToRestaurantActive(restaurantModel.getId(), "close"));
         }
 
+        restaurantModel.add(instantiateLinks.linkToRestaurantResponsible(restaurantModel.getId(), "products"));
+
+        restaurantModel.getKitchen().add(instantiateLinks.linkToKitchen(restaurant.getKitchen().getId()));
+
+        if (restaurantModel.getAddress() != null && restaurantModel.getAddress().getCity() != null) {
+            restaurantModel.getAddress().getCity().add(instantiateLinks.linkToCity(restaurant.getAddress().getCity().getId()));
+        }
+
         return restaurantModel;
     }
 

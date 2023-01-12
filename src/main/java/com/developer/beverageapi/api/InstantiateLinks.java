@@ -91,6 +91,15 @@ public class InstantiateLinks {
         return linkToKitchen(kitchenId, IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToProducts(Long restaurantId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurantProduct.class).list(restaurantId, null))
+                .withRel(rel);
+    }
+
+    public Link linkToProducts(Long restaurantId) {
+        return linkToProducts(restaurantId, IanaLinkRelations.SELF.value());
+    }
+
     public Link linkToOrderConfirmation(String orderCode, String rel) {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerOrderStatus.class).confirm(orderCode)).withRel(rel);
     }

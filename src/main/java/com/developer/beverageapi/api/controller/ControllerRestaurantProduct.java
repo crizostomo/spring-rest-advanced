@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.controller;
 
+import com.developer.beverageapi.api.InstantiateLinks;
 import com.developer.beverageapi.api.assembler.ProductInputDismantle;
 import com.developer.beverageapi.api.assembler.ProductModelAssembler;
 import com.developer.beverageapi.api.assembler.ProductPhotoModelAssembler;
@@ -20,6 +21,7 @@ import com.developer.beverageapi.domain.service.ProductRegistrationService;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -66,30 +68,41 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
     @Autowired
     private PhotoStorageService photoStorageService;
 
+    @Autowired
+    private InstantiateLinks instantiateLinks;
+
+    @Override
     @GetMapping
-    public List<ProductModel> list(@PathVariable Long restaurantId) {
-        Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
-
-        List<Product> allProducts = repositoryProduct.findProductsByRestaurant(restaurant);
-
-        return productModelAssembler.toCollectionModel(allProducts);
-    }
-
-    @GetMapping("/active-inactive")
-    public List<ProductModel> listActiveAndOrInactive(@PathVariable Long restaurantId,
-                                                      @RequestParam(required = false) boolean includeInactive) {
+    public CollectionModel<ProductModel> list(@PathVariable Long restaurantId,
+                                              @RequestParam(required = false, defaultValue = "false") Boolean includeNotActives) {
         Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
 
         List<Product> allProducts = null;
 
-        if (includeInactive) {
+        if (includeNotActives) {
             allProducts = repositoryProduct.findProductsByRestaurant(restaurant);
         } else {
             allProducts = repositoryProduct.findActivesByRestaurant(restaurant);
         }
 
-        return productModelAssembler.toCollectionModel(allProducts);
+        return productModelAssembler.toCollectionModel(allProducts).add(instantiateLinks.linkToProducts(restaurantId));
     }
+
+//    @GetMapping("/active-inactive")
+//    public List<ProductModel> listActiveAndOrInactive(@PathVariable Long restaurantId,
+//                                                      @RequestParam(required = false) boolean includeInactive) {
+//        Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
+//
+//        List<Product> allProducts = null;
+//
+//        if (includeInactive) {
+//            allProducts = repositoryProduct.findProductsByRestaurant(restaurant);
+//        } else {
+//            allProducts = repositoryProduct.findActivesByRestaurant(restaurant);
+//        }
+//
+//        return productModelAssembler.toCollectionModel(allProducts);
+//    }
 
     @GetMapping("/{productId}")
     public ProductModel search(@PathVariable Long restaurantId, @PathVariable Long productId) {

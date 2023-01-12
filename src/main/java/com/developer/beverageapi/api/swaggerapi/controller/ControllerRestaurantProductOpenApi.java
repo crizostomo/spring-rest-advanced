@@ -1,12 +1,12 @@
 package com.developer.beverageapi.api.swaggerapi.controller;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
-import com.developer.beverageapi.api.model.PaymentModel;
 import com.developer.beverageapi.api.model.ProductModel;
 import com.developer.beverageapi.api.model.ProductPhotoModel;
 import com.developer.beverageapi.api.model.input.ProductInput;
 import com.developer.beverageapi.api.model.input.ProductPhotoInput;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,19 +22,21 @@ public interface ControllerRestaurantProductOpenApi {
             @ApiResponse(code = 400, message = "Restaurant ID invalid", response = APIError.class),
             @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
     })
-    public List<ProductModel> list(@ApiParam(value = "Restaurant ID", example = "1", required = true)
-                                           Long restaurantId);
+    public CollectionModel<ProductModel> list(@ApiParam(value = "Restaurant ID", example = "1", required = true)
+                                           Long restaurantId,
+                                              @ApiParam(value = "It shows if it must or not include products not active in the listing result",
+                                   example = "false", defaultValue = "false") Boolean includeNotActives);
 
-    @ApiOperation(value = "It lists the products of a restaurant")
-    @ApiResponses({
-            @ApiResponse(code = 400, message = "Restaurant or Product ID invalid", response = APIError.class),
-            @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
-    })
-    public List<ProductModel> listActiveAndOrInactive(@ApiParam(value = "Restaurant ID", example = "1", required = true)
-                                                              Long restaurantId,
-                                                      @ApiParam(value = "It shows if it must be or not included products not active" +
-                                                              "in the list", example = "1", required = true)
-                                                              boolean includeInactive);
+//    @ApiOperation(value = "It lists the products of a restaurant")
+//    @ApiResponses({
+//            @ApiResponse(code = 400, message = "Restaurant or Product ID invalid", response = APIError.class),
+//            @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
+//    })
+//    public List<ProductModel> listActiveAndOrInactive(@ApiParam(value = "Restaurant ID", example = "1", required = true)
+//                                                              Long restaurantId,
+//                                                      @ApiParam(value = "It shows if it must be or not included products not active" +
+//                                                              "in the list", example = "1", required = true)
+//                                                              boolean includeInactive);
 
     @ApiOperation(value = "It searches the products of a restaurant")
     @ApiResponses({
