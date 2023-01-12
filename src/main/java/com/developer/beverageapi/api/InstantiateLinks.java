@@ -83,6 +83,15 @@ public class InstantiateLinks {
                 .association(restaurantId, null)).withRel(rel);
     }
 
+    public Link linkToProductPhoto(Long restaurantId, Long productId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurantProduct.class)
+                .search(restaurantId, productId)).withRel(rel);
+    }
+
+    public Link linkToProductPhoto(Long restaurantId, Long productId) {
+        return linkToProductPhoto(restaurantId, productId, IanaLinkRelations.SELF.value());
+    }
+
     public Link linkToKitchen(Long kitchenId, String rel) {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerKitchen.class).search(kitchenId)).withRel(rel);
     }

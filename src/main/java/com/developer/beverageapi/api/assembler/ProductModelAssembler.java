@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class ProductModelAssembler extends RepresentationModelAssemblerSupport<Product, ProductModel> {
 
@@ -30,10 +27,12 @@ public class ProductModelAssembler extends RepresentationModelAssemblerSupport<P
         ProductModel productModel = createModelWithId(
                 product.getId(), product, product.getRestaurant().getId());
 
-                modelMapper.map(product, productModel);
+        modelMapper.map(product, productModel);
 
-                productModel.add(instantiateLinks.linkToProducts(product.getRestaurant().getId(), "products"));
+        productModel.add(instantiateLinks.linkToProducts(product.getRestaurant().getId(), "products"));
 
-                return productModel;
+        productModel.add(instantiateLinks.linkToProductPhoto(product.getRestaurant().getId(), productModel.getId(), "photo"));
+
+        return productModel;
     }
 }
