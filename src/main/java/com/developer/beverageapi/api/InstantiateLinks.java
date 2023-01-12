@@ -190,6 +190,16 @@ public class InstantiateLinks {
         return linkToUserGroups(userId, IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToUsersGroupAssociation(Long userId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerUserGroup.class)
+                .association(userId, null)).withRel(rel);
+    }
+
+    public Link linkToUsersGroupRemoveAssociation(Long groupId, Long userId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerUserGroup.class)
+                .removeAssociation(userId, groupId)).withRel(rel);
+    }
+
     public Link linkToRestaurantResponsible(Long restaurantId, String rel) {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurantUserResponsible.class)
                 .list(restaurantId)).withRel(rel);
