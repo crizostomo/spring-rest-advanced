@@ -59,11 +59,42 @@ public class InstantiateLinks {
     }
 
     public Link linkToPermissionsGroup(Long groupId, String rel) {
-        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerGroupPermissions.class).list(groupId)).withRel(rel);
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerGroupPermission.class).list(groupId)).withRel(rel);
+    }
+
+    public Link linkToPermissions(String rel) {
+        return WebMvcLinkBuilder.linkTo(ControllerPermission.class).withRel(rel);
+    }
+
+    public Link linkToPermissions() {
+        return linkToGroups(IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToPermissionsGroup(Long groupId) {
+        return linkToPermissionsGroup(groupId, IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToPermissionsGroupAssociation(Long groupId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerGroupPermission.class)
+                .association(groupId, null)).withRel(rel);
+    }
+
+    public Link linkToPermissionsGroupRemoveAssociation(Long groupId, Long permissionId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerGroupPermission.class)
+                .removeAssociation(groupId, permissionId)).withRel(rel);
     }
 
     public Link linkToRestaurants() {
         return linkToRestaurants(IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToRestaurant(Long restaurantId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class)
+                .search(restaurantId)).withRel(rel);
+    }
+
+    public Link linkToRestaurant(Long restaurantId) {
+        return linkToRestaurant(restaurantId, IanaLinkRelations.SELF.value());
     }
 
     public Link linkToRestaurantPayment(Long restaurantId, String rel) {
@@ -131,15 +162,6 @@ public class InstantiateLinks {
 
     public Link linkToOrderDelivery(String orderCode, String rel) {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerOrderStatus.class).delivery(orderCode)).withRel(rel);
-    }
-
-    public Link linkToRestaurant(Long restaurantId, String rel) {
-        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerRestaurant.class)
-                .search(restaurantId)).withRel(rel);
-    }
-
-    public Link linkToRestaurant(Long restaurantId) {
-        return linkToRestaurant(restaurantId, IanaLinkRelations.SELF.value());
     }
 
     public Link linkToUser(Long userId, String rel) {
