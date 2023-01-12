@@ -9,6 +9,7 @@ import com.developer.beverageapi.domain.model.Group;
 import com.developer.beverageapi.domain.repository.RepositoryGroup;
 import com.developer.beverageapi.domain.service.GroupRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +33,9 @@ public class ControllerGroup implements ControllerGroupOpenApi {
     @Autowired
     private GroupInputDismantle groupInputDismantle;
 
+    @Override
     @GetMapping
-    public List<GroupModel> list() {
+    public CollectionModel<GroupModel> list() {
         List<Group> allGroups = repositoryGroup.findAll();
 
         return groupModelAssembler.toCollectionModel(allGroups);

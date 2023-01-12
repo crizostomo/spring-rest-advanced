@@ -50,6 +50,18 @@ public class InstantiateLinks {
         return Link.of(UriTemplate.of(restaurantsUrl, PROJECTION_VARIABLES), rel);
     }
 
+    public Link linkToGroups(String rel) {
+        return WebMvcLinkBuilder.linkTo(ControllerGroup.class).withRel(rel);
+    }
+
+    public Link linkToGroups() {
+        return linkToGroups(IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToPermissionsGroup(Long groupId, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerGroupPermissions.class).list(groupId)).withRel(rel);
+    }
+
     public Link linkToRestaurants() {
         return linkToRestaurants(IanaLinkRelations.SELF.value());
     }

@@ -2,13 +2,8 @@ package com.developer.beverageapi.api.swaggerapi.controller;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.GroupModel;
-import com.developer.beverageapi.api.model.UserModel;
-import com.developer.beverageapi.api.model.input.UserPasswordInput;
-import com.developer.beverageapi.api.model.input.UserWithPasswordInput;
-import com.developer.beverageapi.api.model.input.UserWithoutPasswordInput;
 import io.swagger.annotations.*;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Users")
 public interface ControllerUserGroupOpenApi {
@@ -17,7 +12,7 @@ public interface ControllerUserGroupOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "User not found", response = APIError.class)
     })
-    public List<GroupModel> list(@ApiParam(value = "User Id", example = "1", required = true)
+    public CollectionModel<GroupModel> list(@ApiParam(value = "User Id", example = "1", required = true)
                                              Long userId);
 
     @ApiOperation(value = "Association of a group to a user")

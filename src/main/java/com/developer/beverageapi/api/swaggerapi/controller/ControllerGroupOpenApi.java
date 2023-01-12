@@ -4,14 +4,13 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.GroupModel;
 import com.developer.beverageapi.api.model.input.GroupInput;
 import io.swagger.annotations.*;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Groups")
 public interface ControllerGroupOpenApi {
 
     @ApiOperation(value = "List Groups")
-    public List<GroupModel> list();
+    public CollectionModel<GroupModel> list();
 
     @ApiOperation(value = "Search a group by id")
     @ApiResponses({

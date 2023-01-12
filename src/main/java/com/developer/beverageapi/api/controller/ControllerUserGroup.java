@@ -6,11 +6,10 @@ import com.developer.beverageapi.api.swaggerapi.controller.ControllerUserGroupOp
 import com.developer.beverageapi.domain.model.User;
 import com.developer.beverageapi.domain.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/users/{userId}/groups", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -22,11 +21,12 @@ public class ControllerUserGroup implements ControllerUserGroupOpenApi {
     @Autowired
     private GroupModelAssembler groupModelAssembler;
 
+    @Override
     @GetMapping
-    public List<GroupModel> list(@PathVariable Long userId) {
+    public CollectionModel<GroupModel> list(@PathVariable Long userId) {
         User user = registrationUser.searchOrFail(userId);
 
-        return groupModelAssembler.toCollectionModel(user.getGroups());
+        return groupModelAssembler.toCollectionModel(user.getGroups()).removeLinks();
     }
 
     @PutMapping("/{groupId}")
