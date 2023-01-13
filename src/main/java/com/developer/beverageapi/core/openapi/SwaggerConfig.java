@@ -4,6 +4,7 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.KitchenModel;
 import com.developer.beverageapi.api.model.OrderSummaryModel;
 import com.developer.beverageapi.api.swaggerapi.model.KitchensModelOpenApi;
+import com.developer.beverageapi.api.swaggerapi.model.LinksModelOpenApi;
 import com.developer.beverageapi.api.swaggerapi.model.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Links;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -67,6 +69,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .ignoredParameterTypes(ServletWebRequest.class,
                         URL.class, URI.class, URLStreamHandler.class, Resource.class, File.class, InputStream.class)
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) // It will substitute the pageable inside Controller Kitchen
+                .directModelSubstitute(Links.class, LinksModelOpenApi.class)
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(Page.class, KitchenModel.class),
                         KitchensModelOpenApi.class)) // It will substitute the Page properties for KitchenModel
