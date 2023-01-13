@@ -28,6 +28,7 @@ public class ControllerRootEntryPoint {
         rootEntryPointModel.add(instantiateLinks.linkToPayment("payments"));
         rootEntryPointModel.add(instantiateLinks.linkToStates("states"));
         rootEntryPointModel.add(instantiateLinks.linkToCities("cities"));
+        rootEntryPointModel.add(instantiateLinks.linkToStatistics("statistics"));
 
         return rootEntryPointModel;
     }

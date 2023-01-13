@@ -243,6 +243,23 @@ public class InstantiateLinks {
         return linkToCities(IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToStatistics(String rel) {
+        return WebMvcLinkBuilder.linkTo(ControllerStatistics.class).withRel(rel);
+    }
+
+    public Link linkToStatisticsDailySale(String rel) {
+        TemplateVariables variablesFilter = new TemplateVariables(
+                new TemplateVariable("restaurantId", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("creationDateStart", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("creationDateEnd", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("timeOffset", TemplateVariable.VariableType.REQUEST_PARAM));
+
+        String ordersUrl = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerStatistics.class)
+                .consultDailySale(null, null)).toUri().toString();
+
+        return Link.of(UriTemplate.of(ordersUrl, variablesFilter), rel);
+    }
+
     public Link linkToState(Long stateId, String rel) {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControllerState.class)
                 .search(stateId)).withRel(rel);

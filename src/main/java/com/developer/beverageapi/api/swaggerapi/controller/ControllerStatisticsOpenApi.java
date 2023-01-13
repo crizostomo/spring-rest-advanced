@@ -1,5 +1,7 @@
 package com.developer.beverageapi.api.swaggerapi.controller;
 
+import com.developer.beverageapi.api.controller.ControllerStatistics;
+import com.developer.beverageapi.api.controller.ControllerStatistics.StatisticsModel;
 import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.CityModel;
 import com.developer.beverageapi.api.model.dto.DailySale;
@@ -12,6 +14,9 @@ import java.util.List;
 
 @Api(tags = "Statistics")
 public interface ControllerStatisticsOpenApi {
+
+    @ApiOperation(value = "Statistics", hidden = true)
+    StatisticsModel statistics();
 
     @ApiOperation(value = "It consults daily sale statistics")
     @ApiImplicitParams({
