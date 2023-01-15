@@ -4,10 +4,8 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.model.CityModel;
 import com.developer.beverageapi.api.model.KitchenModel;
 import com.developer.beverageapi.api.model.OrderSummaryModel;
-import com.developer.beverageapi.api.swaggerapi.model.CitiesModelOpenApi;
-import com.developer.beverageapi.api.swaggerapi.model.KitchensModelOpenApi;
-import com.developer.beverageapi.api.swaggerapi.model.LinksModelOpenApi;
-import com.developer.beverageapi.api.swaggerapi.model.PageableModelOpenApi;
+import com.developer.beverageapi.api.model.StateModel;
+import com.developer.beverageapi.api.swaggerapi.model.*;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -86,6 +84,9 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, CityModel.class),
                         CitiesModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, StateModel.class),
+                        StatesModelOpenApi.class))
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cities", "It runs cities"),
                         new Tag("Groups", "It runs the users groups"),
