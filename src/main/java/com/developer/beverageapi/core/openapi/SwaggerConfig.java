@@ -86,7 +86,13 @@ public class SwaggerConfig implements WebMvcConfigurer {
                         StatesModelOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, PaymentModel.class),
-                        PaymentModelOpenApi.class))
+                        PaymentsModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, GroupModel.class),
+                        GroupsModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, PermissionModel.class),
+                        PermissionsModelOpenApi.class))
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cities", "It runs cities"),
                         new Tag("Groups", "It runs the users groups"),
