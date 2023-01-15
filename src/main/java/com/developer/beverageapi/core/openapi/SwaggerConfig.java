@@ -1,8 +1,10 @@
 package com.developer.beverageapi.core.openapi;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
+import com.developer.beverageapi.api.model.CityModel;
 import com.developer.beverageapi.api.model.KitchenModel;
 import com.developer.beverageapi.api.model.OrderSummaryModel;
+import com.developer.beverageapi.api.swaggerapi.model.CitiesModelOpenApi;
 import com.developer.beverageapi.api.swaggerapi.model.KitchensModelOpenApi;
 import com.developer.beverageapi.api.swaggerapi.model.LinksModelOpenApi;
 import com.developer.beverageapi.api.swaggerapi.model.PageableModelOpenApi;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -76,18 +79,21 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(Page.class, OrderSummaryModel.class),
                         KitchensModelOpenApi.class)) // It will substitute the Page properties for OrderSummaryModel
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, CityModel.class),
+                        CitiesModelOpenApi.class))
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cities", "It runs cities"),
                         new Tag("Groups", "It runs the users groups"),
                         new Tag("Kitchens", "It runs kitchens"),
                         new Tag("Payments", "It runs payments"),
                         new Tag("Orders", "It runs orders"),
-                        new Tag ("Restaurants", "It runs restaurants"),
-                        new Tag ("States", "It runs states"),
+                        new Tag("Restaurants", "It runs restaurants"),
+                        new Tag("States", "It runs states"),
                         new Tag("Products", "It runs restaurant products"),
-                        new Tag ("Users", "It runs users"),
-                        new Tag ("Statistics", "Beverage Statistics"),
-                        new Tag ("Permissions", "It describes permissions"));
+                        new Tag("Users", "It runs users"),
+                        new Tag("Statistics", "Beverage Statistics"),
+                        new Tag("Permissions", "It describes permissions"));
     }
 
     private List<ResponseMessage> globalGetResponseMessages() {
@@ -104,6 +110,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
         );
 
     }
+
     private List<ResponseMessage> globalPostPutResponseMessages() {
         return Arrays.asList(
                 new ResponseMessageBuilder()
