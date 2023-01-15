@@ -19,6 +19,5 @@ public class CitiesModelOpenApi {
     public class CityEmbeddedModelOpenApi {
 
         private List<CityModel> cities;
-
     }
 }

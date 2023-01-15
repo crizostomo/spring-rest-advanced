@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -64,17 +65,20 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .globalOperationParameters(Arrays.asList(
                         new ParameterBuilder()
                                 .name("fields")
-                                .description("Properties name to filter in the response, separated by comma") // For SquigglyConfig
+                                .description("Properties name to filter in the response, separated by comma") // For
+                                // SquigglyConfig
                                 .parameterType("query")
                                 .modelRef(new ModelRef("string"))
                                 .build()))
                 .additionalModels(typeResolver.resolve(APIError.class))
                 .ignoredParameterTypes(ServletWebRequest.class,
                         URL.class, URI.class, URLStreamHandler.class, Resource.class, File.class, InputStream.class)
-                .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) // It will substitute the pageable inside Controller Kitchen
+                .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) // It will substitute the pageable
+                // inside Controller Kitchen
                 .directModelSubstitute(Links.class, LinksModelOpenApi.class)
                 .alternateTypeRules(AlternateTypeRules.newRule(
-                        typeResolver.resolve(Page.class, KitchenModel.class),
+                        typeResolver.resolve(PagedModel.class, KitchenModel.class), // Changed to PagedModel because
+                        // this is what it is being used inside ControllerKitchen
                         KitchensModelOpenApi.class)) // It will substitute the Page properties for KitchenModel
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(Page.class, OrderSummaryModel.class),
