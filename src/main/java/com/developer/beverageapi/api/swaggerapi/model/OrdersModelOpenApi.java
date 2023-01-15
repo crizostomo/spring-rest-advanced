@@ -1,6 +1,6 @@
 package com.developer.beverageapi.api.swaggerapi.model;
 
-import com.developer.beverageapi.api.model.KitchenModel;
+import com.developer.beverageapi.api.model.OrderSummaryModel;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.Getter;
@@ -9,19 +9,19 @@ import org.springframework.hateoas.Links;
 
 import java.util.List;
 
-@ApiModel("KitchensModel")
+@ApiModel("OrdersSummaryModel")
 @Setter
 @Getter
-public class KitchensModelOpenApi {
+public class OrdersModelOpenApi {
 
-    private KitchensEmbeddedModelOpenApi _embedded;
+    private OrdersEmbeddedModelOpenApi _embedded;
     private Links _links;
     private PageModelOpenApi page;
 
-    @ApiModel("KitchensEmbeddedModel")
+    @ApiModel("OrdersSummaryEmbeddedModel")
     @Data
-    public class KitchensEmbeddedModelOpenApi {
+    public class OrdersEmbeddedModelOpenApi {
 
-        private List<KitchenModel> kitchens;
+        private List<OrderSummaryModel> orders;
     }
 }
