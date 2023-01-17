@@ -17,17 +17,17 @@ public class LocalStorageAndAmazonS3Config {
     @Autowired
     private StorageProperties storageProperties;
 
-    @Bean
-    public AmazonS3 amazonS3() {
-        var credentials = new BasicAWSCredentials(
-                storageProperties.getS3().getIdAccessKey(),
-                storageProperties.getS3().getKeySecretAccess());
-
-        return AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(storageProperties.getS3().getRegion())
-                .build(); // It returns a S3 instance, therefore we can inject in the project and use the methods normally
-    }
+//    @Bean
+//    public AmazonS3 amazonS3() {
+//        var credentials = new BasicAWSCredentials(
+//                storageProperties.getS3().getIdAccessKey(),
+//                storageProperties.getS3().getKeySecretAccess());
+//
+//        return AmazonS3ClientBuilder.standard()
+//                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+//                .withRegion(storageProperties.getS3().getRegion())
+//                .build(); // It returns a S3 instance, therefore we can inject in the project and use the methods normally
+//    }
 
     @Bean
     public PhotoStorageService photoStorageService() {
