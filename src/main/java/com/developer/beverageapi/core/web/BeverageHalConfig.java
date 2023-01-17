@@ -12,6 +12,7 @@ public class BeverageHalConfig {
     public HalConfiguration globalPolicy() {
         return new HalConfiguration()
                 .withMediaType(MediaType.APPLICATION_JSON)
-                .withMediaType(BeverageMediaTypes.V1_APPLICATION_JSON);
+                .withMediaType(BeverageMediaTypes.V1_APPLICATION_JSON)
+                .withMediaType(BeverageMediaTypes.V2_APPLICATION_JSON);
     }
 }
