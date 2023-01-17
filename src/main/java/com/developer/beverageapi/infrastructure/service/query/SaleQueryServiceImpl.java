@@ -1,6 +1,6 @@
 package com.developer.beverageapi.infrastructure.service.query;
 
-import com.developer.beverageapi.api.model.dto.DailySale;
+import com.developer.beverageapi.api.v1.model.dto.DailySale;
 import com.developer.beverageapi.domain.filter.DailySaleFilter;
 import com.developer.beverageapi.domain.model.Order;
 import com.developer.beverageapi.domain.model.OrderStatus;

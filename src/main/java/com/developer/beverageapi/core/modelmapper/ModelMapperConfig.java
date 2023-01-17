@@ -1,7 +1,7 @@
 package com.developer.beverageapi.core.modelmapper;
 
-import com.developer.beverageapi.api.model.AddressModel;
-import com.developer.beverageapi.api.model.input.OrderItemInput;
+import com.developer.beverageapi.api.v1.model.AddressModel;
+import com.developer.beverageapi.api.v1.model.input.OrderItemInput;
 import com.developer.beverageapi.domain.model.Address;
 import com.developer.beverageapi.domain.model.OrderItem;
 import org.modelmapper.ModelMapper;

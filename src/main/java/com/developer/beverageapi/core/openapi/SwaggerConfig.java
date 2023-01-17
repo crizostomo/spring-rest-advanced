@@ -1,8 +1,8 @@
 package com.developer.beverageapi.core.openapi;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
-import com.developer.beverageapi.api.model.*;
-import com.developer.beverageapi.api.swaggerapi.model.*;
+import com.developer.beverageapi.api.v1.model.*;
+import com.developer.beverageapi.api.v1.swaggerapi.model.*;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
