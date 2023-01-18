@@ -23,7 +23,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/cities", produces = BeverageMediaTypes.V1_APPLICATION_JSON_VALUE)
+//@RequestMapping(value = "/cities", produces = BeverageMediaTypes.V1_APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/cities", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerCity implements ControllerCityOpenApi {
 
     @Autowired

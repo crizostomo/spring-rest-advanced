@@ -15,13 +15,15 @@ import com.developer.beverageapi.domain.service.CityRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/cities", produces = BeverageMediaTypes.V2_APPLICATION_JSON_VALUE)
+//@RequestMapping(value = "/cities", produces = BeverageMediaTypes.V2_APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v2/cities", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerCityV2 {
 
     @Autowired
