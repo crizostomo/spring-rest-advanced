@@ -27,7 +27,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerRestaurant implements ControllerRestaurantOpenApi {
 
     @Autowired

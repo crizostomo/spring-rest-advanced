@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/restaurants/{restaurantId}/products", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/restaurants/{restaurantId}/products", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerRestaurantProduct implements ControllerRestaurantProductOpenApi {
 
     @Autowired

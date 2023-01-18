@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping(value = "/payments", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/payments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerPayment implements ControllerPaymentOpenApi {
 
     @Autowired

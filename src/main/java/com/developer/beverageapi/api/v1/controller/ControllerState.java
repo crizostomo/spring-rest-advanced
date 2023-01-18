@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/states", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/states", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerState implements ControllerStateOpenApi {
 
     @Autowired

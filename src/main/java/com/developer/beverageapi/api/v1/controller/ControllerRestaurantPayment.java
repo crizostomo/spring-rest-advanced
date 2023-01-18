@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/restaurants/{restaurantId}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/restaurants/{restaurantId}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerRestaurantPayment {
 
     @Autowired

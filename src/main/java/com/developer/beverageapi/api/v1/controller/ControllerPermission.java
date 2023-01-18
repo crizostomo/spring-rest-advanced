@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/permissions", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/permissions", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerPermission implements ControllerPermissionOpenApi {
 
     @Autowired

@@ -43,13 +43,14 @@ import java.util.List;
 public class SwaggerConfig implements WebMvcConfigurer {
 
     @Bean
-    public Docket apiDocket() {
+    public Docket apiDocketV1() {
         var typeResolver = new TypeResolver();
 
         return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("V1")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.developer.beverageapi.api")) // It can be used Predicates.and
-                .paths(PathSelectors.any())
+                .paths(PathSelectors.ant("/v1/**"))
                 .build()
                 .useDefaultResponseMessages(false)
                 .globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
@@ -104,7 +105,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, UserModel.class),
                         UsersModelOpenApi.class))
-                .apiInfo(apiInfo())
+                .apiInfo(apiInfoV1())
                 .tags(new Tag("Cities", "It runs cities"),
                         new Tag("Groups", "It runs the users groups"),
                         new Tag("Kitchens", "It runs kitchens"),
@@ -116,6 +117,37 @@ public class SwaggerConfig implements WebMvcConfigurer {
                         new Tag("Users", "It runs users"),
                         new Tag("Statistics", "Beverage Statistics"),
                         new Tag("Permissions", "It describes permissions"));
+    }
+
+    @Bean
+    public Docket apiDocketV2() {
+        var typeResolver = new TypeResolver();
+
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("V2")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.developer.beverageapi.api")) // It can be used Predicates.and
+                .paths(PathSelectors.ant("/v2/**"))
+                .build()
+                .useDefaultResponseMessages(false)
+                .globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
+                .globalResponseMessage(RequestMethod.POST, globalGetResponseMessages())
+                .globalResponseMessage(RequestMethod.PUT, globalGetResponseMessages())
+                .globalResponseMessage(RequestMethod.DELETE, globalGetResponseMessages())
+                .globalOperationParameters(Arrays.asList(
+                        new ParameterBuilder()
+                                .name("fields")
+                                .description("Properties name to filter in the response, separated by comma") // For
+                                // SquigglyConfig
+                                .parameterType("query")
+                                .modelRef(new ModelRef("string"))
+                                .build()))
+                .additionalModels(typeResolver.resolve(APIError.class))
+                .ignoredParameterTypes(ServletWebRequest.class,
+                        URL.class, URI.class, URLStreamHandler.class, Resource.class, File.class, InputStream.class)
+                .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) // It will substitute the pageable
+                .directModelSubstitute(Links.class, LinksModelOpenApi.class)
+                .apiInfo(apiInfoV2());
     }
 
     private List<ResponseMessage> globalGetResponseMessages() {
@@ -172,11 +204,20 @@ public class SwaggerConfig implements WebMvcConfigurer {
         );
     }
 
-    private ApiInfo apiInfo() {
+    private ApiInfo apiInfoV1() {
         return new ApiInfoBuilder()
                 .title("Beverage Food API")
                 .description("Open API for clients")
                 .version("1.0")
+                .contact(new Contact("WebSite Name", "https://www.toogle.com", "contact@toogle.com"))
+                .build();
+    }
+
+    private ApiInfo apiInfoV2() {
+        return new ApiInfoBuilder()
+                .title("Beverage Food API")
+                .description("Open API for clients")
+                .version("2.0")
                 .contact(new Contact("WebSite Name", "https://www.toogle.com", "contact@toogle.com"))
                 .build();
     }

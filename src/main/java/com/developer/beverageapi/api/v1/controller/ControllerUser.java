@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerUser implements ControllerUserOpenApi {
 
     @Autowired

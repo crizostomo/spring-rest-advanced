@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/groups", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/groups", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerGroup implements ControllerGroupOpenApi {
 
     @Autowired
