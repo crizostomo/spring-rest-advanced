@@ -1,6 +1,7 @@
 package com.developer.beverageapi.api.v2.model.input;
 
 import com.developer.beverageapi.api.v1.model.input.StateIDInput;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@ApiModel("CityInput")
 @Getter
 @Setter
 public class CityInputV2 {

@@ -4,6 +4,7 @@ import com.developer.beverageapi.api.v2.assembler.KitchenInputDismantleV2;
 import com.developer.beverageapi.api.v2.assembler.KitchenModelAssemblerV2;
 import com.developer.beverageapi.api.v2.model.KitchenModelV2;
 import com.developer.beverageapi.api.v2.model.input.KitchenInputV2;
+import com.developer.beverageapi.api.v2.swaggerapi.controller.ControllerKitchenV2OpenApi;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.service.KitchenRegistrationService;
@@ -21,7 +22,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/v2/kitchens", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ControllerKitchenV2 {
+public class ControllerKitchenV2 implements ControllerKitchenV2OpenApi {
 
     @Autowired
     private RepositoryKitchen repositoryKitchen;

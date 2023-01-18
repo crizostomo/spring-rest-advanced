@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.v2.assembler.CityInputDismantleV2;
 import com.developer.beverageapi.api.v2.assembler.CityModelAssemblerV2;
 import com.developer.beverageapi.api.v2.model.CityModelV2;
 import com.developer.beverageapi.api.v2.model.input.CityInputV2;
+import com.developer.beverageapi.api.v2.swaggerapi.controller.ControllerCityV2OpenApi;
 import com.developer.beverageapi.core.web.BeverageMediaTypes;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.StateNotFoundException;
@@ -24,7 +25,7 @@ import java.util.List;
 @RestController
 //@RequestMapping(value = "/cities", produces = BeverageMediaTypes.V2_APPLICATION_JSON_VALUE)
 @RequestMapping(value = "/v2/cities", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ControllerCityV2 {
+public class ControllerCityV2 implements ControllerCityV2OpenApi {
 
     @Autowired
     private RepositoryCity repositoryCity;

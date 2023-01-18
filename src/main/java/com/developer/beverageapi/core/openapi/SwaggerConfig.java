@@ -3,6 +3,10 @@ package com.developer.beverageapi.core.openapi;
 import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.v1.model.*;
 import com.developer.beverageapi.api.v1.swaggerapi.model.*;
+import com.developer.beverageapi.api.v2.model.CityModelV2;
+import com.developer.beverageapi.api.v2.model.KitchenModelV2;
+import com.developer.beverageapi.api.v2.swaggerapi.model.CitiesModelV2OpenApi;
+import com.developer.beverageapi.api.v2.swaggerapi.model.KitchensModelV2OpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -147,7 +151,15 @@ public class SwaggerConfig implements WebMvcConfigurer {
                         URL.class, URI.class, URLStreamHandler.class, Resource.class, File.class, InputStream.class)
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class) // It will substitute the pageable
                 .directModelSubstitute(Links.class, LinksModelOpenApi.class)
-                .apiInfo(apiInfoV2());
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(PagedModel.class, KitchenModelV2.class),
+                        KitchensModelV2OpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, CityModelV2.class),
+                        CitiesModelV2OpenApi.class))
+                .apiInfo(apiInfoV2())
+                .tags(new Tag("Cities", "It runs cities"),
+                        new Tag("Kitchens", "It runs kitchens"));
     }
 
     private List<ResponseMessage> globalGetResponseMessages() {
