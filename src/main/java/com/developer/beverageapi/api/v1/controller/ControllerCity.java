@@ -43,12 +43,15 @@ public class ControllerCity implements ControllerCityOpenApi {
     private CityInputDismantle cityInputDismantle;
 
     @GetMapping
+    @Override
     public CollectionModel<CityModel> list() {
         List<City> allCities = repositoryCity.findAll();
 
         return cityModelAssembler.toCollectionModel(allCities);
     }
 
+//    @Deprecated
+    @Override
     @GetMapping("/{cityId}")
     public CityModel search(@PathVariable Long cityId) {
         City city = registrationCity.searchOrFail(cityId);

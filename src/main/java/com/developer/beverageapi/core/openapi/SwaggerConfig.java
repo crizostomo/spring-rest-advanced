@@ -220,6 +220,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
         return new ApiInfoBuilder()
                 .title("Beverage Food API")
                 .description("Open API for clients")
+//                .description("Open API for clients.<br>" +
+//                        "<strong> This API Version is deprecated and will not longer exist as of dd/MM/aaaa>")
                 .version("1.0")
                 .contact(new Contact("WebSite Name", "https://www.toogle.com", "contact@toogle.com"))
                 .build();
