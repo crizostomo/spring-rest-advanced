@@ -8,6 +8,7 @@ import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerKitchenO
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.service.KitchenRegistrationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/v1/kitchens", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ControllerKitchen implements ControllerKitchenOpenApi {
@@ -42,6 +44,8 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
     //    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @GetMapping
     public PagedModel<KitchenModel> list(@PageableDefault(size = 10) Pageable pageable) {
+        log.info("Consulting kitchens with pages of {} registers", pageable.getPageSize());
+
         Page<Kitchen> kitchensPaged = repositoryKitchen.findAll(pageable);
 
         PagedModel<KitchenModel> kitchenPagedModel = pagedResourcesAssembler
