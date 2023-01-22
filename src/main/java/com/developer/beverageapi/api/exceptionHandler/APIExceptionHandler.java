@@ -6,6 +6,7 @@ import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
+@Slf4j
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String GENERIC_MESSAGE_ERROR = "A System Error Has Occurred. Please Try Again Later. "
@@ -61,7 +63,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = GENERIC_MESSAGE_ERROR;
 
         // Important to put the printStackTrace (At least for now, since we aren't doing any logging)
-        ex.printStackTrace();
+        log.error(ex.getMessage(), ex);
 
         APIError error = createProblemBuilder(status, problemType, detail)
                 .userMessage(GENERIC_MESSAGE_ERROR)

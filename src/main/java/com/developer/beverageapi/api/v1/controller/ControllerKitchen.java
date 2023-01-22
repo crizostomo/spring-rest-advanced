@@ -44,6 +44,10 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
     //    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @GetMapping
     public PagedModel<KitchenModel> list(@PageableDefault(size = 10) Pageable pageable) {
+        if (true) {
+            throw new RuntimeException("Exception Test");
+        }
+
         log.info("Consulting kitchens with pages of {} registers", pageable.getPageSize());
 
         Page<Kitchen> kitchensPaged = repositoryKitchen.findAll(pageable);
