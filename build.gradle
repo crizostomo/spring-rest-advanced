@@ -59,6 +59,8 @@ dependencies {
 
     implementation group: 'org.logback-extensions', name: 'logback-ext-loggly', version: '0.1.5'
 
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+
     implementation 'io.springfox:springfox-swagger2:2.9.2', {
         exclude group: 'org.springframework.plugin:spring-plugin-core'
     }
