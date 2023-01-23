@@ -42,10 +42,10 @@ spring:
     settings:
       locale: pt_BR
 
-  security:
-    user:
-      name: beverageFood
-      password: 123456
+#  security:
+#    user:
+#      name: beverageFood
+#      password: 123456
 
 #  servlet:
 #    multipart:
