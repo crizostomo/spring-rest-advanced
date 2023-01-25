@@ -42,7 +42,13 @@ spring:
     settings:
       locale: pt_BR
 
-#  security:
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: http://localhost:8081/oauth/check_token
+          client-id: checktoken
+          client-secret: check123
 #    user:
 #      name: beverageFood
 #      password: 123456
