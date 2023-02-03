@@ -27,10 +27,10 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer().jwt();
     }
 
-    @Bean
-    public JwtDecoder jwtDecoder() {
-        var secretKey = new SecretKeySpec("beveragea45sd4s56f4sd5f4d5g5dsf41d5fg4d5f".getBytes(), "HmacSHA256");
-
-        return NimbusJwtDecoder.withSecretKey(secretKey).build();
-    }
+//    @Bean
+//    public JwtDecoder jwtDecoder() { // Used when you want a symmetric key
+//        var secretKey = new SecretKeySpec("beveragea45sd4s56f4sd5f4d5g5dsf41d5fg4d5f".getBytes(), "HmacSHA256");
+//
+//        return NimbusJwtDecoder.withSecretKey(secretKey).build();
+//    }
 }

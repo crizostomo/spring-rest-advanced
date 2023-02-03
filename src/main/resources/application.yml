@@ -42,9 +42,12 @@ spring:
     settings:
       locale: pt_BR
 
-#  security:
-#    oauth2:
-#      resourceserver:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:keys/beverage-pkey.pem
+#          jwk-set-uri: http://localhost:8081/oauth/token_key # If you want to use a URI
 #        opaquetoken:
 #          introspection-uri: http://localhost:8081/oauth/check_token
 #          client-id: checktoken
