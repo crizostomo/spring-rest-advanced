@@ -74,10 +74,10 @@ insert into product (id, name, description, price, active, restaurant_id) values
 insert into product (id, name, description, price, active, restaurant_id) values (6, 'Churrasco completo', 'Mix de churrasco com até 5 carnes diferentes', 75, TRUE, 3);
 
 insert into `user` (id, name, email, password, record_date) values
-(1, 'Roronoa Zoro', 'zoro.sword@onepice.com', 'sleep001', utc_timestamp),
-(2, 'Hashibira Inosuke', 'inosuke.hashibira@d-slayer.com', 'killer123', utc_timestamp),
-(3, 'Vegeta', 'vegeta.ssj@dragon-ball.com', 'buma123', utc_timestamp),
-(4, 'Diogo', 'test@gmail.com', 'buma123', utc_timestamp);
+(1, 'Roronoa Zoro', 'zoro.sword@onepice.com', '$2a$12$/F/zubzseTAGzrC2Y3eFwunTpwcTZe5GOc9oTce/nM3MhTsgB9r/u', utc_timestamp),
+(2, 'Hashibira Inosuke', 'inosuke.hashibira@d-slayer.com', '$2a$12$/F/zubzseTAGzrC2Y3eFwunTpwcTZe5GOc9oTce/nM3MhTsgB9r/u', utc_timestamp),
+(3, 'Vegeta', 'vegeta.ssj@dragon-ball.com', '$2a$12$/F/zubzseTAGzrC2Y3eFwunTpwcTZe5GOc9oTce/nM3MhTsgB9r/u', utc_timestamp),
+(4, 'Diogo', 'test@gmail.com', '$2a$12$/F/zubzseTAGzrC2Y3eFwunTpwcTZe5GOc9oTce/nM3MhTsgB9r/u', utc_timestamp);
 
 insert into user_group (user_id, group_id) values (1, 1), (1, 2), (2, 2);
 
