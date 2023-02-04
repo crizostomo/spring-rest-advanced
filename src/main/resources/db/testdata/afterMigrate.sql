@@ -110,7 +110,7 @@ insert into `user` (id, name, email, password, record_date) values
 (3, 'Vegeta', 'vegeta.ssj@dragon-ball.com', '$2a$12$/F/zubzseTAGzrC2Y3eFwunTpwcTZe5GOc9oTce/nM3MhTsgB9r/u', utc_timestamp),
 (4, 'Diogo', 'test@gmail.com', '$2a$12$/F/zubzseTAGzrC2Y3eFwunTpwcTZe5GOc9oTce/nM3MhTsgB9r/u', utc_timestamp);
 
-insert into user_group (user_id, group_id) values (1, 1), (1, 2), (2, 2);
+insert into user_group (user_id, group_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4);
 
 insert into restaurant_user_responsible (restaurant_id, user_id) values (1, 2), (2, 3);
 
