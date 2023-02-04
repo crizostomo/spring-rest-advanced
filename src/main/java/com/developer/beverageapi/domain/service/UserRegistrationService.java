@@ -9,6 +9,7 @@ import com.developer.beverageapi.domain.repository.RepositoryUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,9 @@ public class UserRegistrationService {
     @Autowired
     private GroupRegistrationService registrationGroup;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public User add(User user){
         repositoryUser.detach(user);
@@ -35,6 +39,10 @@ public class UserRegistrationService {
         if (userPresent.isPresent() && !userPresent.get().equals(user)) {
             throw new BusinessException(
                     String.format("There is already a recorded user with the e-mail %s", user.getEmail()));
+        }
+
+        if (user.isNew()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
         return repositoryUser.save(user);
@@ -59,7 +67,7 @@ public class UserRegistrationService {
     public void updatePassword(Long userId, String currentPassword, String newPassword) {
         User user = searchOrFail(userId);
 
-        if (user.passwordIsNotEqualsTo(currentPassword)) {
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new BusinessException("The current password informed is not equals to the user password.");
         }
         user.setPassword(newPassword);

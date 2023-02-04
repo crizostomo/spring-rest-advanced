@@ -40,12 +40,16 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     private List<Group> groups = new ArrayList<>();
 
-    public boolean passwordEqualsTo(String password) {
-        return getPassword().equals(password);
-    }
+//    public boolean passwordEqualsTo(String password) {
+//        return getPassword().equals(password);
+//    }
+//
+//    public boolean passwordIsNotEqualsTo(String password) {
+//        return !passwordEqualsTo(password);
+//    }
 
-    public boolean passwordIsNotEqualsTo(String password) {
-        return !passwordEqualsTo(password);
+    public boolean isNew() {
+        return getId() == null;
     }
 
     public boolean removeGroup(Group group) {
