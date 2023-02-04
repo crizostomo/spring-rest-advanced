@@ -9,6 +9,7 @@ import com.developer.beverageapi.api.v1.model.input.OrderInput;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerOrderOpenApi;
 import com.developer.beverageapi.core.data.PageWrapper;
 import com.developer.beverageapi.core.data.PageableTranslator;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Order;
@@ -53,6 +54,9 @@ public class ControllerOrder implements ControllerOrderOpenApi {
 
     @Autowired
     private PagedResourcesAssembler<Order> pagedResourcesAssembler;
+
+    @Autowired
+    private Security security;
 
     @GetMapping
     public List<OrderModel> list() {
@@ -114,7 +118,7 @@ public class ControllerOrder implements ControllerOrderOpenApi {
 
             // TO DO pick user authenticated
             newOrder.setClient(new User());
-            newOrder.getClient().setId(1L);
+            newOrder.getClient().setId(security.getUserId());
 
             newOrder = issuingOrder.issue(newOrder);
 
