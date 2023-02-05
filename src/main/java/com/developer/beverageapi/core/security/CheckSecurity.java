@@ -10,13 +10,13 @@ import java.lang.annotation.Target;
 public @interface CheckSecurity {
 
     public @interface Kitchens {
-        @PreAuthorize("hasAuthority('EDIT_KITCHENS')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_KITCHENS')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToEdit {
         }
 
-        @PreAuthorize("isAuthenticated()")
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToConsult {
