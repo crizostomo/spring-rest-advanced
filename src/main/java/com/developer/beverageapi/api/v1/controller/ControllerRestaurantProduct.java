@@ -110,7 +110,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productModelAssembler.toModel(product);
     }
 
-    @CheckSecurity.Restaurants.AllowedToEdit
+    @CheckSecurity.Restaurants.AllowedToManageOperation
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductModel add(@PathVariable Long restaurantId,
@@ -125,7 +125,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productModelAssembler.toModel(product);
     }
 
-    @CheckSecurity.Restaurants.AllowedToEdit
+    @CheckSecurity.Restaurants.AllowedToManageOperation
     @PutMapping("/{productId}")
     public ProductModel update(@PathVariable Long restaurantId, @PathVariable Long productId,
                                @RequestBody @Valid ProductInput productInput) {
@@ -138,7 +138,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productModelAssembler.toModel(currentProduct);
     }
 
-    @CheckSecurity.Restaurants.AllowedToEdit
+    @CheckSecurity.Restaurants.AllowedToManageOperation
     @DeleteMapping("/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long productId) {
@@ -198,7 +198,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         }
     }
 
-    @CheckSecurity.Restaurants.AllowedToEdit
+    @CheckSecurity.Restaurants.AllowedToManageOperation
     @Override()
     @PutMapping(path = "/{productId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPhotoModel updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
@@ -235,7 +235,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productPhotoModelAssembler.toModel(savedPhoto);
     }
 
-    @CheckSecurity.Restaurants.AllowedToEdit
+    @CheckSecurity.Restaurants.AllowedToManageOperation
     @Override()
     @DeleteMapping(path = "/{productId}/photo")
     @ResponseStatus(HttpStatus.NO_CONTENT)

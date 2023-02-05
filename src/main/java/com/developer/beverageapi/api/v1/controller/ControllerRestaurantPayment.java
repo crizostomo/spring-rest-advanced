@@ -44,7 +44,7 @@ public class ControllerRestaurantPayment {
         return paymentModels;
     }
 
-    @CheckSecurity.Restaurants.AllowedToEdit
+    @CheckSecurity.Restaurants.AllowedToManageOperation
     @PutMapping("/{paymentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> association(@PathVariable Long restaurantId, @PathVariable Long paymentId) {
@@ -53,7 +53,7 @@ public class ControllerRestaurantPayment {
         return ResponseEntity.noContent().build();
     }
 
-    @CheckSecurity.Restaurants.AllowedToEdit
+    @CheckSecurity.Restaurants.AllowedToManageOperation
     @DeleteMapping("/{paymentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> removeAssociation(@PathVariable Long restaurantId, @PathVariable Long paymentId) {

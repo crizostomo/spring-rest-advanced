@@ -47,7 +47,7 @@ public class ControllerRestaurantUserResponsible implements ControllerRestaurant
         return userModels;
     }
 
-    @CheckSecurity.Restaurants.AllowedToEdit
+    @CheckSecurity.Restaurants.AllowedToManageRecord
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity association(@PathVariable Long restaurantId, @PathVariable Long userId) {
@@ -56,7 +56,7 @@ public class ControllerRestaurantUserResponsible implements ControllerRestaurant
         return ResponseEntity.noContent().build();
     }
 
-    @CheckSecurity.Restaurants.AllowedToEdit
+    @CheckSecurity.Restaurants.AllowedToManageRecord
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity removeAssociation(@PathVariable Long restaurantId, @PathVariable Long userId) {

@@ -13,7 +13,7 @@ public @interface CheckSecurity {
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_KITCHENS')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        public @interface AllowedToEdit {
+        public @interface AllowedToManageRecord {
         }
 
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
@@ -27,13 +27,21 @@ public @interface CheckSecurity {
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_RESTAURANTS')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        public @interface AllowedToEdit {
+        public @interface AllowedToManageRecord {
         }
 
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToConsult {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and " +
+                "(hasAuthority('EDIT_RESTAURANTS') or " +
+                "@Security.manageRestaurant(#restaurantId))") // #restaurantId --> get access to the restaurantId in the controller
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface AllowedToManageOperation {
         }
     }
 }

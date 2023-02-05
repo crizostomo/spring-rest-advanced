@@ -65,7 +65,7 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
         return kitchenModelAssembler.toModel(kitchen);
     }
 
-    @CheckSecurity.Kitchens.AllowedToEdit
+    @CheckSecurity.Kitchens.AllowedToManageRecord
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -76,7 +76,7 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
         return kitchenModelAssembler.toModel(kitchen);
     }
 
-    @CheckSecurity.Kitchens.AllowedToEdit
+    @CheckSecurity.Kitchens.AllowedToManageRecord
     @Override
     @PutMapping("/{kitchenId}")
     public KitchenModel update(@PathVariable Long kitchenId,
@@ -88,7 +88,7 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
         return kitchenModelAssembler.toModel(currentKitchen);
     }
 
-    @CheckSecurity.Kitchens.AllowedToEdit
+    @CheckSecurity.Kitchens.AllowedToManageRecord
     @Override
     @DeleteMapping("/{kitchenId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
