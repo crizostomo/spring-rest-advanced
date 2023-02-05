@@ -11,7 +11,8 @@ public enum ProblemType {
     INVALID_PARAMETER("/invalid-parameter", "Invalid Parameter"),
     MESSAGE_NOT_READABLE("/message-not-readable", "This message is not readable"),
     RESOURCE_NOT_FOUND("/resource-not-found", "Resource not found"),
-    SYSTEM_ERROR("/system-error", "System Error");
+    SYSTEM_ERROR("/system-error", "System Error"),
+    ACCESS_DENIED("/access-denied", "Access Denied");
 
     private String title;
     private String uri;

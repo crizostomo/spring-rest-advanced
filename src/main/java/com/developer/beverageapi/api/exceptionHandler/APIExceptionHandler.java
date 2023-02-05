@@ -28,6 +28,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.nio.file.AccessDeniedException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,6 +68,20 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
         APIError error = createProblemBuilder(status, problemType, detail)
                 .userMessage(GENERIC_MESSAGE_ERROR)
+                .build();
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleEntityNotFound(Exception ex, WebRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ProblemType problemType = ProblemType.ACCESS_DENIED;
+        String detail = GENERIC_MESSAGE_ERROR;
+
+        APIError error = createProblemBuilder(status, problemType, detail)
+                .userMessage(GENERIC_MESSAGE_ERROR)
+                .userMessage("You do not have permission to execute this operation")
                 .build();
 
         return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
