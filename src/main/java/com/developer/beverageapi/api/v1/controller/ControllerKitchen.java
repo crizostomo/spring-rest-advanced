@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.v1.assembler.KitchenModelAssembler;
 import com.developer.beverageapi.api.v1.model.KitchenModel;
 import com.developer.beverageapi.api.v1.model.input.KitchenInput;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerKitchenOpenApi;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
 import com.developer.beverageapi.domain.service.KitchenRegistrationService;
@@ -17,7 +18,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,7 +43,7 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
     private PagedResourcesAssembler<Kitchen> pagedResourcesAssembler;
 
     //    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    @PreAuthorize("isAuthenticated()")
+    @CheckSecurity.Kitchens.AllowedToConsult
     @Override
     @GetMapping
     public PagedModel<KitchenModel> list(@PageableDefault(size = 10) Pageable pageable) {
@@ -56,7 +56,7 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
     }
 
     //    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("isAuthenticated()")
+    @CheckSecurity.Kitchens.AllowedToConsult
     @Override
     @GetMapping("/{kitchenId}")
     public KitchenModel search(@PathVariable Long kitchenId) {
@@ -65,7 +65,7 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
         return kitchenModelAssembler.toModel(kitchen);
     }
 
-    @PreAuthorize("hasAuthority('EDIT_KITCHENS')")
+    @CheckSecurity.Kitchens.AllowedToEdit
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -76,11 +76,11 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
         return kitchenModelAssembler.toModel(kitchen);
     }
 
-    @PreAuthorize("hasAuthority('EDIT_KITCHENS')")
+    @CheckSecurity.Kitchens.AllowedToEdit
     @Override
     @PutMapping("/{kitchenId}")
     public KitchenModel update(@PathVariable Long kitchenId,
-                          @RequestBody @Valid KitchenInput kitchenInput) {
+                               @RequestBody @Valid KitchenInput kitchenInput) {
         Kitchen currentKitchen = registrationKitchen.searchOrFail(kitchenId);
         kitchenInputDismantle.copyToDomainObject(kitchenInput, currentKitchen);
         currentKitchen = registrationKitchen.add(currentKitchen);
@@ -88,7 +88,7 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
         return kitchenModelAssembler.toModel(currentKitchen);
     }
 
-    @PreAuthorize("hasAuthority('EDIT_KITCHENS')")
+    @CheckSecurity.Kitchens.AllowedToEdit
     @Override
     @DeleteMapping("/{kitchenId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
