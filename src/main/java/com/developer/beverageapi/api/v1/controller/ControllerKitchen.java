@@ -17,6 +17,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,14 +43,10 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
     private PagedResourcesAssembler<Kitchen> pagedResourcesAssembler;
 
     //    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @PreAuthorize("isAuthenticated()")
+    @Override
     @GetMapping
     public PagedModel<KitchenModel> list(@PageableDefault(size = 10) Pageable pageable) {
-//        if (true) {
-//            throw new RuntimeException("Exception Test");
-//        }
-
-        log.info("Consulting kitchens with pages of {} registers", pageable.getPageSize());
-
         Page<Kitchen> kitchensPaged = repositoryKitchen.findAll(pageable);
 
         PagedModel<KitchenModel> kitchenPagedModel = pagedResourcesAssembler
@@ -59,6 +56,8 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
     }
 
     //    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("isAuthenticated()")
+    @Override
     @GetMapping("/{kitchenId}")
     public KitchenModel search(@PathVariable Long kitchenId) {
         Kitchen kitchen = registrationKitchen.searchOrFail(kitchenId);
@@ -66,6 +65,8 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
         return kitchenModelAssembler.toModel(kitchen);
     }
 
+    @PreAuthorize("hasAuthority('EDIT_KITCHENS')")
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public KitchenModel add(@RequestBody @Valid KitchenInput kitchenInput) {
@@ -75,6 +76,8 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
         return kitchenModelAssembler.toModel(kitchen);
     }
 
+    @PreAuthorize("hasAuthority('EDIT_KITCHENS')")
+    @Override
     @PutMapping("/{kitchenId}")
     public KitchenModel update(@PathVariable Long kitchenId,
                           @RequestBody @Valid KitchenInput kitchenInput) {
@@ -85,6 +88,8 @@ public class ControllerKitchen implements ControllerKitchenOpenApi {
         return kitchenModelAssembler.toModel(currentKitchen);
     }
 
+    @PreAuthorize("hasAuthority('EDIT_KITCHENS')")
+    @Override
     @DeleteMapping("/{kitchenId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long kitchenId) {
