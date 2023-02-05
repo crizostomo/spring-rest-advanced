@@ -4,6 +4,7 @@ import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.assembler.UserModelAssembler;
 import com.developer.beverageapi.api.v1.model.UserModel;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerRestaurantUserResponsibleOpenApi;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class ControllerRestaurantUserResponsible implements ControllerRestaurant
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @CheckSecurity.Restaurants.AllowedToConsult
     @GetMapping
     public CollectionModel<UserModel> list(@PathVariable Long restaurantId) {
         Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
@@ -45,6 +47,7 @@ public class ControllerRestaurantUserResponsible implements ControllerRestaurant
         return userModels;
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity association(@PathVariable Long restaurantId, @PathVariable Long userId) {
@@ -53,6 +56,7 @@ public class ControllerRestaurantUserResponsible implements ControllerRestaurant
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity removeAssociation(@PathVariable Long restaurantId, @PathVariable Long userId) {

@@ -59,23 +59,16 @@ insert into `group` (id, name) values (2, 'Silver');
 insert into `group` (id, name) values (3, 'Bronze');
 insert into `group` (id, name) values (4, 'Iron');
 
-insert into permission (id, name, description) values (1, 'CONSULT_KITCHENS', 'It allows to consult kitchens');
-insert into permission (id, name, description) values (2, 'EDIT_KITCHENS', 'It allows to edit kitchens');
-insert into permission (id, name, description) values (3, 'CONSULT_PAYMENTS', 'It allows to consult payments');
-insert into permission (id, name, description) values (4, 'EDIT_PAYMENTS', 'It allows to create or edit payments');
-insert into permission (id, name, description) values (5, 'CONSULT_CITIES', 'It allows to consult cities');
-insert into permission (id, name, description) values (6, 'EDIT_CITIES', 'It allows to create or edit cities');
-insert into permission (id, name, description) values (7, 'CONSULT_STATES', 'It allows to consulr states');
-insert into permission (id, name, description) values (8, 'EDIT_STATES', 'It allows to create or edit states');
-insert into permission (id, name, description) values (9, 'CONSULT_USERS', 'It allows to consult users');
-insert into permission (id, name, description) values (10, 'EDIT_USERS', 'It allows to create or edit users');
-insert into permission (id, name, description) values (11, 'CONSULT_RESTAURANTS', 'It allows to consult restaurants');
-insert into permission (id, name, description) values (12, 'EDIT_RESTAURANTS', 'It allows to create, edit or manage restaurants');
-insert into permission (id, name, description) values (13, 'CONSULT_PRODUCTS', 'It allows to consult products');
-insert into permission (id, name, description) values (14, 'EDIT_PRODUCTS', 'It allows to create or edit products');
-insert into permission (id, name, description) values (15, 'CONSULT_ORDERS', 'It allows to consult orders');
-insert into permission (id, name, description) values (16, 'MANAGE_ORDERS', 'It allows to manage orders');
-insert into permission (id, name, description) values (17, 'GENERATE_REPORTS', 'It allows to manage reports');
+insert into permission (id, name, description) values (1, 'EDIT_KITCHENS', 'It allows to edit kitchens');
+insert into permission (id, name, description) values (2, 'EDIT_PAYMENTS', 'It allows to create or edit payments');
+insert into permission (id, name, description) values (3, 'EDIT_CITIES', 'It allows to create or edit cities');
+insert into permission (id, name, description) values (4, 'EDIT_STATES', 'It allows to create or edit states');
+insert into permission (id, name, description) values (5, 'CONSULT_USERS', 'It allows to consult users');
+insert into permission (id, name, description) values (6, 'EDIT_USERS', 'It allows to create or edit users');
+insert into permission (id, name, description) values (7, 'EDIT_RESTAURANTS', 'It allows to create, edit or manage restaurants');
+insert into permission (id, name, description) values (8, 'CONSULT_ORDERS', 'It allows to consult orders');
+insert into permission (id, name, description) values (9, 'MANAGE_ORDERS', 'It allows to manage orders');
+insert into permission (id, name, description) values (10, 'GENERATE_REPORTS', 'It allows to manage reports');
 
 insert into restaurant_payment (restaurant_id, payment_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3);
 
@@ -87,7 +80,7 @@ select 1, id from permission;
 insert into group_permission (group_id, permission_id)
 select 2, id from permission where name like 'CONSULT_%';
 
-insert into group_permission (group_id, permission_id) values (2, 14);
+insert into group_permission (group_id, permission_id) values (2, 10);
 
 -- Add permissions in the Bronze Group
 insert into group_permission (group_id, permission_id)

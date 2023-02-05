@@ -22,4 +22,18 @@ public @interface CheckSecurity {
         public @interface AllowedToConsult {
         }
     }
+
+    public @interface Restaurants {
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_RESTAURANTS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface AllowedToEdit {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface AllowedToConsult {
+        }
+    }
 }

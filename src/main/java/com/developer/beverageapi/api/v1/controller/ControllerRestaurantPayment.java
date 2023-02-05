@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.controller;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.assembler.PaymentModelAssembler;
 import com.developer.beverageapi.api.v1.model.PaymentModel;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class ControllerRestaurantPayment {
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @CheckSecurity.Restaurants.AllowedToConsult
     @GetMapping
     public CollectionModel<PaymentModel> list(@PathVariable Long restaurantId) {
         Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
@@ -42,6 +44,7 @@ public class ControllerRestaurantPayment {
         return paymentModels;
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @PutMapping("/{paymentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> association(@PathVariable Long restaurantId, @PathVariable Long paymentId) {
@@ -50,6 +53,7 @@ public class ControllerRestaurantPayment {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @DeleteMapping("/{paymentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> removeAssociation(@PathVariable Long restaurantId, @PathVariable Long paymentId) {

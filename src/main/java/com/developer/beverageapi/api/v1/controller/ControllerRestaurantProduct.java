@@ -9,6 +9,7 @@ import com.developer.beverageapi.api.v1.model.ProductPhotoModel;
 import com.developer.beverageapi.api.v1.model.input.ProductInput;
 import com.developer.beverageapi.api.v1.model.input.ProductPhotoInput;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerRestaurantProductOpenApi;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
 import com.developer.beverageapi.domain.model.Product;
 import com.developer.beverageapi.domain.model.ProductPhoto;
@@ -67,6 +68,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @CheckSecurity.Restaurants.AllowedToConsult
     @Override
     @GetMapping
     public CollectionModel<ProductModel> list(@PathVariable Long restaurantId,
@@ -100,6 +102,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
 //        return productModelAssembler.toCollectionModel(allProducts);
 //    }
 
+    @CheckSecurity.Restaurants.AllowedToConsult
     @GetMapping("/{productId}")
     public ProductModel search(@PathVariable Long restaurantId, @PathVariable Long productId) {
         Product product = registrationProduct.searchOrFail(restaurantId, productId);
@@ -107,6 +110,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productModelAssembler.toModel(product);
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductModel add(@PathVariable Long restaurantId,
@@ -121,6 +125,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productModelAssembler.toModel(product);
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @PutMapping("/{productId}")
     public ProductModel update(@PathVariable Long restaurantId, @PathVariable Long productId,
                                @RequestBody @Valid ProductInput productInput) {
@@ -133,12 +138,14 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productModelAssembler.toModel(currentProduct);
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @DeleteMapping("/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long productId) {
         registrationProduct.remove(productId);
     }
 
+    @CheckSecurity.Restaurants.AllowedToConsult
     @Override()
     @GetMapping(path = "/{productId}/photo", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductPhotoModel searchPhoto(@PathVariable Long restaurantId, @PathVariable Long productId) {
@@ -147,6 +154,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productPhotoModelAssembler.toModel(productPhoto);
     }
 
+    @CheckSecurity.Restaurants.AllowedToConsult
     @Override()
     @GetMapping(path = "/{productId}/photo", produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> getFile(@PathVariable Long restaurantId, @PathVariable Long productId,
@@ -190,6 +198,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         }
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @Override()
     @PutMapping(path = "/{productId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPhotoModel updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
@@ -226,6 +235,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
         return productPhotoModelAssembler.toModel(savedPhoto);
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @Override()
     @DeleteMapping(path = "/{productId}/photo")
     @ResponseStatus(HttpStatus.NO_CONTENT)

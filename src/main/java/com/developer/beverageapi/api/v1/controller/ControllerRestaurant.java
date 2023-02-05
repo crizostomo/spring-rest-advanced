@@ -7,6 +7,7 @@ import com.developer.beverageapi.api.v1.assembler.RestaurantSummaryModelAssemble
 import com.developer.beverageapi.api.v1.model.RestaurantModel;
 import com.developer.beverageapi.api.v1.model.input.RestaurantInput;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerRestaurantOpenApi;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.CityNotFoundException;
 import com.developer.beverageapi.domain.exception.KitchenNotFoundException;
@@ -54,7 +55,8 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
     @Autowired
     private RestaurantSummaryModelAssembler restaurantSummaryModelAssembler;
 
-//    @ApiOperation(value = "Restaurant Summary List", response = BasicRestaurantModelSwaggerApi.class)
+    //    @ApiOperation(value = "Restaurant Summary List", response = BasicRestaurantModelSwaggerApi.class)
+    @CheckSecurity.Restaurants.AllowedToConsult
     @GetMapping
     public CollectionModel<RestaurantModel> list() {
         return restaurantModelAssembler.toCollectionModel(repositoryRestaurant.findAll());
@@ -62,6 +64,8 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
 
 //    @ApiOperation(value = "Restaurant Summary List", hidden = true)
 //    @JsonView(RestaurantView.Summary.class)
+
+    @CheckSecurity.Restaurants.AllowedToConsult
     @GetMapping(params = "projection=summary")
     public CollectionModel<RestaurantModel> listSummary() {
         return list();
@@ -85,6 +89,7 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
 //		return restaurantsWrapper;
 //	}
 
+    @CheckSecurity.Restaurants.AllowedToConsult
     @GetMapping("/{restaurantId}")
     public RestaurantModel search(@PathVariable Long restaurantId) {
         Restaurant restaurant = registrationRestaurant.searchOrFail(restaurantId);
@@ -94,6 +99,7 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
         return restaurantModelAssembler.toModel(restaurant);
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantModel add(@RequestBody @Valid RestaurantInput restaurantInput) {
@@ -106,14 +112,15 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
         }
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @PutMapping("/{restaurantId}")
     public RestaurantModel update(@PathVariable Long restaurantId,
-                             @RequestBody @Valid RestaurantInput restaurantInput) {
+                                  @RequestBody @Valid RestaurantInput restaurantInput) {
         try {
 //        Restaurant restaurant = restaurantInputDismantle.toDomainObject(restaurantInput);
-        Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
+            Restaurant currentRestaurant = registrationRestaurant.searchOrFail(restaurantId);
 
-        restaurantInputDismantle.copyToDomainObject(restaurantInput, currentRestaurant);
+            restaurantInputDismantle.copyToDomainObject(restaurantInput, currentRestaurant);
 
 //        BeanUtils.copyProperties(restaurant, currentRestaurant,
 //                "id", "payment", "address", "recordDate");
@@ -123,13 +130,15 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
             throw new BusinessException(e.getMessage());
         }
     }
+
     /**
-     * @PutMapping("/{restaurantId}/active") || @DeleteMapping("/{restaurantId}/inactive")
-     * They are one thing to do!
      * @param restaurantId
      * @return
+     * @PutMapping("/{restaurantId}/active") || @DeleteMapping("/{restaurantId}/inactive")
+     * They are one thing to do!
      */
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @PutMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> active(@PathVariable Long restaurantId) {
@@ -138,6 +147,7 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @DeleteMapping("/{restaurantId}/inactive")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> inactive(@PathVariable Long restaurantId) {
@@ -146,6 +156,7 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @PutMapping("/activations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void activateMultiples(@RequestBody List<Long> restaurantIds) {
@@ -156,6 +167,7 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
         }
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @DeleteMapping("/activations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deactivateMultiples(@RequestBody List<Long> restaurantIds) {
@@ -166,6 +178,7 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
         }
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @PutMapping("/{restaurantId}/opening")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> open(@PathVariable Long restaurantId) {
@@ -174,6 +187,7 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @PutMapping("/{restaurantId}/closing")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> close(@PathVariable Long restaurantId) {
@@ -232,6 +246,7 @@ public class ControllerRestaurant implements ControllerRestaurantOpenApi {
 //        }
 //    }
 
+    @CheckSecurity.Restaurants.AllowedToEdit
     @DeleteMapping("/{restaurantId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long restaurantId) {
