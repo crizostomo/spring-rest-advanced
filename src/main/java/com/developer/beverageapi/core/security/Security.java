@@ -24,6 +24,9 @@ public class Security {
     }
 
     public boolean manageRestaurant(Long restaurantId) {
+        if (restaurantId == null) {
+            return false;
+        }
         return repositoryRestaurant.existsResponsible(restaurantId, getUserId());
     }
 }

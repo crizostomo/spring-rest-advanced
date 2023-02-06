@@ -66,6 +66,7 @@ public class ControllerOrder implements ControllerOrderOpenApi {
         return orderModelAssembler.toCollectionModelList(allOrders);
     }
 
+    @CheckSecurity.Orders.AllowedToSearch
     @Override
     @GetMapping("/filter")
     public PagedModel<OrderSummaryModel> search(OrderFilter filter, @PageableDefault(size = 10)Pageable pageable) {
@@ -129,7 +130,7 @@ public class ControllerOrder implements ControllerOrderOpenApi {
         }
     }
 
-    @CheckSecurity.Orders.AllowedToSearch
+    @CheckSecurity.Orders.AllowedToGet
     @GetMapping(value = "/{codeOrder}", produces = MediaType.APPLICATION_JSON_VALUE)
     public OrderModel search(@PathVariable String codeOrder) {
         Order order = issuingOrder.searchOrFail(codeOrder);

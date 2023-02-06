@@ -54,6 +54,14 @@ public @interface CheckSecurity {
                 "@security.manageRestaurant(returnObject.restaurant.id)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
+        public @interface AllowedToGet {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and (hasAuthority('CONSULT_ORDERS') or " +
+                "@security.getUserId() == #filter.clientId or " +
+                "@security.manageRestaurant(#filter.restaurant.id))")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
         public @interface AllowedToSearch {
         }
     }
