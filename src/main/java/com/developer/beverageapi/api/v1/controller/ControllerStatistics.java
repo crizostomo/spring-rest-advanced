@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.controller;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.model.dto.DailySale;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerStatisticsOpenApi;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.filter.DailySaleFilter;
 import com.developer.beverageapi.domain.service.SaleQueryService;
 import com.developer.beverageapi.domain.service.SaleReportService;
@@ -31,6 +32,7 @@ public class ControllerStatistics implements ControllerStatisticsOpenApi {
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @CheckSecurity.Statistics.AllowedToConsult
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public StatisticsModel statistics() {
@@ -44,12 +46,14 @@ public class ControllerStatistics implements ControllerStatisticsOpenApi {
     public static class StatisticsModel extends RepresentationModel<StatisticsModel> {
     }
 
+    @CheckSecurity.Statistics.AllowedToConsult
     @GetMapping(path = "/daily-sale", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<DailySale> consultDailySale(DailySaleFilter filter,
                                             @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
         return saleQueryService.consultDailySale(filter, timeOffset);
     }
 
+    @CheckSecurity.Statistics.AllowedToConsult
     @GetMapping(path = "/daily-sale", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> consultDailySalePDF(DailySaleFilter filter,
                                                       @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
