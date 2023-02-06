@@ -1,5 +1,6 @@
 package com.developer.beverageapi.api.v1.controller;
 
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.service.FlowOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ public class ControllerOrderStatus {
     @Autowired
     private FlowOrderService statusOrder;
 
+    @CheckSecurity.Orders.AllowedToManageOrders
     @PutMapping("/confirmation")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> confirm(@PathVariable String codeOrder) {
@@ -22,6 +24,7 @@ public class ControllerOrderStatus {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Orders.AllowedToManageOrders
     @PutMapping("/cancellation")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> cancel(@PathVariable String codeOrder) {
@@ -30,6 +33,7 @@ public class ControllerOrderStatus {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Orders.AllowedToManageOrders
     @PutMapping("/delivery")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delivery(@PathVariable String codeOrder) {

@@ -64,5 +64,18 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         public @interface AllowedToSearch {
         }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface AllowedToCreate {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('MANAGE_ORDERS') or " +
+                "@security.manageRestaurantOfOrder(#codeOrder))")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface AllowedToManageOrders {
+        }
     }
 }
