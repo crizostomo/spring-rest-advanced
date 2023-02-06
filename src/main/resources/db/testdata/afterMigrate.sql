@@ -63,8 +63,8 @@ insert into permission (id, name, description) values (1, 'EDIT_KITCHENS', 'It a
 insert into permission (id, name, description) values (2, 'EDIT_PAYMENTS', 'It allows to create or edit payments');
 insert into permission (id, name, description) values (3, 'EDIT_CITIES', 'It allows to create or edit cities');
 insert into permission (id, name, description) values (4, 'EDIT_STATES', 'It allows to create or edit states');
-insert into permission (id, name, description) values (5, 'CONSULT_USERS', 'It allows to consult users');
-insert into permission (id, name, description) values (6, 'EDIT_USERS', 'It allows to create or edit users');
+insert into permission (id, name, description) values (5, 'CONSULT_USERS_GROUPS_PERMISSIONS', 'It allows to consult users');
+insert into permission (id, name, description) values (6, 'EDIT_USERS_GROUPS_PERMISSIONS', 'It allows to create or edit users');
 insert into permission (id, name, description) values (7, 'EDIT_RESTAURANTS', 'It allows to create, edit or manage restaurants');
 insert into permission (id, name, description) values (8, 'CONSULT_ORDERS', 'It allows to consult orders');
 insert into permission (id, name, description) values (9, 'MANAGE_ORDERS', 'It allows to manage orders');

@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.controller;
 import com.developer.beverageapi.api.v1.assembler.PermissionModelAssembler;
 import com.developer.beverageapi.api.v1.model.PermissionModel;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerPermissionOpenApi;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.model.Permission;
 import com.developer.beverageapi.domain.repository.RepositoryPermission;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class ControllerPermission implements ControllerPermissionOpenApi {
     @Autowired
     private PermissionModelAssembler permissionModelAssembler;
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToConsult
     @GetMapping
     public CollectionModel<PermissionModel> list() {
         List<Permission> allPermissions = repositoryPermission.findAll();

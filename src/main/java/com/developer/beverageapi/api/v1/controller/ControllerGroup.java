@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.v1.assembler.GroupModelAssembler;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerGroupOpenApi;
 import com.developer.beverageapi.api.v1.model.GroupModel;
 import com.developer.beverageapi.api.v1.model.input.GroupInput;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.model.Group;
 import com.developer.beverageapi.domain.repository.RepositoryGroup;
 import com.developer.beverageapi.domain.service.GroupRegistrationService;
@@ -34,6 +35,7 @@ public class ControllerGroup implements ControllerGroupOpenApi {
     private GroupInputDismantle groupInputDismantle;
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.AllowedToConsult
     @GetMapping
     public CollectionModel<GroupModel> list() {
         List<Group> allGroups = repositoryGroup.findAll();
@@ -41,6 +43,7 @@ public class ControllerGroup implements ControllerGroupOpenApi {
         return groupModelAssembler.toCollectionModel(allGroups);
     }
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToConsult
     @GetMapping("/{groupId}")
     public GroupModel search(@PathVariable Long groupId) {
         Group group = registrationGroup.searchOrFail(groupId);
@@ -48,6 +51,7 @@ public class ControllerGroup implements ControllerGroupOpenApi {
         return groupModelAssembler.toModel(group);
     }
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToEdit
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GroupModel add(@RequestBody @Valid GroupInput groupInput) {
@@ -58,6 +62,7 @@ public class ControllerGroup implements ControllerGroupOpenApi {
         return groupModelAssembler.toModel(group);
     }
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToEdit
     @PutMapping("/{groupId}")
     public GroupModel update(@PathVariable Long groupId,
                              @RequestBody @Valid GroupInput groupInput) {
@@ -70,6 +75,7 @@ public class ControllerGroup implements ControllerGroupOpenApi {
         return groupModelAssembler.toModel(currentGroup);
     }
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToEdit
     @DeleteMapping("/{groupId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long groupId) {

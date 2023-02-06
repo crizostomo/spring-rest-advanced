@@ -7,6 +7,7 @@ import com.developer.beverageapi.api.v1.model.input.UserPasswordInput;
 import com.developer.beverageapi.api.v1.model.input.UserWithPasswordInput;
 import com.developer.beverageapi.api.v1.model.input.UserWithoutPasswordInput;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerUserOpenApi;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.model.User;
 import com.developer.beverageapi.domain.repository.RepositoryUser;
 import com.developer.beverageapi.domain.service.UserRegistrationService;
@@ -35,6 +36,7 @@ public class ControllerUser implements ControllerUserOpenApi {
     @Autowired
     private UserInputDismantle userInputDismantle;
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToConsult
     @GetMapping
     public CollectionModel<UserModel> list() {
         List<User> userList = repositoryUser.findAll();
@@ -42,6 +44,7 @@ public class ControllerUser implements ControllerUserOpenApi {
         return userModelAssembler.toCollectionModel(userList);
     }
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToConsult
     @GetMapping("/{userId}")
     public UserModel search(@PathVariable Long userId) {
         User user = registrationUser.searchOrFail(userId);
@@ -49,6 +52,7 @@ public class ControllerUser implements ControllerUserOpenApi {
         return userModelAssembler.toModel(user);
     }
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToEdit
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserModel add(@RequestBody @Valid UserWithPasswordInput userWithPasswordInput) {
@@ -59,6 +63,7 @@ public class ControllerUser implements ControllerUserOpenApi {
         return userModelAssembler.toModel(user);
     }
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToChangeUser
     @PutMapping("/{userId}")
     public UserModel update(@PathVariable Long userId,
                              @RequestBody @Valid UserWithoutPasswordInput userWithoutPasswordInput) {
@@ -71,6 +76,7 @@ public class ControllerUser implements ControllerUserOpenApi {
         return userModelAssembler.toModel(currentUser);
     }
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToChangeOwnPassword
     @PutMapping("/{userId}/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePassword(@PathVariable Long userId,
@@ -79,6 +85,7 @@ public class ControllerUser implements ControllerUserOpenApi {
         registrationUser.updatePassword(userId, password.getCurrentPassword(), password.getNewPassword());
     }
 
+    @CheckSecurity.UsersGroupsPermissions.AllowedToEdit
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long userId) {

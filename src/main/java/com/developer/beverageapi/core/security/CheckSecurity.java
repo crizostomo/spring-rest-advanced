@@ -120,4 +120,31 @@ public @interface CheckSecurity {
         public @interface AllowedToConsult {
         }
     }
+
+    public @interface UsersGroupsPermissions {
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and @security.getUserId() == #userId")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface AllowedToChangeOwnPassword {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('EDIT_USERS_GROUPS_PERMISSIONS') or " +
+                "@security.getUserId() == #userId)")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface AllowedToChangeUser {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_USERS_GROUPS_PERMISSIONS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface AllowedToEdit {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('EDIT_USERS_GROUPS_PERMISSIONS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface AllowedToConsult {
+        }
+    }
 }
