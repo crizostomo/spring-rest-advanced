@@ -24,7 +24,6 @@ public class Security {
     }
 
     public boolean manageRestaurant(Long restaurantId) {
-        repositoryRestaurant.existsResponsible(restaurantId, getUserId());
-        return true;
+        return repositoryRestaurant.existsResponsible(restaurantId, getUserId());
     }
 }

@@ -1,5 +1,6 @@
 package com.developer.beverageapi.core.security;
 
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.lang.annotation.ElementType;
@@ -38,10 +39,22 @@ public @interface CheckSecurity {
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and " +
                 "(hasAuthority('EDIT_RESTAURANTS') or " +
-                "@Security.manageRestaurant(#restaurantId))") // #restaurantId --> get access to the restaurantId in the controller
+                "@security.manageRestaurant(#restaurantId))")
+        // #restaurantId --> get access to the restaurantId in the controller
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToManageOperation {
+        }
+    }
+
+    public @interface Orders {
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PostAuthorize("hasAuthority('CONSULT_ORDERS') or " +
+                "@security.getUserId() == returnObject.client.id or " +
+                "@security.manageRestaurant(returnObject.restaurant.id)")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface AllowedToSearch {
         }
     }
 }

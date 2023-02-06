@@ -9,6 +9,7 @@ import com.developer.beverageapi.api.v1.model.input.OrderInput;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerOrderOpenApi;
 import com.developer.beverageapi.core.data.PageWrapper;
 import com.developer.beverageapi.core.data.PageableTranslator;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.EntityNotFoundException;
@@ -128,6 +129,7 @@ public class ControllerOrder implements ControllerOrderOpenApi {
         }
     }
 
+    @CheckSecurity.Orders.AllowedToSearch
     @GetMapping(value = "/{codeOrder}", produces = MediaType.APPLICATION_JSON_VALUE)
     public OrderModel search(@PathVariable String codeOrder) {
         Order order = issuingOrder.searchOrFail(codeOrder);
