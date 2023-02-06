@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.v1.assembler.PaymentModelAssembler;
 import com.developer.beverageapi.api.v1.model.PaymentModel;
 import com.developer.beverageapi.api.v1.model.input.PaymentInput;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerPaymentOpenApi;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.model.Payment;
 import com.developer.beverageapi.domain.repository.RepositoryPayment;
 import com.developer.beverageapi.domain.service.PaymentRegistrationService;
@@ -39,6 +40,7 @@ public class ControllerPayment implements ControllerPaymentOpenApi {
     @Autowired
     private PaymentInputDismantle paymentInputDismantle;
 
+    @CheckSecurity.Payment.AllowedToConsult
     @Override
     @GetMapping
     public ResponseEntity<CollectionModel<PaymentModel>> list(ServletWebRequest request) {
@@ -67,10 +69,11 @@ public class ControllerPayment implements ControllerPaymentOpenApi {
 //                .cacheControl(CacheControl.noStore())
                 .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
                 .eTag(eTag)
-//                .header("ETag", eTag) --> Another opttion
+//                .header("ETag", eTag) --> Another option
                 .body(paymentModels);
     }
 
+    @CheckSecurity.Payment.AllowedToConsult
     @GetMapping(value = "/{paymentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PaymentModel> search(@PathVariable Long paymentId, ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -97,6 +100,7 @@ public class ControllerPayment implements ControllerPaymentOpenApi {
                 .body(paymentModel);
     }
 
+    @CheckSecurity.Payment.AllowedToEdit
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PaymentModel add(@RequestBody @Valid PaymentInput paymentInput) {
@@ -107,6 +111,7 @@ public class ControllerPayment implements ControllerPaymentOpenApi {
         return paymentModelAssembler.toModel(payment);
     }
 
+    @CheckSecurity.Payment.AllowedToEdit
     @PutMapping("/{paymentId}")
     public PaymentModel update(@PathVariable Long paymentId,
                                @RequestBody @Valid PaymentInput paymentInput) {
@@ -119,6 +124,7 @@ public class ControllerPayment implements ControllerPaymentOpenApi {
         return paymentModelAssembler.toModel(currentPayment);
     }
 
+    @CheckSecurity.Payment.AllowedToEdit
     @DeleteMapping("/{paymentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long paymentId) {
