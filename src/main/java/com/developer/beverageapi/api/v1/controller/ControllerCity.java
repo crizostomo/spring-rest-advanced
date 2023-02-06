@@ -3,10 +3,10 @@ package com.developer.beverageapi.api.v1.controller;
 import com.developer.beverageapi.api.ResourceUriHelper;
 import com.developer.beverageapi.api.v1.assembler.CityInputDismantle;
 import com.developer.beverageapi.api.v1.assembler.CityModelAssembler;
-import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerCityOpenApi;
 import com.developer.beverageapi.api.v1.model.CityModel;
 import com.developer.beverageapi.api.v1.model.input.CityInput;
-import com.developer.beverageapi.core.web.BeverageMediaTypes;
+import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerCityOpenApi;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.exception.BusinessException;
 import com.developer.beverageapi.domain.exception.StateNotFoundException;
 import com.developer.beverageapi.domain.model.City;
@@ -42,6 +42,7 @@ public class ControllerCity implements ControllerCityOpenApi {
     @Autowired
     private CityInputDismantle cityInputDismantle;
 
+    @CheckSecurity.Cities.AllowedToConsult
     @GetMapping
     @Override
     public CollectionModel<CityModel> list() {
@@ -51,6 +52,8 @@ public class ControllerCity implements ControllerCityOpenApi {
     }
 
 //    @Deprecated
+
+    @CheckSecurity.Cities.AllowedToConsult
     @Override
     @GetMapping("/{cityId}")
     public CityModel search(@PathVariable Long cityId) {
@@ -59,6 +62,7 @@ public class ControllerCity implements ControllerCityOpenApi {
         return cityModelAssembler.toModel(city);
     }
 
+    @CheckSecurity.Cities.AllowedToEdit
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CityModel add(@RequestBody @Valid CityInput cityInput) {
@@ -77,6 +81,7 @@ public class ControllerCity implements ControllerCityOpenApi {
         }
     }
 
+    @CheckSecurity.Cities.AllowedToEdit
     @PutMapping("/{cityId}")
     public CityModel update(@PathVariable Long cityId, @RequestBody @Valid CityInput cityInput) {
         try {
@@ -92,6 +97,7 @@ public class ControllerCity implements ControllerCityOpenApi {
         }
     }
 
+    @CheckSecurity.Cities.AllowedToEdit
     @DeleteMapping("/{cityId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long cityId) {

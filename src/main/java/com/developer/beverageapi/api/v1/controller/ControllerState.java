@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.v1.assembler.StateModelAssembler;
 import com.developer.beverageapi.api.v1.model.StateModel;
 import com.developer.beverageapi.api.v1.model.input.StateInput;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerStateOpenApi;
+import com.developer.beverageapi.core.security.CheckSecurity;
 import com.developer.beverageapi.domain.model.State;
 import com.developer.beverageapi.domain.repository.RepositoryState;
 import com.developer.beverageapi.domain.service.StateRegistrationService;
@@ -33,6 +34,7 @@ public class ControllerState implements ControllerStateOpenApi {
     @Autowired
     private StateInputDismantle stateInputDismantle;
 
+    @CheckSecurity.States.AllowedToConsult
     @GetMapping
     public CollectionModel<StateModel> list() {
         List<State> allStates = repositoryState.findAll();
@@ -40,6 +42,7 @@ public class ControllerState implements ControllerStateOpenApi {
         return stateModelAssembler.toCollectionModel(allStates);
     }
 
+    @CheckSecurity.States.AllowedToConsult
     @GetMapping("/{stateId}")
     public StateModel search(@PathVariable Long stateId) {
         State state = registrationState.searchOrFail(stateId);
@@ -47,6 +50,7 @@ public class ControllerState implements ControllerStateOpenApi {
         return stateModelAssembler.toModel(state);
     }
 
+    @CheckSecurity.States.AllowedToEdit
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public StateModel add(@RequestBody @Valid StateInput stateInput) {
@@ -57,6 +61,7 @@ public class ControllerState implements ControllerStateOpenApi {
         return stateModelAssembler.toModel(state);
     }
 
+    @CheckSecurity.States.AllowedToEdit
     @PutMapping("/{stateId}")
     public StateModel update(@PathVariable Long stateId,
                              @RequestBody @Valid StateInput stateInput) {
@@ -69,6 +74,7 @@ public class ControllerState implements ControllerStateOpenApi {
         return stateModelAssembler.toModel(currentState);
     }
 
+    @CheckSecurity.States.AllowedToEdit
     @DeleteMapping("/{stateId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long stateId) {
