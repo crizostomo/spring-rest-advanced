@@ -16,6 +16,7 @@ delete from user_group;
 delete from `order`;
 delete from order_item;
 delete from product_photo;
+delete from oauth_client_details;
 
 set foreign_key_checks = 1;
 
@@ -163,3 +164,36 @@ values (6, uuid(), 3, 1, 2, 1, '18405-321', 'Santa Catarina Road', '222', null, 
 
 insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values
 (7, 2, 1, 2, 79, 149, 'Extra Bacon');
+
+insert into oauth_client_details (
+  client_id, resource_ids, client_secret,
+  scope, authorized_grant_types, web_server_redirect_uri, authorities,
+  access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+  'beverage-web', null, '$2a$12$CKD6mNvI74MOLsNAKA4e1.KvPEC2kNo0OyYuEpreRzoXJ3lDVfK8e',
+  'READ,WRITE', 'password', null, null,
+  60 * 60 * 6, 60 * 24 * 60 * 60, null
+);
+
+insert into oauth_client_details (
+  client_id, resource_ids, client_secret,
+  scope, authorized_grant_types, web_server_redirect_uri, authorities,
+  access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+  'beverage-analytics', null, '$2a$12$CKD6mNvI74MOLsNAKA4e1.KvPEC2kNo0OyYuEpreRzoXJ3lDVfK8e',
+  'READ,WRITE', 'authorization_code', 'http://www.beverage-analytics.local:8082', null,
+  null, null, null
+);
+
+insert into oauth_client_details (
+  client_id, resource_ids, client_secret,
+  scope, authorized_grant_types, web_server_redirect_uri, authorities,
+  access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+  'invoice', null, '$2a$12$CKD6mNvI74MOLsNAKA4e1.KvPEC2kNo0OyYuEpreRzoXJ3lDVfK8e',
+  'READ,WRITE', 'client_credentials', null, 'CONSULT_ORDERS,GENERATE_REPORTS',
+  null, null, null
+);
