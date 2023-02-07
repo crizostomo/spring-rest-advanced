@@ -37,4 +37,9 @@ public class Security {
     public boolean manageRestaurantOfOrder(String codeOrder) {
         return repositoryOrder.isOrderManagedBy(codeOrder, getUserId());
     }
+
+    public boolean userAuthenticatedEqual(Long userId) {
+        return getUserId() != null && userId != null
+                && getUserId().equals(userId);
+    }
 }
