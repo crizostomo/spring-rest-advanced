@@ -42,4 +42,15 @@ public class Security {
         return getUserId() != null && userId != null
                 && getUserId().equals(userId);
     }
+
+    public boolean hasAuthority(String authorityName) {
+        return getAuthentication().getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authorityName));
+    }
+
+    public boolean allowedToManageOrders(String codeOrder) {
+
+        return hasAuthority("SCOPE_WRITE") && (hasAuthority("MANAGE_ORDERS")
+                || manageRestaurantOfOrder(codeOrder));
+    }
 }

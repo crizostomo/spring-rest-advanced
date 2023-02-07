@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.assembler;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.controller.ControllerOrder;
 import com.developer.beverageapi.api.v1.model.OrderModel;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Order;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     public OrderModelAssembler() {
         super(ControllerOrder.class, OrderModel.class);
     }
@@ -31,16 +35,18 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
 
         orderModel.add(instantiateLinks.linkToOrders("orders"));
 
-        if (order.canBeConfirmed()) {
-            orderModel.add(instantiateLinks.linkToOrderConfirmation(order.getCode(), "confirm"));
-        }
+        if (security.allowedToManageOrders(order.getCode())) {
+            if (order.canBeConfirmed()) {
+                orderModel.add(instantiateLinks.linkToOrderConfirmation(order.getCode(), "confirm"));
+            }
 
-        if (order.canBeCancelled()) {
-            orderModel.add(instantiateLinks.linkToOrderCancellation(order.getCode(), "cancel"));
-        }
+            if (order.canBeCancelled()) {
+                orderModel.add(instantiateLinks.linkToOrderCancellation(order.getCode(), "cancel"));
+            }
 
-        if (order.canBeDelivered()) {
-            orderModel.add(instantiateLinks.linkToOrderDelivery(order.getCode(), "delivery"));
+            if (order.canBeDelivered()) {
+                orderModel.add(instantiateLinks.linkToOrderDelivery(order.getCode(), "delivery"));
+            }
         }
 
         orderModel.getRestaurant().add(instantiateLinks.linkToRestaurant(order.getRestaurant().getId()));

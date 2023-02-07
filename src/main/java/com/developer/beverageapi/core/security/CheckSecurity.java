@@ -71,8 +71,7 @@ public @interface CheckSecurity {
         public @interface AllowedToCreate {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('MANAGE_ORDERS') or " +
-                "@security.manageRestaurantOfOrder(#codeOrder))")
+        @PreAuthorize("@security.allowedToManageOrders(#codeOrder)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToManageOrders {
