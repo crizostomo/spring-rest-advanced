@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.assembler;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.controller.ControllerRestaurant;
 import com.developer.beverageapi.api.v1.model.RestaurantBasicModel;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,10 @@ public class RestaurantBasicModelAssembler extends RepresentationModelAssemblerS
     @Autowired
     private InstantiateLinks instantiateLinks;
 
-    public RestaurantBasicModelAssembler () {
+    @Autowired
+    private Security security;
+
+    public RestaurantBasicModelAssembler() {
         super(ControllerRestaurant.class, RestaurantBasicModel.class);
     }
 
@@ -29,14 +33,24 @@ public class RestaurantBasicModelAssembler extends RepresentationModelAssemblerS
 
         modelMapper.map(restaurant, restaurantBasicModel);
 
-        restaurantBasicModel.add(instantiateLinks.linkToRestaurants("restaurants"));
+        if (security.allowedToConsultRestaurants()) {
+            restaurantBasicModel.add(instantiateLinks.linkToRestaurants("restaurants"));
+        }
 
-        restaurantBasicModel.getKitchen().add(instantiateLinks.linkToKitchen(restaurant.getKitchen().getId()));
+        if (security.allowedToConsultKitchens()) {
+            restaurantBasicModel.getKitchen().add(instantiateLinks.linkToKitchen(restaurant.getKitchen().getId()));
+        }
 
         return restaurantBasicModel;
     }
 
     public CollectionModel<RestaurantBasicModel> toCollectionModel(Iterable<? extends Restaurant> entities) {
-        return super.toCollectionModel(entities).add(instantiateLinks.linkToRestaurants());
+        CollectionModel<RestaurantBasicModel> collectionModel = super.toCollectionModel(entities);
+
+        if (security.allowedToConsultRestaurants()) {
+            collectionModel.add(instantiateLinks.linkToRestaurants());
+        }
+
+        return collectionModel;
     }
 }

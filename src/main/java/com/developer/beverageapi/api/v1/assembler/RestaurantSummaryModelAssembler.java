@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.assembler;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.controller.ControllerRestaurant;
 import com.developer.beverageapi.api.v1.model.RestaurantSummaryModel;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class RestaurantSummaryModelAssembler extends RepresentationModelAssemble
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     public RestaurantSummaryModelAssembler() {
         super(ControllerRestaurant.class, RestaurantSummaryModel.class);
     }
@@ -29,12 +33,19 @@ public class RestaurantSummaryModelAssembler extends RepresentationModelAssemble
 
         modelMapper.map(restaurant, restaurantSummaryModel);
 
-        restaurantSummaryModel.add(instantiateLinks.linkToRestaurants("restaurants"));
+        if (security.allowedToConsultRestaurants()) {
+            restaurantSummaryModel.add(instantiateLinks.linkToRestaurants("restaurants"));
+        }
 
         return restaurantSummaryModel;
     }
 
     public CollectionModel<RestaurantSummaryModel> toCollectionModel(Iterable<? extends Restaurant> entities) {
-        return super.toCollectionModel(entities).add(instantiateLinks.linkToRestaurants());
+        CollectionModel<RestaurantSummaryModel> collectionModel = super.toCollectionModel(entities);
+
+        if (security.allowedToConsultRestaurants()) {
+            collectionModel.add(instantiateLinks.linkToRestaurants());
+        }
+        return collectionModel;
     }
 }

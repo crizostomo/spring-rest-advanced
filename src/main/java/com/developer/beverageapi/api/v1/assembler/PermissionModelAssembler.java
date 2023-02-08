@@ -2,6 +2,7 @@ package com.developer.beverageapi.api.v1.assembler;
 
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.model.PermissionModel;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Permission;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class PermissionModelAssembler implements RepresentationModelAssembler<Pe
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     public PermissionModel toModel(Permission permission) {
         PermissionModel permissionModel = modelMapper.map(permission, PermissionModel.class);
 
@@ -26,6 +30,11 @@ public class PermissionModelAssembler implements RepresentationModelAssembler<Pe
 
     @Override
     public CollectionModel<PermissionModel> toCollectionModel(Iterable<? extends Permission> entities) {
-        return RepresentationModelAssembler.super.toCollectionModel(entities).add(instantiateLinks.linkToPermissions());
+        CollectionModel<PermissionModel> collectionModel = RepresentationModelAssembler.super.toCollectionModel(entities);
+
+        if(security.allowedToConsultUsersGroupsPermissions()) {
+            collectionModel.add(instantiateLinks.linkToPermissions());
+        }
+        return collectionModel;
     }
 }

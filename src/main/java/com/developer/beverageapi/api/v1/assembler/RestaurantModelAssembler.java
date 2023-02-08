@@ -2,8 +2,9 @@ package com.developer.beverageapi.api.v1.assembler;
 
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.controller.ControllerRestaurant;
-import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.api.v1.model.RestaurantModel;
+import com.developer.beverageapi.core.security.Security;
+import com.developer.beverageapi.domain.model.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -19,6 +20,9 @@ public class RestaurantModelAssembler extends RepresentationModelAssemblerSuppor
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     public RestaurantModelAssembler() {
         super(ControllerRestaurant.class, RestaurantModel.class);
     }
@@ -28,42 +32,64 @@ public class RestaurantModelAssembler extends RepresentationModelAssemblerSuppor
         RestaurantModel restaurantModel = createModelWithId(restaurant.getId(), restaurant);
         modelMapper.map(restaurant, restaurantModel);
 
-        restaurantModel.add(instantiateLinks.linkToRestaurants("restaurants"));
+        if (security.allowedToConsultRestaurants()) {
+            restaurantModel.add(instantiateLinks.linkToRestaurants("restaurants"));
+        }
+
+        if (security.allowedToManageRecordRestaurants()) {
+            if (restaurant.activationAllowed()) {
+                restaurantModel.add(instantiateLinks.linkToRestaurantActive(restaurantModel.getId(), "active"));
+            }
+
+            if (restaurant.inactivationAllowed()) {
+                restaurantModel.add(instantiateLinks.linkToRestaurantActive(restaurantModel.getId(), "inactive"));
+            }
+        }
+
+        if (security.allowedToManageRestaurantOperation(restaurant.getId())) {
+            if (restaurant.openingAllowed()) {
+                restaurantModel.add(instantiateLinks.linkToRestaurantActive(restaurantModel.getId(), "open"));
+            }
+
+            if (restaurant.closingAllowed()) {
+                restaurantModel.add(instantiateLinks.linkToRestaurantActive(restaurantModel.getId(), "close"));
+            }
+        }
+
+        if (security.allowedToConsultRestaurants()) {
+            restaurantModel.add(instantiateLinks.linkToRestaurantResponsible(restaurantModel.getId(), "products"));
+        }
+
+        if (security.allowedToConsultKitchens()) {
+            restaurantModel.getKitchen().add(instantiateLinks.linkToKitchen(restaurant.getKitchen().getId()));
+        }
+
+        if (security.allowedToConsultCities()) {
+            if (restaurantModel.getAddress() != null && restaurantModel.getAddress().getCity() != null) {
+                restaurantModel.getAddress().getCity().add(instantiateLinks.linkToCity(restaurant.getAddress().getCity().getId()));
+            }
+        }
 
 //        restaurantModel.getKitchen().add(instantiateLinks.linkToCity(restaurant.getAddress().getCity().getId()));
 
-        restaurantModel.add(instantiateLinks.linkToRestaurantPayment(restaurant.getId(), "payments"));
-
-        restaurantModel.add(instantiateLinks.linkToRestaurantResponsible(restaurantModel.getId(), "responsible"));
-
-        if (restaurant.activationAllowed()) {
-            restaurantModel.add(instantiateLinks.linkToRestaurantActive(restaurantModel.getId(), "active"));
+        if (security.allowedToConsultRestaurants()) {
+            restaurantModel.add(instantiateLinks.linkToRestaurantPayment(restaurant.getId(), "payments"));
         }
 
-        if (restaurant.inactivationAllowed()) {
-            restaurantModel.add(instantiateLinks.linkToRestaurantActive(restaurantModel.getId(), "inactive"));
-        }
-
-        if (restaurant.openingAllowed()) {
-            restaurantModel.add(instantiateLinks.linkToRestaurantActive(restaurantModel.getId(), "open"));
-        }
-
-        if (restaurant.closingAllowed()) {
-            restaurantModel.add(instantiateLinks.linkToRestaurantActive(restaurantModel.getId(), "close"));
-        }
-
-        restaurantModel.add(instantiateLinks.linkToRestaurantResponsible(restaurantModel.getId(), "products"));
-
-        restaurantModel.getKitchen().add(instantiateLinks.linkToKitchen(restaurant.getKitchen().getId()));
-
-        if (restaurantModel.getAddress() != null && restaurantModel.getAddress().getCity() != null) {
-            restaurantModel.getAddress().getCity().add(instantiateLinks.linkToCity(restaurant.getAddress().getCity().getId()));
+        if (security.allowedToManageRecordRestaurants()) {
+            restaurantModel.add(instantiateLinks.linkToRestaurantResponsible(restaurantModel.getId(), "responsible"));
         }
 
         return restaurantModel;
     }
 
     public CollectionModel<RestaurantModel> toCollectionModel(Iterable<? extends Restaurant> entities) {
-        return super.toCollectionModel(entities).add(instantiateLinks.linkToRestaurants());
+        CollectionModel<RestaurantModel> collectionModel = super.toCollectionModel(entities);
+
+        if (security.allowedToConsultRestaurants()) {
+            collectionModel.add(instantiateLinks.linkToRestaurants());
+        }
+
+        return collectionModel;
     }
 }

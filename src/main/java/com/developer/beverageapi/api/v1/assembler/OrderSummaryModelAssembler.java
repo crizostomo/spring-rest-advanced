@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.assembler;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.controller.ControllerOrder;
 import com.developer.beverageapi.api.v1.model.OrderSummaryModel;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Order;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class OrderSummaryModelAssembler extends RepresentationModelAssemblerSupp
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     public OrderSummaryModelAssembler() {
         super(ControllerOrder.class, OrderSummaryModel.class);
     }
@@ -28,11 +32,17 @@ public class OrderSummaryModelAssembler extends RepresentationModelAssemblerSupp
 
         modelMapper.map(order, orderSummaryModel);
 
-        orderSummaryModel.add(instantiateLinks.linkToOrders("orders"));
+        if (security.allowedToSearchOrders()) {
+            orderSummaryModel.add(instantiateLinks.linkToOrders("orders"));
+        }
 
-        orderSummaryModel.getRestaurant().add(instantiateLinks.linkToRestaurant(order.getRestaurant().getId()));
+        if (security.allowedToConsultRestaurants()) {
+            orderSummaryModel.getRestaurant().add(instantiateLinks.linkToRestaurant(order.getRestaurant().getId()));
+        }
 
-        orderSummaryModel.getClient().add(instantiateLinks.linkToUser(order.getClient().getId()));
+        if (security.allowedToConsultUsersGroupsPermissions()) {
+            orderSummaryModel.getClient().add(instantiateLinks.linkToUser(order.getClient().getId()));
+        }
 
         return orderSummaryModel;
     }

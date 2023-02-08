@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.v1.assembler.GroupModelAssembler;
 import com.developer.beverageapi.api.v1.model.GroupModel;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerUserGroupOpenApi;
 import com.developer.beverageapi.core.security.CheckSecurity;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.User;
 import com.developer.beverageapi.domain.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class ControllerUserGroup implements ControllerUserGroupOpenApi {
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     @CheckSecurity.UsersGroupsPermissions.AllowedToConsult
     @Override
     @GetMapping
@@ -34,13 +38,16 @@ public class ControllerUserGroup implements ControllerUserGroupOpenApi {
         User user = registrationUser.searchOrFail(userId);
 
         CollectionModel<GroupModel> groupModels = groupModelAssembler.toCollectionModel(user.getGroups())
-                .removeLinks()
-                .add(instantiateLinks.linkToUsersGroupAssociation(userId, "association"));
+                .removeLinks();
 
-        groupModels.getContent().forEach(groupModel -> {
-            groupModel.add(instantiateLinks.linkToUsersGroupRemoveAssociation(
-                    userId, groupModel.getId(), "removeAssociation"));
-        });
+        if (security.allowedToEditUsersGroupsPermissions()) {
+            groupModels.add(instantiateLinks.linkToUsersGroupAssociation(userId, "association"));
+
+            groupModels.getContent().forEach(groupModel -> {
+                groupModel.add(instantiateLinks.linkToUsersGroupRemoveAssociation(
+                        userId, groupModel.getId(), "removeAssociation"));
+            });
+        }
 
         return groupModels;
     }

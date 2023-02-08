@@ -17,7 +17,7 @@ public @interface CheckSecurity {
         public @interface AllowedToManageRecord {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@security.allowedToConsultKitchens()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToConsult {
@@ -25,21 +25,22 @@ public @interface CheckSecurity {
     }
 
     public @interface Restaurants {
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_RESTAURANTS')")
+        @PreAuthorize("@security.allowedToManageRecordRestaurants()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToManageRecord {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@security.allowedToConsultRestaurants()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToConsult {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and " +
-                "(hasAuthority('EDIT_RESTAURANTS') or " +
-                "@security.manageRestaurant(#restaurantId))")
+//        @PreAuthorize("hasAuthority('SCOPE_WRITE') and " +
+//                "(hasAuthority('EDIT_RESTAURANTS') or " +
+//                "@security.manageRestaurant(#restaurantId))")
+        @PreAuthorize("@security.allowedToManageRestaurantOperation(#restaurantId)")
         // #restaurantId --> get access to the restaurantId in the controller
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
@@ -57,9 +58,7 @@ public @interface CheckSecurity {
         public @interface AllowedToGet {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and (hasAuthority('CONSULT_ORDERS') or " +
-                "@security.userAuthenticatedEqual(#filter.clientId) or " +
-                "@security.manageRestaurant(#filter.restaurant.id))")
+        @PreAuthorize("@security.allowedToSearchOrders(#filter.clientId, #filter.restaurant.id)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToSearch {
@@ -85,7 +84,8 @@ public @interface CheckSecurity {
         public @interface AllowedToEdit {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+//        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@security.allowedToConsultPayments()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToConsult {
@@ -99,7 +99,7 @@ public @interface CheckSecurity {
         public @interface AllowedToEdit {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@security.allowedToConsultCities()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToConsult {
@@ -113,7 +113,7 @@ public @interface CheckSecurity {
         public @interface AllowedToEdit {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@security.allowedToConsultStates()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToConsult {
@@ -134,13 +134,14 @@ public @interface CheckSecurity {
         public @interface AllowedToChangeUser {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_USERS_GROUPS_PERMISSIONS')")
+//        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_USERS_GROUPS_PERMISSIONS')")
+        @PreAuthorize("@security.allowedToEditUsersGroupsPermissions()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToEdit {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('EDIT_USERS_GROUPS_PERMISSIONS')")
+        @PreAuthorize("@security.allowedToConsultUsersGroupsPermissions()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToConsult {
@@ -148,7 +149,7 @@ public @interface CheckSecurity {
     }
 
     public @interface Statistics {
-        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('GENERATE_REPORTS')")
+        @PreAuthorize("@security.allowedToConsultStatistics()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface AllowedToConsult {

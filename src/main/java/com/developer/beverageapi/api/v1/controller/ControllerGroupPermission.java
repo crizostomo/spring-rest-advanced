@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.v1.assembler.PermissionModelAssembler;
 import com.developer.beverageapi.api.v1.model.PermissionModel;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerGroupPermissionsOpenApi;
 import com.developer.beverageapi.core.security.CheckSecurity;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Group;
 import com.developer.beverageapi.domain.service.GroupRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,20 +28,27 @@ public class ControllerGroupPermission implements ControllerGroupPermissionsOpen
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     @CheckSecurity.UsersGroupsPermissions.AllowedToConsult
     @GetMapping
     public CollectionModel<PermissionModel> list(@PathVariable Long groupId) {
         Group group = registrationGroup.searchOrFail(groupId);
 
         CollectionModel<PermissionModel> permissionModels = permissionModelAssembler.toCollectionModel(group.getPermissions())
-                .removeLinks()
-                .add(instantiateLinks.linkToPermissionsGroup(groupId))
-                .add(instantiateLinks.linkToPermissionsGroupAssociation(groupId, "association"));
+                .removeLinks();
 
-        permissionModels.getContent().forEach(permissionModel -> {
-            permissionModel.add(instantiateLinks.linkToPermissionsGroupRemoveAssociation(
-                    groupId, permissionModel.getId(), "removeAssociation"));
-        });
+        permissionModels.add(instantiateLinks.linkToPermissionsGroup(groupId));
+
+        if (security.allowedToEditUsersGroupsPermissions()) {
+            permissionModels.add(instantiateLinks.linkToPermissionsGroupAssociation(groupId, "association"));
+
+            permissionModels.getContent().forEach(permissionModel -> {
+                permissionModel.add(instantiateLinks.linkToPermissionsGroupRemoveAssociation(
+                        groupId, permissionModel.getId(), "removeAssociation"));
+            });
+        }
 
         return permissionModels;
     }

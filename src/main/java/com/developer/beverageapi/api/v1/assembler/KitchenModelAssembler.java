@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.assembler;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.controller.ControllerKitchen;
 import com.developer.beverageapi.api.v1.model.KitchenModel;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Kitchen;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class KitchenModelAssembler extends RepresentationModelAssemblerSupport<K
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     public KitchenModelAssembler() {
         super(ControllerKitchen.class, KitchenModel.class);
     }
@@ -27,7 +31,9 @@ public class KitchenModelAssembler extends RepresentationModelAssemblerSupport<K
         KitchenModel kitchenModel = createModelWithId(kitchen.getId(), kitchen);
         modelMapper.map(kitchen, KitchenModel.class);
 
-        kitchenModel.add(instantiateLinks.linkToKitchens("kitchens"));
+        if (security.allowedToConsultKitchens()) {
+            kitchenModel.add(instantiateLinks.linkToKitchens("kitchens"));
+        }
 
         return kitchenModel;
     }

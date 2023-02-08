@@ -1,6 +1,7 @@
 package com.developer.beverageapi.api.v1.controller;
 
 import com.developer.beverageapi.api.v1.InstantiateLinks;
+import com.developer.beverageapi.core.security.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
@@ -15,20 +16,46 @@ public class ControllerRootEntryPoint {
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     @GetMapping
     public RootEntryPointModel root() {
         var rootEntryPointModel = new RootEntryPointModel();
 
-        rootEntryPointModel.add(instantiateLinks.linkToKitchens("kitchens"));
-        rootEntryPointModel.add(instantiateLinks.linkToOrders("orders"));
-        rootEntryPointModel.add(instantiateLinks.linkToRestaurants("restaurants"));
-        rootEntryPointModel.add(instantiateLinks.linkToGroups("groups"));
-        rootEntryPointModel.add(instantiateLinks.linkToUsers("users"));
-        rootEntryPointModel.add(instantiateLinks.linkToPermissions("permissions"));
-        rootEntryPointModel.add(instantiateLinks.linkToPayment("payments"));
-        rootEntryPointModel.add(instantiateLinks.linkToStates("states"));
-        rootEntryPointModel.add(instantiateLinks.linkToCities("cities"));
-        rootEntryPointModel.add(instantiateLinks.linkToStatistics("statistics"));
+        if (security.allowedToConsultKitchens()) {
+            rootEntryPointModel.add(instantiateLinks.linkToKitchens("kitchens"));
+        }
+
+        if (security.allowedToSearchOrders()) {
+            rootEntryPointModel.add(instantiateLinks.linkToOrders("orders"));
+        }
+
+        if (security.allowedToConsultRestaurants()) {
+            rootEntryPointModel.add(instantiateLinks.linkToRestaurants("restaurants"));
+        }
+
+        if (security.allowedToConsultUsersGroupsPermissions()) {
+            rootEntryPointModel.add(instantiateLinks.linkToGroups("groups"));
+            rootEntryPointModel.add(instantiateLinks.linkToUsers("users"));
+            rootEntryPointModel.add(instantiateLinks.linkToPermissions("permissions"));
+        }
+
+        if (security.allowedToConsultPayments()) {
+            rootEntryPointModel.add(instantiateLinks.linkToPayment("payments"));
+        }
+
+        if (security.allowedToConsultPayments()) {
+            rootEntryPointModel.add(instantiateLinks.linkToStates("states"));
+        }
+
+        if (security.allowedToConsultCities()) {
+            rootEntryPointModel.add(instantiateLinks.linkToCities("cities"));
+        }
+
+        if (security.allowedToConsultStatistics()) {
+            rootEntryPointModel.add(instantiateLinks.linkToStatistics("statistics"));
+        }
 
         return rootEntryPointModel;
     }

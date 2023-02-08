@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.assembler;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.controller.ControllerGroup;
 import com.developer.beverageapi.api.v1.model.GroupModel;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Group;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class GroupModelAssembler extends RepresentationModelAssemblerSupport<Gro
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     public GroupModelAssembler() {
         super(ControllerGroup.class, GroupModel.class);
     }
@@ -28,15 +32,23 @@ public class GroupModelAssembler extends RepresentationModelAssemblerSupport<Gro
         GroupModel groupModel = createModelWithId(group.getId(), group);
         modelMapper.map(group, groupModel);
 
-        groupModel.add(instantiateLinks.linkToGroups("groups"));
+        if (security.allowedToConsultUsersGroupsPermissions()) {
+            groupModel.add(instantiateLinks.linkToGroups("groups"));
 
-        groupModel.add(instantiateLinks.linkToPermissionsGroup(group.getId(), "permissions"));
+            groupModel.add(instantiateLinks.linkToPermissionsGroup(group.getId(), "permissions"));
+        }
 
         return groupModel;
     }
 
     @Override
     public CollectionModel<GroupModel> toCollectionModel(Iterable<? extends Group> entities) {
-        return super.toCollectionModel(entities).add(instantiateLinks.linkToGroups());
+        CollectionModel<GroupModel> collectionModel = super.toCollectionModel(entities);
+
+        if (security.allowedToConsultUsersGroupsPermissions()) {
+            collectionModel.add(instantiateLinks.linkToGroups());
+        }
+
+        return collectionModel;
     }
 }

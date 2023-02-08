@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.assembler;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.controller.ControllerUser;
 import com.developer.beverageapi.api.v1.model.UserModel;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class UserModelAssembler extends RepresentationModelAssemblerSupport<User
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     public UserModelAssembler() {
         super(ControllerUser.class, UserModel.class);
     }
@@ -28,9 +32,11 @@ public class UserModelAssembler extends RepresentationModelAssemblerSupport<User
 
         modelMapper.map(user, userModel);
 
-        userModel.add(instantiateLinks.linkToUsers("users"));
+        if (security.allowedToEditUsersGroupsPermissions()) {
+            userModel.add(instantiateLinks.linkToUsers("users"));
 
-        userModel.add(instantiateLinks.linkToUserGroups(userModel.getId(), "users-group"));
+            userModel.add(instantiateLinks.linkToUserGroups(userModel.getId(), "users-group"));
+        }
 
         return userModel;
     }

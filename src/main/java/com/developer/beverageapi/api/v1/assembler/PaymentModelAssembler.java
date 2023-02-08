@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.assembler;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.controller.ControllerPayment;
 import com.developer.beverageapi.api.v1.model.PaymentModel;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Payment;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class PaymentModelAssembler extends RepresentationModelAssemblerSupport<P
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     public PaymentModelAssembler() {
         super(ControllerPayment.class, PaymentModel.class);
     }
@@ -29,12 +33,19 @@ public class PaymentModelAssembler extends RepresentationModelAssemblerSupport<P
 
         modelMapper.map(payment, paymentModel);
 
-        paymentModel.add(instantiateLinks.linkToPayment("payments"));
+        if (security.allowedToConsultPayments()) {
+            paymentModel.add(instantiateLinks.linkToPayment("payments"));
+        }
 
         return paymentModel;
     }
 
     public CollectionModel<PaymentModel> toCollectionModel(Iterable<? extends Payment> entities) {
-        return super.toCollectionModel(entities).add(instantiateLinks.linkToPayment());
+        CollectionModel<PaymentModel> collectionModel = super.toCollectionModel(entities);
+
+        if (security.allowedToConsultPayments()) {
+            collectionModel.add(instantiateLinks.linkToPayment());
+        }
+        return collectionModel;
     }
 }

@@ -5,6 +5,7 @@ import com.developer.beverageapi.api.v1.assembler.UserModelAssembler;
 import com.developer.beverageapi.api.v1.model.UserModel;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerRestaurantUserResponsibleOpenApi;
 import com.developer.beverageapi.core.security.CheckSecurity;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.service.RestaurantRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class ControllerRestaurantUserResponsible implements ControllerRestaurant
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     @CheckSecurity.Restaurants.AllowedToConsult
     @GetMapping
     public CollectionModel<UserModel> list(@PathVariable Long restaurantId) {
@@ -34,15 +38,18 @@ public class ControllerRestaurantUserResponsible implements ControllerRestaurant
 
         CollectionModel<UserModel> userModels = userModelAssembler
                 .toCollectionModel(restaurant.getResponsible())
-                .removeLinks()
-                .add(instantiateLinks.linkToRestaurantResponsible(restaurantId))
-                .add(instantiateLinks.linkToRestaurantResponsibleAssociation(restaurantId, "association"));
+                .removeLinks();
 
-        userModels.getContent().stream().forEach(userModel -> {
-            userModel.add(instantiateLinks.linkToRestaurantResponsibleRemoveAssociation(
-                    restaurantId, userModel.getId(), "removeAssociation"
-            ));
-        });
+        userModels.add(instantiateLinks.linkToRestaurantResponsible(restaurantId));
+
+        if (security.allowedToManageRecordRestaurants()) {
+            userModels.add(instantiateLinks.linkToRestaurantResponsibleAssociation(restaurantId, "association"));
+
+            userModels.getContent().stream().forEach(userModel -> {
+                userModel.add(instantiateLinks.linkToRestaurantResponsibleRemoveAssociation(
+                        restaurantId, userModel.getId(), "removeAssociation"));
+            });
+        }
 
         return userModels;
     }

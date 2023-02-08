@@ -6,6 +6,7 @@ import com.developer.beverageapi.api.v1.model.PaymentModel;
 import com.developer.beverageapi.api.v1.model.input.PaymentInput;
 import com.developer.beverageapi.api.v1.swaggerapi.controller.ControllerPaymentOpenApi;
 import com.developer.beverageapi.core.security.CheckSecurity;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Payment;
 import com.developer.beverageapi.domain.repository.RepositoryPayment;
 import com.developer.beverageapi.domain.service.PaymentRegistrationService;
@@ -39,6 +40,9 @@ public class ControllerPayment implements ControllerPaymentOpenApi {
 
     @Autowired
     private PaymentInputDismantle paymentInputDismantle;
+
+    @Autowired
+    private Security security;
 
     @CheckSecurity.Payment.AllowedToConsult
     @Override

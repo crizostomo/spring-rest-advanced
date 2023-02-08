@@ -33,7 +33,9 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
         OrderModel orderModel = createModelWithId(order.getCode(), order);
         modelMapper.map(order, orderModel);
 
-        orderModel.add(instantiateLinks.linkToOrders("orders"));
+        if (security.allowedToSearchOrders()) {
+            orderModel.add(instantiateLinks.linkToOrders("orders"));
+        }
 
         if (security.allowedToManageOrders(order.getCode())) {
             if (order.canBeConfirmed()) {
@@ -49,18 +51,28 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
             }
         }
 
-        orderModel.getRestaurant().add(instantiateLinks.linkToRestaurant(order.getRestaurant().getId()));
+        if (security.allowedToConsultRestaurants()) {
+            orderModel.getRestaurant().add(instantiateLinks.linkToRestaurant(order.getRestaurant().getId()));
+        }
 
-        orderModel.getClient().add(instantiateLinks.linkToUser(order.getClient().getId()));
+        if (security.allowedToConsultUsersGroupsPermissions()) {
+            orderModel.getClient().add(instantiateLinks.linkToUser(order.getClient().getId()));
+        }
 
-        orderModel.getPayment().add(instantiateLinks.linkToPayment(order.getPayment().getId()));
+        if (security.allowedToConsultPayments()) {
+            orderModel.getPayment().add(instantiateLinks.linkToPayment(order.getPayment().getId()));
+        }
 
-//        orderModel.getDeliveryAddress().getCity().add(instantiateLinks.linkToCity(order.getAddress().getCity().getId()));
+//        if (security.allowedToConsultCities()) {
+//            orderModel.getDeliveryAddress().getCity().add(instantiateLinks.linkToCity(order.getAddress().getCity().getId()));
+//        }
         // when calling the endpoint orders/{codeOrder}
 
-        orderModel.getItems().forEach(item -> {
-            item.add(instantiateLinks.linkToProduct(orderModel.getRestaurant().getId(), item.getId(), "product"));
-        });
+        if (security.allowedToConsultRestaurants()) {
+            orderModel.getItems().forEach(item -> {
+                item.add(instantiateLinks.linkToProduct(orderModel.getRestaurant().getId(), item.getId(), "product"));
+            });
+        }
 
         return orderModel;
     }

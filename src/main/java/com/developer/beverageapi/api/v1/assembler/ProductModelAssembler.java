@@ -3,6 +3,7 @@ package com.developer.beverageapi.api.v1.assembler;
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.api.v1.controller.ControllerRestaurantProduct;
 import com.developer.beverageapi.api.v1.model.ProductModel;
+import com.developer.beverageapi.core.security.Security;
 import com.developer.beverageapi.domain.model.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class ProductModelAssembler extends RepresentationModelAssemblerSupport<P
     @Autowired
     private InstantiateLinks instantiateLinks;
 
+    @Autowired
+    private Security security;
+
     public ProductModelAssembler() {
         super(ControllerRestaurantProduct.class, ProductModel.class);
     }
@@ -29,9 +33,12 @@ public class ProductModelAssembler extends RepresentationModelAssemblerSupport<P
 
         modelMapper.map(product, productModel);
 
-        productModel.add(instantiateLinks.linkToProducts(product.getRestaurant().getId(), "products"));
+        if (security.allowedToConsultRestaurants()) {
+            productModel.add(instantiateLinks.linkToProducts(product.getRestaurant().getId(), "products"));
 
-        productModel.add(instantiateLinks.linkToProductPhoto(product.getRestaurant().getId(), productModel.getId(), "photo"));
+            productModel.add(instantiateLinks.linkToProductPhoto(
+                    product.getRestaurant().getId(), productModel.getId(), "photo"));
+        }
 
         return productModel;
     }

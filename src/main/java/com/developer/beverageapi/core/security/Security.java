@@ -53,4 +53,67 @@ public class Security {
         return hasAuthority("SCOPE_WRITE") && (hasAuthority("MANAGE_ORDERS")
                 || manageRestaurantOfOrder(codeOrder));
     }
+
+    public boolean isAuthenticated() {
+        return getAuthentication().isAuthenticated();
+    }
+
+    public boolean hasWriteScope() {
+        return hasAuthority("SCOPE_WRITE");
+    }
+
+    public boolean haReadScope() {
+        return hasAuthority("SCOPE_READ");
+    }
+
+    public boolean allowedToConsultRestaurants() {
+        return hasWriteScope() && isAuthenticated();
+    }
+
+    public boolean allowedToManageRecordRestaurants() {
+        return hasWriteScope() && hasAuthority("EDIT_RESTAURANTS");
+    }
+
+    public boolean allowedToManageRestaurantOperation(Long restaurantId) {
+        return hasWriteScope() && (hasAuthority("EDIT_RESTAURANTS")
+        || manageRestaurant(restaurantId));
+    }
+
+    public boolean allowedToConsultUsersGroupsPermissions() {
+        return haReadScope() && hasAuthority("CONSULT_USERS_GROUPS_PERMISSIONS");
+    }
+
+    public boolean allowedToEditUsersGroupsPermissions() {
+        return hasWriteScope() && hasAuthority("EDIT_USERS_GROUPS_PERMISSIONS");
+    }
+
+    public boolean allowedToSearchOrders(Long clientId, Long restaurantId) {
+        return haReadScope() && (hasAuthority("CONSULT_ORDERS")
+                || userAuthenticatedEqual(clientId)
+                || manageRestaurant(restaurantId));
+    }
+
+    public boolean allowedToSearchOrders() {
+        return isAuthenticated() && haReadScope();
+    }
+
+    public boolean allowedToConsultPayments() {
+        return isAuthenticated() && haReadScope();
+    }
+
+    public boolean allowedToConsultCities() {
+        return isAuthenticated() && haReadScope();
+    }
+
+    public boolean allowedToConsultStates() {
+        return isAuthenticated() && haReadScope();
+    }
+
+    public boolean allowedToConsultKitchens() {
+        return isAuthenticated() && haReadScope();
+    }
+
+    public boolean allowedToConsultStatistics() {
+        return haReadScope() && hasAuthority("GENERATE_REPORTS");
+    }
 }
