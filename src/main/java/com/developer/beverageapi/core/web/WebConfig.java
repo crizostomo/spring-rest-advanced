@@ -17,13 +17,14 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private ApiDeprecationHandler apiDeprecationHandler;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-//                .allowedOrigins("http://localhost:8080/restaurants")
-//                .maxAge(30)
-                .allowedMethods("*");
-    }
+// Commented because it was added another corsConfig class
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+////                .allowedOrigins("http://localhost:8080/restaurants")
+////                .maxAge(30)
+//                .allowedMethods("*");
+//    }
 
 //    @Override
 //    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {

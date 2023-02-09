@@ -71,6 +71,11 @@ beverage:
   storage:
     local:
       photos-directory: /Users/diogo/Documents/Catalog
+  jwt:
+    keystore:
+      jks-location: classpath:keys/beverage.jks
+      password: 654321
+      keypair-alias: beverage
 
 server:
   compression:
