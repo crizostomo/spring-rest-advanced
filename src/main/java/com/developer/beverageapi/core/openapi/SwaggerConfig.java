@@ -25,11 +25,9 @@ import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration
 import springfox.documentation.builders.*;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.ResponseMessage;
-import springfox.documentation.service.Tag;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -109,6 +107,10 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, UserModel.class),
                         UsersModelOpenApi.class))
+
+                .securitySchemes(Arrays.asList(securityScheme()))
+                .securityContexts(Arrays.asList(securityContext()))
+
                 .apiInfo(apiInfoV1())
                 .tags(new Tag("Cities", "It runs cities"),
                         new Tag("Groups", "It runs the users groups"),
@@ -121,6 +123,35 @@ public class SwaggerConfig implements WebMvcConfigurer {
                         new Tag("Users", "It runs users"),
                         new Tag("Statistics", "Beverage Statistics"),
                         new Tag("Permissions", "It describes permissions"));
+    }
+
+    private SecurityScheme securityScheme() {
+        return new OAuthBuilder()
+                .name("Beverage Oauth")
+                .grantTypes(grantTypes())
+                .scopes(scopes())
+                .build();
+    }
+
+    private SecurityContext securityContext() {
+        var securityReference = SecurityReference.builder()
+                .reference("Beverage Oauth")
+                .scopes(scopes().toArray(new AuthorizationScope[0]))
+                .build();
+
+        return SecurityContext.builder()
+                .securityReferences(Arrays.asList(securityReference))
+                .forPaths(PathSelectors.any())
+                .build();
+    }
+
+    private List<GrantType> grantTypes() {
+        return Arrays.asList(new ResourceOwnerPasswordCredentialsGrant("/oauth/token"));
+    }
+
+    private List<AuthorizationScope> scopes() {
+        return Arrays.asList(new AuthorizationScope("READ", "Reading Access"),
+                new AuthorizationScope("Write", "Writing Access"));
     }
 
     @Bean
