@@ -20,7 +20,7 @@ public class NotificationClientOrderConfirmedListener {
 
         var message = EmailService.Message.builder()
                 .subject(order.getRestaurant().getName() + " - Order Confirmed")
-                .body("confirmed-order.html")
+                .body("emails/confirmed-order.html")
                 .variable("order", order)
                 .recipient(order.getClient().getEmail())
                 .build();

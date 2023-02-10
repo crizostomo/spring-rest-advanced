@@ -62,8 +62,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //                .scopes("WRITE", "READ")
 //                .redirectUris("http://client-application")
 ////                .redirectUris("http:/www.beverage-analytics.local:8082") // Class 22.19
-//// http://localhost:8081/oauth/authorize?response_type=code&client_id=beverage-analytics&state=abc&redirect_uri=http://
-//// client-application
+//// http://localhost:8080/oauth/authorize?response_type=code&client_id=beverage-analytics&state=abc&redirect_uri=http://www.beverage-analytics.local:8082&response_type=code
 //                    .and()
 //                .withClient("webadmin")
 //                .authorizedGrantTypes("implicit")

@@ -184,7 +184,7 @@ insert into oauth_client_details (
 values (
   'beverage-analytics', null, '$2a$12$CKD6mNvI74MOLsNAKA4e1.KvPEC2kNo0OyYuEpreRzoXJ3lDVfK8e',
   'READ,WRITE', 'authorization_code', 'http://www.beverage-analytics.local:8082', null,
-  null, null, null
+  null, null, false
 );
 
 insert into oauth_client_details (
