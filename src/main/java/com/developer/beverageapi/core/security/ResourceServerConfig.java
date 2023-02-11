@@ -37,6 +37,8 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 //                .anyRequest().denyAll()
 //                .and()
                 .formLogin().loginPage("/login")
+                .defaultSuccessUrl("http://localhost:8080/oauth/authorize?response_type=code&client_id=" +
+                        "beverage-analytics&state=abc&redirect_uri=http://www.beverage-analytics.local:8082&response_type=code", true)
                     .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**").authenticated()
