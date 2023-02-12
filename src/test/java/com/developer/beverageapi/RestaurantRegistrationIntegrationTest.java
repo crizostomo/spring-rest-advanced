@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 import java.math.BigDecimal;
 
+import com.developer.beverageapi.core.io.Base64ProtocolResolver;
 import com.developer.beverageapi.domain.model.Kitchen;
 import com.developer.beverageapi.domain.model.Restaurant;
 import com.developer.beverageapi.domain.repository.RepositoryKitchen;
@@ -13,9 +14,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -24,8 +27,10 @@ import io.restassured.http.ContentType;
 import util.ResourceUtils;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource("/application-test.yml")
+@AutoConfigureMockMvc
+@ContextConfiguration(initializers = Base64ProtocolResolver.class) // Calls the convertor base64
 public class RestaurantRegistrationIntegrationTest {
 
     private static final String BUSINESS_VIOLATION_RULE_PROBLEM_TYPE = "Violation of business rule";
