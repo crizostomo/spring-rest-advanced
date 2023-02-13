@@ -3,6 +3,7 @@ spring:
     locations: classpath:db/migration,classpath:db/testdata
   datasource:
     url: jdbc:mysql://localhost:3306/beverage?createDatabaseIfNotExist=true&serverTimezone=UTC
+#    url: jdbc:mysql://${DB_HOST:localhost}/beverage?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
     password: root
     hikari:
