@@ -2,8 +2,11 @@ FROM openjdk:11-jre-slim
 
 WORKDIR /app
 
-COPY build/libs/*.jar /app/api.jar
+ARG JAR_FILE
 
-EXPOSE 8080
+COPY build/libs/*.jar /app/api.jar
+# COPY build/libs/${JAR_FILE} /app/api.jar
+
+EXPOSE ${PORT}
 
 CMD ["java", "-jar", "api.jar"]

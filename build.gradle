@@ -88,3 +88,47 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+task buildPackage(dependsOn: [bootJar]) {
+    doLast {
+        copy {
+            from "${rootDir}"
+            include "Dockerfile"
+            into "${buildDir}/openshift"
+            expand(JAR_FILE: bootJar.archiveName, PORT: 8080)
+        }
+        copy {
+            from "${buildDir}/libs"
+            include "$bootJar.archiveName"
+            into "${buildDir}/openshift"
+        }
+    }
+}
+
+task deployQA(dependsOn: buildPackage) {
+    doLast {
+        exec {
+            commandLine "oc", "project", "project-name"
+        }
+        exec {
+            commandLine "oc", "start-build", "${project.name}", "--from-dir", "${buildDir}/openshift", "--follow"
+        }
+        exec {
+            commandLine "oc", "tag", "${project.name}:latest", "${project.name}:${project.version}"
+        }
+    }
+}
+
+task deployProd(dependsOn: buildPackage) {
+    doLast {
+        exec {
+            commandLine "oc", "project", "project-name"
+        }
+        exec {
+            commandLine "oc", "start-build", "${project.name}", "--from-dir", "${buildDir}/openshift", "--follow"
+        }
+        exec {
+            commandLine "oc", "tag", "${project.name}:latest", "${project.name}:${project.version}"
+        }
+    }
+}
