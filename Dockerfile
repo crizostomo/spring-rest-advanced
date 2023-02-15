@@ -4,8 +4,8 @@ WORKDIR /app
 
 ARG JAR_FILE
 
-COPY build/libs/*.jar /app/api.jar
-# COPY build/libs/${JAR_FILE} /app/api.jar
+# COPY build/libs/*.jar /app/api.jar
+COPY build/libs/${JAR_FILE} /app/api.jar
 
 EXPOSE ${PORT}
 

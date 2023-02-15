@@ -12,3 +12,30 @@ services:
 
 volumes:
   beverage_data:
+
+#version: "3.9"
+#
+#networks:
+#  algafood-network:
+#    driver: bridge
+#
+#services:
+#  algafood-mysql:
+#    image: mysql:8.0
+#    environment:
+#      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+#    ports:
+#      - "3306:3306"
+#    networks:
+#      - beverage-network
+#
+#  algafood-api:
+#    image: beverage-api
+#    environment:
+#      DB_HOST: beverage-mysql
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - beverage-network
+#    depends_on:
+#      - beverage-mysql
