@@ -16,11 +16,11 @@ volumes:
 #version: "3.9"
 #
 #networks:
-#  algafood-network:
+#  beverage-network:
 #    driver: bridge
 #
 #services:
-#  algafood-mysql:
+#  beverage-mysql:
 #    image: mysql:8.0
 #    environment:
 #      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
@@ -29,8 +29,9 @@ volumes:
 #    networks:
 #      - beverage-network
 #
-#  algafood-api:
+#  beverage-api:
 #    image: beverage-api
+#    command: ["/wait-for-it.sh", "beverage-mysql:3306", "-t", "30", "--",  "java", "-jar", "api.jar"]
 #    environment:
 #      DB_HOST: beverage-mysql
 #    ports:
