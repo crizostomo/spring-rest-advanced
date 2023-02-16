@@ -42,3 +42,13 @@ volumes:
 #      - beverage-mysql
 #    deploy:
 #      replicas: 2
+
+  beverage-proxy:
+    build: ./nginx
+    image: beverage-proxy
+    ports:
+      - "80:80"
+    networks:
+      - beverage-network
+    depends_on:
+      - beverage-api
