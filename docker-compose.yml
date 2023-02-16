@@ -34,9 +34,11 @@ volumes:
 #    command: ["/wait-for-it.sh", "beverage-mysql:3306", "-t", "30", "--",  "java", "-jar", "api.jar"]
 #    environment:
 #      DB_HOST: beverage-mysql
-#    ports:
-#      - "8080:8080"
+##    ports:
+##      - "8080:8080"
 #    networks:
 #      - beverage-network
 #    depends_on:
 #      - beverage-mysql
+#    deploy:
+#      replicas: 2
