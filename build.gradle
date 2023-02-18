@@ -79,6 +79,10 @@ dependencies {
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
 
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis'
+
+    implementation group: 'org.springframework.session', name: 'spring-session-data-redis'
+
     testImplementation group: 'io.rest-assured', name: 'spring-mock-mvc', version: '5.3.0'
 
     testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.1.1.RELEASE'

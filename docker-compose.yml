@@ -39,6 +39,8 @@ volumes:
 #    command: ["/wait-for-it.sh", "beverage-mysql:3306", "-t", "30", "--",  "java", "-jar", "api.jar"]
 #    environment:
 #      DB_HOST: beverage-mysql
+#      SPRING_SESSION_STORE_TYPE: redis
+#      SPRING_REDIS_HOST: beverage-redis
 ##    ports:
 ##      - "8080:8080"
 #    networks:
