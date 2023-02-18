@@ -29,6 +29,11 @@ volumes:
 #    networks:
 #      - beverage-network
 #
+#  beverage-redis:
+#    image: redis:6.2.1-alpine
+#        networks:
+#          - beverage-network
+#
 #  beverage-api:
 #    image: beverage-api
 #    command: ["/wait-for-it.sh", "beverage-mysql:3306", "-t", "30", "--",  "java", "-jar", "api.jar"]
