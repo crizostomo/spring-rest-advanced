@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -105,6 +106,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         endpoints.authenticationManager(authenticationManager) // It needs this, otherwise the 'password flow' does not work
                 .userDetailsService(userDetailsService)
+                .authorizationCodeServices(new JdbcAuthorizationCodeServices(this.dataSource)) // To store it on db
                 .reuseRefreshTokens(false) // It generates another refresh token
 //                .tokenStore(redisTokenStore())
                 .accessTokenConverter(jwtAccessTokenConverter())
