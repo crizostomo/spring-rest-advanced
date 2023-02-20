@@ -8,6 +8,7 @@ import com.developer.beverageapi.domain.service.PhotoStorageService;
 import com.developer.beverageapi.infrastructure.service.storage.LocalPhotoStorageService;
 import com.developer.beverageapi.infrastructure.service.storage.S3PhotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +19,7 @@ public class LocalStorageAndAmazonS3Config {
     private StorageProperties storageProperties;
 
 //    @Bean
+//    @ConditionalOnProperty(name = "beverage.storage.kind", havingValue = "s3")
 //    public AmazonS3 amazonS3() {
 //        var credentials = new BasicAWSCredentials(
 //                storageProperties.getS3().getIdAccessKey(),

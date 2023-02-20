@@ -1,4 +1,5 @@
 spring:
+#  profiles: local
   flyway:
     locations: classpath:db/migration,classpath:db/testdata
   datasource:
@@ -63,7 +64,7 @@ spring:
 #      max-file-size: 500KB
 
   mail:
-    host: smtp.gmail.com #e-mail-smtp.us-east-1.amazonaws.com
+    host: smtp.sendgrid.net #e-mail-smtp.us-east-1.amazonaws.com
     port: 587
     username: username
     password: password
@@ -73,8 +74,15 @@ spring:
 
 beverage:
   storage:
+#    kind: local
     local:
       photos-directory: /Users/diogo/Documents/Catalog
+#    s3:
+#      access-key-id:
+#      secret-access-key:
+#      bucket: beverage-test
+#      region: us-eat-1
+#      photos-directory: catalog
   jwt:
     keystore:
 #      jks-location: classpath:keys/ignored_beverage.jks
@@ -93,6 +101,40 @@ server:
       region: us-east-1
       photos-directory: catalog
 
+
+  email:
+    recipient: no-reply@test.com.br
+    impl: fake
+#    kind: S3
+#    kind: local
+
+#logging:
+#  loggly:
+#    token=xxxxx-xxxx-xxxx-xxxx-xxxxxxxx
+#  level:
+#    org:
+#      springframework: DEBUG
+---
+spring:
+  profiles: development
+  datasource:
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+
+beverage:
+  storage:
+    kind: local
+    local:
+      photos-directory: /Users/diogo/Documents/Catalog
+    s3:
+      id-access-key: AcCeSs-KeY # Test Purposes
+      key-secret-access: SeCrEt-AcCeSs # Test Purposes
+      bucket: beverage-test
+      region: us-east-1
+      photos-directory: catalog
+
 #    kind: S3
 #    kind: local
 
@@ -100,9 +142,55 @@ server:
     recipient: no-reply@test.com.br
     impl: fake
 
-logging:
-  loggly:
-    token=xxxxx-xxxx-xxxx-xxxx-xxxxxxxx
-#  level:
-#    org:
-#      springframework: DEBUG
+  jwt:
+    keystore:
+      jks-location: base64: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
+      password: 654321
+      keypair-alias: beverage
+
+server:
+  compression:
+    enabled: true
+---
+spring:
+  profiles: production
+#  datasource:
+#    username: root
+#    password: root
+  jpa:
+    show-sql: true
+  session:
+    store-type: redis
+#  redis:
+#    host:
+#    port:
+#    password:
+beverage:
+  storage:
+    kind: s3
+    s3:
+#      id-access-key: AcCeSs-KeY # Test Purposes
+#      key-secret-access: SeCrEt-AcCeSs # Test Purposes
+#      bucket: beverage-test
+#      region: us-east-1
+      photos-directory: catalog
+
+  #    kind: S3
+  #    kind: local
+
+  email:
+#    recipient: no-reply@test.com.br
+    impl: smtp
+#    port: 587
+#    username: username
+#    password: password
+
+#  jwt:
+#    keystore:
+#      jks-location: base64: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
+#      password: 654321
+#      keypair-alias: beverage
+
+server:
+  compression:
+    enabled: true
