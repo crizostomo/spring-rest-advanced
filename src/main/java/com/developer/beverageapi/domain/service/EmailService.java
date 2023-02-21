@@ -20,7 +20,7 @@ public interface EmailService {
         private String subject;
         private String body;
 
-        @Singular
+        @Singular("variable")
         private Map<String, Object> variables;
     }
 }

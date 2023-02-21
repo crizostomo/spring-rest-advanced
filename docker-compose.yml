@@ -7,6 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
+#      - "13306:3306"
     volumes:
       - beverage_data:/var/lib/mysql
 
@@ -41,6 +42,7 @@ volumes:
 #      DB_HOST: beverage-mysql
 #      SPRING_SESSION_STORE_TYPE: redis
 #      SPRING_REDIS_HOST: beverage-redis
+#      SPRING_PROFILES_ACTIVE: development
 ##    ports:
 ##      - "8080:8080"
 #    networks:

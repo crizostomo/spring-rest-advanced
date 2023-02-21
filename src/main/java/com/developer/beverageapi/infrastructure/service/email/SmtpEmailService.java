@@ -3,13 +3,9 @@ package com.developer.beverageapi.infrastructure.service.email;
 import com.developer.beverageapi.core.email.EmailProperties;
 import com.developer.beverageapi.domain.service.EmailService;
 import com.developer.beverageapi.infrastructure.service.storage.StorageException;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -24,7 +20,7 @@ public class SmtpEmailService implements EmailService {
     private EmailProperties emailProperties;
 
     @Autowired
-    private Configuration freemarkerConfig;
+    private EmailTemplateProcessor emailTemplateProcessor;
 
     @Override
     public void send(Message message) {
@@ -38,7 +34,8 @@ public class SmtpEmailService implements EmailService {
     }
 
     protected MimeMessage getMimeMessage(Message message) throws MessagingException {
-        String body = processTemplate(message);
+//        String body = processTemplate(message);
+        String body = emailTemplateProcessor.processTemplate(message);
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
 
@@ -48,15 +45,5 @@ public class SmtpEmailService implements EmailService {
         helper.setSubject(message.getSubject());
         helper.setText(body, true);
         return mimeMessage;
-    }
-
-    protected String processTemplate(Message message) {
-        try {
-            Template template = freemarkerConfig.getTemplate(message.getBody());
-
-            return FreeMarkerTemplateUtils.processTemplateIntoString(template, message.getVariables());
-        } catch (Exception e) {
-            throw new StorageException("It was not possible to build the email template", e);
-        }
     }
 }
