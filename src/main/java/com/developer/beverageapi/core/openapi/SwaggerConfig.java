@@ -21,7 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
+//import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.*;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
@@ -41,7 +41,7 @@ import java.util.List;
 
 @Configuration
 @EnableSwagger2
-@Import(BeanValidatorPluginsConfiguration.class)
+//@Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig implements WebMvcConfigurer {
 
     @Bean
