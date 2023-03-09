@@ -75,6 +75,14 @@ spring:
 springdoc:
   packages-to-scan: com.developer.beverageapi.api
   paths-to-match: /v1/**
+  oAuthFlow:
+    authorizationUrl: http://localhost:8080/oauth/authorize
+    tokenUrl: http://localhost:8080/oauth/token
+  swagger-ui:
+    oauth:
+      client-id: beverage-web
+      client-secret: web123
+      use-pkce-with-authorization-code-grant: true
 
 beverage:
   storage:

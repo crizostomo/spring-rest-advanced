@@ -2,7 +2,9 @@ package com.developer.beverageapi.api.v1.swaggerapi.controller;
 
 import com.developer.beverageapi.api.exceptionHandler.APIError;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+@SecurityRequirement(name = "security_auth")
 @Api(tags = "Orders")
 public interface ControllerOrderStatusOpenApi {
 

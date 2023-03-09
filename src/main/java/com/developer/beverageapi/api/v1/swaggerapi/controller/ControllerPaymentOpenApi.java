@@ -4,10 +4,12 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.v1.model.PaymentModel;
 import com.developer.beverageapi.api.v1.model.input.PaymentInput;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.ServletWebRequest;
 
+@SecurityRequirement(name = "security_auth")
 @Api(tags = "Payments")
 public interface ControllerPaymentOpenApi {
 

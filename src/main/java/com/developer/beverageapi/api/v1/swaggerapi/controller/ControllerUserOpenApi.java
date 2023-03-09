@@ -6,8 +6,10 @@ import com.developer.beverageapi.api.v1.model.input.UserPasswordInput;
 import com.developer.beverageapi.api.v1.model.input.UserWithPasswordInput;
 import com.developer.beverageapi.api.v1.model.input.UserWithoutPasswordInput;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 
+@SecurityRequirement(name = "security_auth")
 @Api(tags = "Users")
 public interface ControllerUserOpenApi {
 

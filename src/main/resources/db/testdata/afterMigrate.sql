@@ -176,7 +176,7 @@ insert into oauth_client_details (
 )
 values (
   'beverage-web', null, '$2a$12$CKD6mNvI74MOLsNAKA4e1.KvPEC2kNo0OyYuEpreRzoXJ3lDVfK8e',
-  'READ,WRITE', 'password', null, null,
+  'READ,WRITE', 'password,authorization_code', 'http://localhost:8080,http://localhost:8080/swagger-ui/oauth2-redirect.html', null,
   60 * 60 * 6, 60 * 24 * 60 * 60, null
 );
 

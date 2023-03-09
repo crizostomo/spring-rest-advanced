@@ -4,10 +4,12 @@ import com.developer.beverageapi.api.v1.controller.ControllerStatistics.Statisti
 import com.developer.beverageapi.api.v1.model.dto.DailySale;
 import com.developer.beverageapi.domain.filter.DailySaleFilter;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+@SecurityRequirement(name = "security_auth")
 @Api(tags = "Statistics")
 public interface ControllerStatisticsOpenApi {
 

@@ -4,8 +4,10 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.v1.model.GroupModel;
 import com.developer.beverageapi.api.v1.model.input.GroupInput;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 
+@SecurityRequirement(name = "security_auth")
 @Api(tags = "Groups")
 public interface ControllerGroupOpenApi {
 
