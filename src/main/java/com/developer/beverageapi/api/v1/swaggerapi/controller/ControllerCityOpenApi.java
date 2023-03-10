@@ -5,6 +5,8 @@ import com.developer.beverageapi.api.v1.model.CityModel;
 import com.developer.beverageapi.api.v1.model.input.CityInput;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
@@ -22,14 +24,14 @@ public interface ControllerCityOpenApi {
             @ApiResponse(code = 400, message = "City id invalid", response = APIError.class),
             @ApiResponse(code = 404, message = "City not found", response = APIError.class)
     })
-    public CityModel search(@ApiParam(value = "City Id", example = "1", required = true)
+    public CityModel search(@Parameter(description = "City Id", example = "1", required = true)
                                         Long cityId);
 
     @Operation(summary = "It records a city")
     @ApiResponses({
             @ApiResponse(code = 201, message = "City created")
     })
-    public CityModel add(@ApiParam(name = "body", value = "City Representation", required = true)
+    public CityModel add(@RequestBody(description = "City Representation", required = true)
                          CityInput cityInput);
 
     @Operation(summary = "It updates a city by id")
@@ -37,8 +39,8 @@ public interface ControllerCityOpenApi {
             @ApiResponse(code = 200, message = "City updated"),
             @ApiResponse(code = 404, message = "City not found", response = APIError.class)
     })
-    public CityModel update(@ApiParam(value = "City Id", example = "1", required = true) Long cityId,
-                            @ApiParam(name = "body", value = "City Representation with new data")
+    public CityModel update(@Parameter(description = "City Id", example = "1", required = true) Long cityId,
+                            @RequestBody(description = "City Representation with new data", required = true)
                             CityInput cityInput);
 
 
