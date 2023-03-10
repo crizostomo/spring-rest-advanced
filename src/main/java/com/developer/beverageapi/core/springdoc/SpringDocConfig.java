@@ -9,8 +9,14 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
+import io.swagger.v3.oas.models.tags.Tag;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Arrays;
 
 @Configuration
 @SecurityScheme(name = "security_auth",
@@ -37,6 +43,31 @@ public class SpringDocConfig {
                                 .url("http://springdoc.com")))
                 .externalDocs(new ExternalDocumentation()
                         .description("External Documentation for Beverage API")
-                        .url("https://springdoc.com"));
+                        .url("https://springdoc.com"))
+//                .tags(Arrays.asList(
+//                        new Tag().name("Cities").description("It runs Citiies")))
+                ;
+    }
+
+    @Bean
+    public OpenApiCustomiser openApiCustomiser() {
+        return openApi -> {
+            openApi.getPaths()
+                    .values()
+                    .stream()
+                    .flatMap(pathItem -> pathItem.readOperations().stream())
+                    .forEach(operation -> {
+                        ApiResponses responses = operation.getResponses();
+
+                        ApiResponse apiNotFound = new ApiResponse().description("Resource not found");
+                        ApiResponse apiWithoutRepresentation = new ApiResponse().description("Resource does not have a " +
+                                "representation that can be accepted by the customer");
+                        ApiResponse apiResponseInternalError = new ApiResponse().description("Internal server error");
+
+                        responses.addApiResponse("500", apiResponseInternalError);
+                        responses.addApiResponse("404", apiNotFound);
+                        responses.addApiResponse("406", apiWithoutRepresentation);
+                    });
+        };
     }
 }

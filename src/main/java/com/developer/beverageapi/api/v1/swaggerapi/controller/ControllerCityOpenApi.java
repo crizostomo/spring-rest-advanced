@@ -3,7 +3,9 @@ package com.developer.beverageapi.api.v1.swaggerapi.controller;
 import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.v1.model.CityModel;
 import com.developer.beverageapi.api.v1.model.input.CityInput;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -13,7 +15,6 @@ import org.springframework.hateoas.CollectionModel;
 
 @SecurityRequirement(name = "security_auth")
 @Tag(name = "Cities", description = "It runs cities")
-//@Api(tags = "Cities")
 public interface ControllerCityOpenApi {
 
     @Operation(summary = "List cities")
