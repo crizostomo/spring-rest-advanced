@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,20 +22,22 @@ public interface ControllerCityOpenApi {
     @Operation(summary = "List cities")
     public CollectionModel<CityModel> list();
 
-    @Operation(summary = "Search a city by id", description = "The record of a city needs a state and a valid name")
-    @ApiResponses({
-            @ApiResponse(code = 400, message = "City id invalid", response = APIError.class),
-            @ApiResponse(code = 404, message = "City not found", response = APIError.class)
+    @Operation(summary = "Search a city by id", description = "The record of a city needs a state and a valid name", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400",
+                    description = "City id invalid",
+                    content = @Content(schema = @Schema)),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "City not found")
     })
     public CityModel search(@Parameter(description = "City Id", example = "1", required = true)
-                                        Long cityId);
+                                    Long cityId);
 
     @Operation(summary = "It records a city")
     @ApiResponses({
             @ApiResponse(code = 201, message = "City created")
     })
     public CityModel add(@RequestBody(description = "City Representation", required = true)
-                         CityInput cityInput);
+                                 CityInput cityInput);
 
     @Operation(summary = "It updates a city by id")
     @ApiResponses({
@@ -42,7 +46,7 @@ public interface ControllerCityOpenApi {
     })
     public CityModel update(@Parameter(description = "City Id", example = "1", required = true) Long cityId,
                             @RequestBody(description = "City Representation with new data", required = true)
-                            CityInput cityInput);
+                                    CityInput cityInput);
 
 
     @Operation(summary = "It deletes a city by id")
@@ -51,5 +55,5 @@ public interface ControllerCityOpenApi {
             @ApiResponse(code = 404, message = "City not found", response = APIError.class)
     })
     public void delete(@ApiParam(value = "City Id", example = "1", required = true)
-                       Long cityId);
+                               Long cityId);
 }
