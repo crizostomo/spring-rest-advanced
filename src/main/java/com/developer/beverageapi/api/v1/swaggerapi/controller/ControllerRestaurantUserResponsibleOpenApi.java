@@ -4,11 +4,13 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.v1.model.UserModel;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "Restaurants")
+@Tag(name = "Restaurants", description = "It runs restaurants")
+//@Api(tags = "Restaurants")
 public interface ControllerRestaurantUserResponsibleOpenApi {
 
     @ApiOperation(value = "It lists the users associated to a restaurant")

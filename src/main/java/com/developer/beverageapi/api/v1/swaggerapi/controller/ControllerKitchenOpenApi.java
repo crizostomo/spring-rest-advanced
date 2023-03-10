@@ -5,11 +5,13 @@ import com.developer.beverageapi.api.v1.model.KitchenModel;
 import com.developer.beverageapi.api.v1.model.input.KitchenInput;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "Kitchens")
+@Tag(name = "Kitchens", description = "It runs kitchens")
+//@Api(tags = "Kitchens")
 public interface ControllerKitchenOpenApi {
 
     @ApiOperation(value = "List the Kitchens with pagination")

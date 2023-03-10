@@ -3,9 +3,11 @@ package com.developer.beverageapi.api.v1.swaggerapi.controller;
 import com.developer.beverageapi.api.exceptionHandler.APIError;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "Orders")
+@Tag(name = "Orders", description = "It runs orders")
+//@Api(tags = "Orders")
 public interface ControllerOrderStatusOpenApi {
 
     @ApiOperation(value = "Order Confirmation")

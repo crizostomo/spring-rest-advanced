@@ -4,11 +4,13 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.v1.model.GroupModel;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "Users")
+@Tag(name = "Users", description = "It runs users")
+//@Api(tags = "Users")
 public interface ControllerUserGroupOpenApi {
 
     @ApiOperation(value = "List the groups associated to a user")

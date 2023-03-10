@@ -5,10 +5,12 @@ import com.developer.beverageapi.api.v1.model.CityModel;
 import com.developer.beverageapi.api.v1.model.input.CityInput;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "Cities")
+@Tag(name = "Cities", description = "It runs cities")
+//@Api(tags = "Cities")
 public interface ControllerCityOpenApi {
 
     @ApiOperation(value = "List cities")

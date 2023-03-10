@@ -7,6 +7,7 @@ import com.developer.beverageapi.api.v1.model.input.OrderInput;
 import com.developer.beverageapi.domain.filter.OrderFilter;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
@@ -14,7 +15,8 @@ import org.springframework.hateoas.PagedModel;
 import java.util.List;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "Orders")
+@Tag(name = "Orders", description = "It runs orders")
+//@Api(tags = "Orders")
 public interface ControllerOrderOpenApi {
 
     @ApiOperation(value = "List orders")

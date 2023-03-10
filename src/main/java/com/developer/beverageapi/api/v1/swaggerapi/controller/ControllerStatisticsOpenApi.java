@@ -5,12 +5,14 @@ import com.developer.beverageapi.api.v1.model.dto.DailySale;
 import com.developer.beverageapi.domain.filter.DailySaleFilter;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "Statistics")
+@Tag(name = "Statistics", description = "It runs statistics")
+//@Api(tags = "Statistics")
 public interface ControllerStatisticsOpenApi {
 
     @ApiOperation(value = "Statistics", hidden = true)

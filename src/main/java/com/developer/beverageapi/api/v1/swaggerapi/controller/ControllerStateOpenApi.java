@@ -5,10 +5,12 @@ import com.developer.beverageapi.api.v1.model.StateModel;
 import com.developer.beverageapi.api.v1.model.input.StateInput;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "States")
+@Tag(name = "States", description = "It runs states")
+//@Api(tags = "States")
 public interface ControllerStateOpenApi {
 
     @ApiOperation(value = "List states")

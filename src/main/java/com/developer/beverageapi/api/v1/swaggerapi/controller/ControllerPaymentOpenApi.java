@@ -5,12 +5,14 @@ import com.developer.beverageapi.api.v1.model.PaymentModel;
 import com.developer.beverageapi.api.v1.model.input.PaymentInput;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.ServletWebRequest;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "Payments")
+@Tag(name = "Payments", description = "It runs payments")
+//@Api(tags = "Payments")
 public interface ControllerPaymentOpenApi {
 
     @ApiOperation(value = "List payments")

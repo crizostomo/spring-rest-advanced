@@ -7,6 +7,7 @@ import com.developer.beverageapi.api.v1.model.input.ProductInput;
 import com.developer.beverageapi.api.v1.model.input.ProductPhotoInput;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @SecurityRequirement(name = "security_auth")
+@Tag(name = "Products", description = "It runs products")
 @Api(tags = "Products")
 public interface ControllerRestaurantProductOpenApi {
 

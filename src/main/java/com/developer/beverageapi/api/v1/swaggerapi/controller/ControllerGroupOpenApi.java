@@ -5,10 +5,12 @@ import com.developer.beverageapi.api.v1.model.GroupModel;
 import com.developer.beverageapi.api.v1.model.input.GroupInput;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "Groups")
+@Tag(name = "Groups", description = "It runs the users groups")
+//@Api(tags = "Groups")
 public interface ControllerGroupOpenApi {
 
     @ApiOperation(value = "List Groups")

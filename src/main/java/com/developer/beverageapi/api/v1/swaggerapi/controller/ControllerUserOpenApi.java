@@ -7,10 +7,12 @@ import com.developer.beverageapi.api.v1.model.input.UserWithPasswordInput;
 import com.developer.beverageapi.api.v1.model.input.UserWithoutPasswordInput;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
 @SecurityRequirement(name = "security_auth")
-@Api(tags = "Users")
+@Tag(name = "Users", description = "It runs users")
+//@Api(tags = "Users")
 public interface ControllerUserOpenApi {
 
     @ApiOperation(value = "List the users")
