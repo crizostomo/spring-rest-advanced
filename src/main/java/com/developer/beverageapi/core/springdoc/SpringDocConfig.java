@@ -54,20 +54,51 @@ public class SpringDocConfig {
         return openApi -> {
             openApi.getPaths()
                     .values()
-                    .stream()
-                    .flatMap(pathItem -> pathItem.readOperations().stream())
-                    .forEach(operation -> {
-                        ApiResponses responses = operation.getResponses();
-
-                        ApiResponse apiNotFound = new ApiResponse().description("Resource not found");
-                        ApiResponse apiWithoutRepresentation = new ApiResponse().description("Resource does not have a " +
-                                "representation that can be accepted by the customer");
-                        ApiResponse apiResponseInternalError = new ApiResponse().description("Internal server error");
-
-                        responses.addApiResponse("500", apiResponseInternalError);
-                        responses.addApiResponse("404", apiNotFound);
-                        responses.addApiResponse("406", apiWithoutRepresentation);
-                    });
+                    .forEach(pathItem -> pathItem.readOperationsMap()
+                            .forEach((httpMethod, operation) -> {
+                                ApiResponses responses = operation.getResponses();
+                                switch (httpMethod) {
+                                    case GET:
+                                        responses.addApiResponse("404", new ApiResponse().description("Resource not found"));
+                                        responses.addApiResponse("406", new ApiResponse()
+                                                .description("Resource does not have a representation that can be accepted by the customer"));
+                                        responses.addApiResponse("500", new ApiResponse().description("Internal server error"));
+                                        break;
+                                    case POST:
+                                        responses.addApiResponse("400", new ApiResponse().description("Invalid request"));
+                                        responses.addApiResponse("500", new ApiResponse().description("Internal server error"));
+                                        break;
+                                    case PUT:
+                                        responses.addApiResponse("404", new ApiResponse().description("Resource not found"));
+                                        responses.addApiResponse("400", new ApiResponse().description("Invalid request"));
+                                        responses.addApiResponse("500", new ApiResponse().description("Internal server error"));
+                                        break;
+                                    case DELETE:
+                                        responses.addApiResponse("404", new ApiResponse().description("Resource not found"));
+                                        responses.addApiResponse("500", new ApiResponse().description("Internal server error"));
+                                        break;
+                                    default:
+                                        responses.addApiResponse("500", new ApiResponse().description("Internal server error"));
+                                        break;
+                                }
+                            }));
+            /**
+             * Below is another way to define status code responses
+             */
+//                    .stream()
+//                    .flatMap(pathItem -> pathItem.readOperations().stream())
+//                    .forEach(operation -> {
+//                        ApiResponses responses = operation.getResponses();
+//
+//                        ApiResponse apiNotFound = new ApiResponse().description("Resource not found");
+//                        ApiResponse apiWithoutRepresentation = new ApiResponse().description("Resource does not have a " +
+//                                "representation that can be accepted by the customer");
+//                        ApiResponse apiResponseInternalError = new ApiResponse().description("Internal server error");
+//
+//                        responses.addApiResponse("500", apiResponseInternalError);
+//                        responses.addApiResponse("404", apiNotFound);
+//                        responses.addApiResponse("406", apiWithoutRepresentation);
+//                    });
         };
     }
 }
