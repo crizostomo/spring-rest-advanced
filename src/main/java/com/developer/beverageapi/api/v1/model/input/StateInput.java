@@ -1,6 +1,6 @@
 package com.developer.beverageapi.api.v1.model.input;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class StateInput {
 
-    @ApiModelProperty(example = "Sao Paulo", required = true)
+    @Schema(example = "Sao Paulo", required = true)
     @NotBlank
     private String name;
 }
