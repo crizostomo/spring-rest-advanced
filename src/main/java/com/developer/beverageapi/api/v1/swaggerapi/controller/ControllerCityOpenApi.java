@@ -26,7 +26,7 @@ public interface ControllerCityOpenApi {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400",
                     description = "City id invalid",
-                    content = @Content(schema = @Schema)),
+                    content = @Content(schema = @Schema(ref = "APIError"))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "City not found")
     })
     public CityModel search(@Parameter(description = "City Id", example = "1", required = true)

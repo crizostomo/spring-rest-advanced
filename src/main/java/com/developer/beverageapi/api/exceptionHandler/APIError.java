@@ -1,8 +1,7 @@
 package com.developer.beverageapi.api.exceptionHandler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,37 +11,38 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Builder
+@Schema(name = "APIError")
 public class APIError {
 
-    @ApiModelProperty(example = "400")
+    @Schema(example = "400")
     private Integer status;
 
-    @ApiModelProperty(example = "https://toogle.com.br/invalid-data")
+    @Schema(example = "https://toogle.com.br/invalid-data")
     private String type;
 
-    @ApiModelProperty(example = "Invalid data")
+    @Schema(example = "Invalid data")
     private String title;
 
-    @ApiModelProperty(example = "One or more fields are invalid")
+    @Schema(example = "One or more fields are invalid")
     private String detail;
 
     private String userMessage;
 
-    @ApiModelProperty(example = "2022-11-01T10:33:02.70844Z")
+    @Schema(example = "2022-11-01T10:33:02.70844Z")
     private OffsetDateTime timestamp;
 
-    @ApiModelProperty(example = "Objects or fields that generated the error (optional)")
+    @Schema(example = "Objects or fields that generated the error (optional)")
     private List<Object> objects;
 
-    @ApiModel("ProblemObj")
+    @Schema(name = "ProblemObj")
     @Getter
     @Builder
     public static class Object {
 
-        @ApiModelProperty(example = "Price")
+        @Schema(example = "Price")
         private String name;
 
-        @ApiModelProperty(example = "Price is mandatory")
+        @Schema(example = "Price is mandatory")
         private String userMessage;
     }
 }

@@ -1,14 +1,18 @@
 package com.developer.beverageapi.core.springdoc;
 
+import com.developer.beverageapi.api.exceptionHandler.APIError;
+import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
 import io.swagger.v3.oas.annotations.security.OAuthFlows;
 import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
@@ -17,6 +21,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @SecurityScheme(name = "security_auth",
@@ -46,7 +52,21 @@ public class SpringDocConfig {
                         .url("https://springdoc.com"))
 //                .tags(Arrays.asList(
 //                        new Tag().name("Cities").description("It runs Citiies")))
-                ;
+                .components(new Components().schemas(
+                    generateSchemas()
+                ));
+    }
+
+    private Map<String, Schema> generateSchemas() {
+        final Map<String, Schema> schemaMap = new HashMap<>();
+
+        Map<String, Schema> schemaMapAPIError = ModelConverters.getInstance().read(APIError.class);
+        Map<String, Schema> schemaObjError = ModelConverters.getInstance().read(APIError.Object.class);
+
+        schemaMap.putAll(schemaMapAPIError);
+        schemaMap.putAll(schemaObjError);
+
+        return schemaMap;
     }
 
     @Bean
