@@ -12,15 +12,15 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +36,11 @@ import java.util.Map;
                 }
         )))
 public class SpringDocConfig {
+
+    private static final String resourceNotFound = "ResourceNotFound";
+    private static final String badRequestResponse = "BadRequestResponse";
+    private static final String internalServerError = "InternalServerError";
+    private static final String resourceWithoutRepresentation = "ResourceWithoutRepresentation";
 
     @Bean
     public OpenAPI openAPI() {
@@ -53,8 +58,28 @@ public class SpringDocConfig {
 //                .tags(Arrays.asList(
 //                        new Tag().name("Cities").description("It runs Citiies")))
                 .components(new Components().schemas(
-                    generateSchemas()
-                ));
+                    generateSchemas())
+                        .responses(generateResponses()));
+    }
+
+    private Map<String, ApiResponse> generateResponses() {
+
+        Map<String, ApiResponse> apiResponseMap = new HashMap<>();
+
+        Content content = new Content()
+                .addMediaType(MediaType.APPLICATION_JSON_VALUE,
+                        new io.swagger.v3.oas.models.media.MediaType().schema(new Schema<APIError>().$ref("APIError")));
+
+        apiResponseMap.put(badRequestResponse, new ApiResponse().description("Invalid request").content(content));
+
+        apiResponseMap.put(resourceNotFound, new ApiResponse().description("Resource not found").content(content));
+
+        apiResponseMap.put(internalServerError, new ApiResponse().description("Internal server error").content(content));
+
+        apiResponseMap.put(resourceWithoutRepresentation, new ApiResponse()
+                .description("Resource does not have a representation that can be accepted by the customer").content(content));
+
+        return apiResponseMap;
     }
 
     private Map<String, Schema> generateSchemas() {
@@ -79,26 +104,22 @@ public class SpringDocConfig {
                                 ApiResponses responses = operation.getResponses();
                                 switch (httpMethod) {
                                     case GET:
-                                        responses.addApiResponse("404", new ApiResponse().description("Resource not found"));
-                                        responses.addApiResponse("406", new ApiResponse()
-                                                .description("Resource does not have a representation that can be accepted by the customer"));
-                                        responses.addApiResponse("500", new ApiResponse().description("Internal server error"));
+                                        responses.addApiResponse("406", new ApiResponse().$ref(resourceWithoutRepresentation));
+                                        responses.addApiResponse("500", new ApiResponse().$ref(internalServerError));
                                         break;
                                     case POST:
-                                        responses.addApiResponse("400", new ApiResponse().description("Invalid request"));
-                                        responses.addApiResponse("500", new ApiResponse().description("Internal server error"));
+                                        responses.addApiResponse("400", new ApiResponse().$ref(badRequestResponse));
+                                        responses.addApiResponse("500", new ApiResponse().$ref(internalServerError));
                                         break;
                                     case PUT:
-                                        responses.addApiResponse("404", new ApiResponse().description("Resource not found"));
-                                        responses.addApiResponse("400", new ApiResponse().description("Invalid request"));
-                                        responses.addApiResponse("500", new ApiResponse().description("Internal server error"));
+                                        responses.addApiResponse("400", new ApiResponse().$ref(badRequestResponse));
+                                        responses.addApiResponse("500", new ApiResponse().$ref(internalServerError));
                                         break;
                                     case DELETE:
-                                        responses.addApiResponse("404", new ApiResponse().description("Resource not found"));
-                                        responses.addApiResponse("500", new ApiResponse().description("Internal server error"));
+                                        responses.addApiResponse("500", new ApiResponse().$ref(internalServerError));
                                         break;
                                     default:
-                                        responses.addApiResponse("500", new ApiResponse().description("Internal server error"));
+                                        responses.addApiResponse("500", new ApiResponse().$ref(internalServerError));
                                         break;
                                 }
                             }));

@@ -1,6 +1,5 @@
 package com.developer.beverageapi.api.v1.swaggerapi.controller;
 
-import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.v1.model.CityModel;
 import com.developer.beverageapi.api.v1.model.input.CityInput;
 import io.swagger.annotations.ApiParam;
@@ -39,20 +38,19 @@ public interface ControllerCityOpenApi {
     public CityModel add(@RequestBody(description = "City Representation", required = true)
                                  CityInput cityInput);
 
-    @Operation(summary = "It updates a city by id")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "City updated"),
-            @ApiResponse(code = 404, message = "City not found", response = APIError.class)
+    @Operation(summary = "It updates a city by id", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "City updated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "City not found",
+                    content = @Content(schema = @Schema(ref = "APIError")))
     })
     public CityModel update(@Parameter(description = "City Id", example = "1", required = true) Long cityId,
                             @RequestBody(description = "City Representation with new data", required = true)
                                     CityInput cityInput);
 
-
-    @Operation(summary = "It deletes a city by id")
-    @ApiResponses({
-            @ApiResponse(code = 204, message = "City deleted"),
-            @ApiResponse(code = 404, message = "City not found", response = APIError.class)
+    @Operation(summary = "It deletes a city by id", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "City deleted"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "City not found",
+                    content = @Content(schema = @Schema(ref = "APIError")))
     })
     public void delete(@ApiParam(value = "City Id", example = "1", required = true)
                                Long cityId);
