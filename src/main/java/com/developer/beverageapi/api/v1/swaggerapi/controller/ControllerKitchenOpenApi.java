@@ -1,9 +1,15 @@
 package com.developer.beverageapi.api.v1.swaggerapi.controller;
 
-import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.v1.model.KitchenModel;
 import com.developer.beverageapi.api.v1.model.input.KitchenInput;
-import io.swagger.annotations.*;
+import com.developer.beverageapi.core.springdoc.PageableParameter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
@@ -11,42 +17,40 @@ import org.springframework.hateoas.PagedModel;
 
 @SecurityRequirement(name = "security_auth")
 @Tag(name = "Kitchens", description = "It runs kitchens")
-//@Api(tags = "Kitchens")
 public interface ControllerKitchenOpenApi {
 
-    @ApiOperation(value = "List the Kitchens with pagination")
-    public PagedModel<KitchenModel> list(Pageable pageable);
+    @Operation(summary = "List the Kitchens with pagination")
+    @PageableParameter
+    public PagedModel<KitchenModel> list(@Parameter(hidden = true) Pageable pageable);
 
-    @ApiOperation(value = "Search a kitchen by id")
-    @ApiResponses({
-            @ApiResponse(code = 400, message = "Kitchen id invalid", response = APIError.class),
-            @ApiResponse(code = 404, message = "Kitchen not found", response = APIError.class)
+    @Operation(summary = "Search a kitchen by id", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400",
+                    description = "Kitchen id invalid",
+                    content = @Content(schema = @Schema(ref = "APIError"))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Kitchen not found")
     })
-    public KitchenModel search(@ApiParam(value = "Kitchen Id", example = "1", required = true)
+    public KitchenModel search(@Parameter(description = "Kitchen Id", example = "1", required = true)
                                         Long kitchenId);
 
-    @ApiOperation(value = "It records a kitchen")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "Kitchen created")
+    @Operation(summary = "It records a kitchen", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Kitchen created"),
     })
-    public KitchenModel add(@ApiParam(name = "body", value = "Kitchen Representation", required = true)
+    public KitchenModel add(@RequestBody(description = "Kitchen Representation", required = true)
                                     KitchenInput kitchenInput);
 
-    @ApiOperation(value = "It updates a kitchen by id")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Kitchen updated"),
-            @ApiResponse(code = 404, message = "Kitchen not found", response = APIError.class)
+    @Operation(summary = "It updates a kitchen by id", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Kitchen updated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Kitchen not found")
     })
-    public KitchenModel update(@ApiParam(value = "Kitchen Id", example = "1", required = true) Long kitchenId,
-                            @ApiParam(name = "body", value = "Kitchen Representation with new data")
+    public KitchenModel update(@Parameter(description = "Kitchen Id", example = "1", required = true) Long kitchenId,
+                            @RequestBody(description = "Kitchen Representation with new data")
                                     KitchenInput kitchenInput);
 
-
-    @ApiOperation(value = "It deletes a kitchen by id")
-    @ApiResponses({
-            @ApiResponse(code = 204, message = "Kitchen deleted"),
-            @ApiResponse(code = 404, message = "Kitchen not found", response = APIError.class)
+    @Operation(summary = "It deletes a kitchen by id", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Kitchen deleted"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Kitchen not found")
     })
-    public void delete(@ApiParam(value = "Kitchen Id", example = "1", required = true)
+    public void delete(@Parameter(description = "Kitchen Id", example = "1", required = true)
                        Long kitchenId);
 }
