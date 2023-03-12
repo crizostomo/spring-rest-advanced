@@ -4,6 +4,9 @@ import com.developer.beverageapi.api.exceptionHandler.APIError;
 import com.developer.beverageapi.api.v1.model.RestaurantModel;
 import com.developer.beverageapi.api.v1.model.input.RestaurantInput;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
@@ -13,13 +16,18 @@ import java.util.List;
 
 @SecurityRequirement(name = "security_auth")
 @Tag(name = "Restaurants", description = "It runs restaurants")
-//@Api(tags = "Restaurants")
 public interface ControllerRestaurantOpenApi {
 
-    @ApiOperation(value = "List Restaurants")
+    @Operation(summary = "List Restaurants", parameters = {
+            @Parameter(name = "projection",
+                    description = "Projection's name",
+                    example = "summary",
+                    in = ParameterIn.QUERY,
+                    required = false)
+    })
     public CollectionModel<RestaurantModel> list();
 
-    @ApiOperation(value = "List Restaurants Summarized")
+    @Operation(summary = "List Restaurants Summarized", hidden = true)
 //    @JsonView(RestaurantView.Summary.class)
     public CollectionModel<RestaurantModel> listSummary();
 
@@ -29,7 +37,7 @@ public interface ControllerRestaurantOpenApi {
             @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
     })
     public RestaurantModel search(@ApiParam(value = "Restaurant Id", example = "1", required = true)
-                                        Long restaurantId);
+                                          Long restaurantId);
 
     @ApiOperation(value = "It records a restaurant")
     @ApiResponses({
@@ -44,8 +52,8 @@ public interface ControllerRestaurantOpenApi {
             @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
     })
     public RestaurantModel update(@ApiParam(value = "Restaurant Id", example = "1", required = true) Long restaurantId,
-                            @ApiParam(name = "body", value = "Restaurant Representation with new data")
-                                    RestaurantInput restaurantInput);
+                                  @ApiParam(name = "body", value = "Restaurant Representation with new data")
+                                          RestaurantInput restaurantInput);
 
     @ApiOperation(value = "It actives a restaurant")
     @ApiResponses({
@@ -53,7 +61,7 @@ public interface ControllerRestaurantOpenApi {
             @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
     })
     public ResponseEntity<Void> active(@ApiParam(value = "Restaurant Id", example = "1", required = true)
-                       Long restaurantId);
+                                               Long restaurantId);
 
     @ApiOperation(value = "It deactivates a restaurant by id")
     @ApiResponses({
@@ -61,7 +69,7 @@ public interface ControllerRestaurantOpenApi {
             @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
     })
     public ResponseEntity<Void> inactive(@ApiParam(value = "Restaurant Id", example = "1", required = true)
-                       Long restaurantId);
+                                                 Long restaurantId);
 
     @ApiOperation(value = "It activates multiples restaurants")
     @ApiResponses({
@@ -73,7 +81,7 @@ public interface ControllerRestaurantOpenApi {
     @ApiResponses({
             @ApiResponse(code = 204, message = "Restaurants deactivated successfully")})
     public void deactivateMultiples(@ApiParam(name = "Body", value = "Restaurants IDs", required = true)
-                                          List<Long> restaurantId);
+                                            List<Long> restaurantId);
 
     @ApiOperation(value = "It opens a restaurant by id")
     @ApiResponses({
@@ -81,7 +89,7 @@ public interface ControllerRestaurantOpenApi {
             @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
     })
     public ResponseEntity<Void> open(@ApiParam(value = "Restaurant Id", example = "1", required = true)
-                                 Long restaurantId);
+                                             Long restaurantId);
 
     @ApiOperation(value = "It closes a restaurant by id")
     @ApiResponses({
@@ -89,7 +97,7 @@ public interface ControllerRestaurantOpenApi {
             @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
     })
     public ResponseEntity<Void> close(@ApiParam(value = "Restaurant Id", example = "1", required = true)
-                             Long restaurantId);
+                                              Long restaurantId);
 
     @ApiOperation(value = "It deletes a restaurant by id")
     @ApiResponses({
@@ -97,5 +105,5 @@ public interface ControllerRestaurantOpenApi {
             @ApiResponse(code = 404, message = "Restaurant not found", response = APIError.class)
     })
     public void delete(@ApiParam(value = "Restaurant Id", example = "1", required = true)
-                       Long restaurantId);
+                               Long restaurantId);
 }
