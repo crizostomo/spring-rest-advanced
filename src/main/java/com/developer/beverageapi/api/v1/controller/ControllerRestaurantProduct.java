@@ -202,8 +202,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
     @Override()
     @PutMapping(path = "/{productId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPhotoModel updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
-                                         @Valid ProductPhotoInput productPhotoInput,
-                                         @RequestPart(required = true) MultipartFile file) throws IOException {
+                                         @Valid ProductPhotoInput productPhotoInput) throws IOException {
 
 //        var fileName = UUID.randomUUID().toString() + "_" + productPhotoInput.getFile().getOriginalFilename();
 //
@@ -221,7 +220,7 @@ public class ControllerRestaurantProduct implements ControllerRestaurantProductO
 
         Product product = productRegistration.searchOrFail(restaurantId, productId);
 
-//        MultipartFile file = productPhotoInput.getFile();
+        MultipartFile file = productPhotoInput.getFile();
 
         ProductPhoto photo = new ProductPhoto();
         photo.setProduct(product);

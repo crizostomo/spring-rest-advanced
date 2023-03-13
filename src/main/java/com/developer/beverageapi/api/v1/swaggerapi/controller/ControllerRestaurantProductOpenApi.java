@@ -7,8 +7,10 @@ import com.developer.beverageapi.api.v1.model.input.ProductInput;
 import com.developer.beverageapi.api.v1.model.input.ProductPhotoInput;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
@@ -108,22 +110,21 @@ public interface ControllerRestaurantProductOpenApi {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404",
             description = "Restaurant's product not found", content = @Content(schema = @Schema(ref = "APIError")))
     })
-    public ProductPhotoModel updatePhoto(@ApiParam(value = "Restaurant Id", example = "1", required = true)
+    public ProductPhotoModel updatePhoto(@Parameter(description = "Restaurant Id", example = "1", required = true)
                                                  Long restaurantId,
-                                         @ApiParam(value = "Product Id", example = "1", required = true)
+                                         @Parameter(description = "Product Id", example = "1", required = true)
                                                  Long productId,
-                                         ProductPhotoInput productPhotoInput,
-                                         @ApiParam(value = "File of the product photo (max 500KB, only JPG and PNG", required = true)
-                                                     MultipartFile file) throws IOException;
+                                        @RequestBody(required = true) ProductPhotoInput productPhotoInput) throws IOException;
 
-    @ApiOperation(value = "It deletes a product photo of a restaurant")
-    @ApiResponses({
-            @ApiResponse(code = 204, message = "Product photo deleted"),
-            @ApiResponse(code = 400, message = "Restaurant or Product ID invalid", response = APIError.class),
-            @ApiResponse(code = 404, message = "Product photo not found", response = APIError.class)
+    @Operation(summary = "It deletes a product photo of a restaurant", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Product photo deleted"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Restaurant or Product ID invalid",
+            content = @Content(schema = @Schema(ref = "APIError"))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Product photo not found",
+            content = @Content(schema = @Schema(ref = "APIError")))
     })
-    public void deletePhoto(@ApiParam(value = "Restaurant Id", example = "1", required = true)
+    public void deletePhoto(@Parameter(description = "Restaurant Id", example = "1", required = true)
                                     Long restaurantId,
-                            @ApiParam(value = "Product Id", example = "1", required = true)
+                            @Parameter(description = "Product Id", example = "1", required = true)
                                     Long productId);
 }

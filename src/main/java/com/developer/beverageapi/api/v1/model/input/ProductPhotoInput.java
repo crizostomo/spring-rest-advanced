@@ -15,13 +15,13 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class ProductPhotoInput {
 
-    @ApiModelProperty(hidden = true)
+//    @ApiModelProperty(hidden = true)
     @NotNull
     @FileSize(max = "500KB")
     @FileContentType(allowed = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     private MultipartFile file;
 
-    @ApiModelProperty(value = "Product photo description", required = true)
+//    @ApiModelProperty(value = "Product photo description", required = true)
     @NotBlank
     private String description;
 }
