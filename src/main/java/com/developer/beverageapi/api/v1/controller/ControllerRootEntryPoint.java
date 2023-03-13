@@ -2,6 +2,7 @@ package com.developer.beverageapi.api.v1.controller;
 
 import com.developer.beverageapi.api.v1.InstantiateLinks;
 import com.developer.beverageapi.core.security.Security;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
@@ -20,6 +21,7 @@ public class ControllerRootEntryPoint {
     private Security security;
 
     @GetMapping
+    @Operation(hidden = true)
     public RootEntryPointModel root() {
         var rootEntryPointModel = new RootEntryPointModel();
 
