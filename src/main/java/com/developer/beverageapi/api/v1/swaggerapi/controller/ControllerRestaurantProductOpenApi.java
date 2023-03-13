@@ -6,6 +6,9 @@ import com.developer.beverageapi.api.v1.model.ProductPhotoModel;
 import com.developer.beverageapi.api.v1.model.input.ProductInput;
 import com.developer.beverageapi.api.v1.model.input.ProductPhotoInput;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
@@ -93,13 +96,17 @@ public interface ControllerRestaurantProductOpenApi {
                                          @ApiParam(value = "Product ID", example = "1", required = true)
                                                  Long productId);
 
-    @ApiOperation(value = "It searches the photo of a restaurant product", hidden = true)
+    @Operation(summary = "It searches the photo of a restaurant product", hidden = true)
     ResponseEntity<?> getFile(Long restaurantId, Long productId, String acceptHeader) throws HttpMediaTypeNotAcceptableException;
 
-    @ApiOperation(value = "It updates the product photo of a Restaurant")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Product photo updated successfully"),
-            @ApiResponse(code = 404, message = "Restaurant product not found", response = APIError.class)
+    @Operation(summary = "It updates the product photo of a Restaurant", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ProductPhotoModel.class)),
+                    @Content(mediaType = "image/jpeg", schema = @Schema(type = "string", format = "binary")),
+                    @Content(mediaType = "image/png", schema = @Schema(type = "string", format = "binary"))
+            }),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404",
+            description = "Restaurant's product not found", content = @Content(schema = @Schema(ref = "APIError")))
     })
     public ProductPhotoModel updatePhoto(@ApiParam(value = "Restaurant Id", example = "1", required = true)
                                                  Long restaurantId,
