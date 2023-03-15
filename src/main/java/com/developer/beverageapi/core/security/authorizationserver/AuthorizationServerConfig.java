@@ -33,7 +33,7 @@ public class AuthorizationServerConfig {
     @Bean
     public ProviderSettings providerSettings(BeverageSecurityProperties properties) {
         return ProviderSettings.builder()
-                .issuer(properties.getProvideUrl())
+                .issuer(properties.getProviderUrl())
                 .build();
     }
 

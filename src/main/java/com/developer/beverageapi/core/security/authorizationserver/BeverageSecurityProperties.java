@@ -16,5 +16,5 @@ import javax.validation.constraints.NotBlank;
 public class BeverageSecurityProperties {
 
     @NotBlank
-    private String provideUrl;
+    private String providerUrl;
 }
