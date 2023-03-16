@@ -49,7 +49,7 @@ spring:
       resourceserver:
         jwt:
 #          public-key-location: classpath:keys/ignored_beverage-pkey.pem
-          jwk-set-uri: http://localhost:8080/.well-known/jwks.json # If you want to use a URI
+          jwk-set-uri: http://localhost:8080/oauth2/jwks # If you want to use a URI
         opaquetoken:
           introspection-uri: http://localhost:8080/oauth2/introspect
           client-id: beverage-backend
