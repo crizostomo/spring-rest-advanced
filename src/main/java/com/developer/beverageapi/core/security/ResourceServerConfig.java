@@ -36,7 +36,8 @@ public class ResourceServerConfig {
                 .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter()); // To use the access token in all endpoints
 
         return http
-                .formLogin(Customizer.withDefaults())
+//                .formLogin(Customizer.withDefaults())
+                .formLogin(customizer -> customizer.loginPage("/login"))
                 .build();
     }
 
