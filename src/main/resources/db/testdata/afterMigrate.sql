@@ -2,7 +2,7 @@ set foreign_key_checks = 0;
 
 lock tables city write, kitchen write, state write, payment write, `group` write, group_permission write, permission write, product write,
 restaurant write, restaurant_payment write, restaurant_user_responsible write, `user` write, user_group write, `order` write,
-order_item write, product_photo write, oauth_client_details write;
+order_item write, product_photo write, oauth2_registered_client write;
 
 delete from city;
 delete from kitchen;
@@ -20,7 +20,7 @@ delete from user_group;
 delete from `order`;
 delete from order_item;
 delete from product_photo;
-delete from oauth_client_details;
+delete from oauth2_registered_client;
 
 set foreign_key_checks = 1;
 
@@ -169,37 +169,16 @@ values (6, uuid(), 3, 1, 2, 1, '18405-321', 'Santa Catarina Road', '222', null, 
 insert into order_item (id, order_id, product_id, quantity, unit_price, total, observation) values
 (7, 2, 1, 2, 79, 149, 'Extra Bacon');
 
-insert into oauth_client_details (
-  client_id, resource_ids, client_secret,
-  scope, authorized_grant_types, web_server_redirect_uri, authorities,
-  access_token_validity, refresh_token_validity, autoapprove
-)
-values (
-  'beverage-web', null, '$2a$12$CKD6mNvI74MOLsNAKA4e1.KvPEC2kNo0OyYuEpreRzoXJ3lDVfK8e',
-  'READ,WRITE', 'password,authorization_code', 'http://localhost:8080,http://localhost:8080/swagger-ui/oauth2-redirect.html', null,
-  60 * 60 * 6, 60 * 24 * 60 * 60, null
-);
+INSERT INTO oauth2_registered_client
+(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+VALUES('1', 'beverage-backend', '2022-08-16 19:04:12', '$2a$12$MubElee3MTE.d8ROxA3Pnu4OPPxWelVPjMS9hB1sd117z7y7Y5ob6', NULL, '1', 'client_secret_basic', 'client_credentials', '', 'READ', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":false}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",1800.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
 
-insert into oauth_client_details (
-  client_id, resource_ids, client_secret,
-  scope, authorized_grant_types, web_server_redirect_uri, authorities,
-  access_token_validity, refresh_token_validity, autoapprove
-)
-values (
-  'beverage-analytics', null, '$2a$12$CKD6mNvI74MOLsNAKA4e1.KvPEC2kNo0OyYuEpreRzoXJ3lDVfK8e',
-  'READ,WRITE', 'authorization_code', 'http://www.beverage-analytics.local:8082', null,
-  null, null, false
-);
+INSERT INTO oauth2_registered_client
+(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+VALUES('2', 'beverage-web', '2022-08-16 19:04:12', '$2a$12$1hHshqcRrLUiPnwmEJypQusTfLT123z4qtfoBwLv7JdAMfEDvMGJi', NULL, '2', 'client_secret_basic', 'refresh_token,authorization_code', 'http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html,http://127.0.0.1:8080/authorized', 'READ,WRITE', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":false,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",900.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",86400.000000000]}');
 
-insert into oauth_client_details (
-  client_id, resource_ids, client_secret,
-  scope, authorized_grant_types, web_server_redirect_uri, authorities,
-  access_token_validity, refresh_token_validity, autoapprove
-)
-values (
-  'invoice', null, '$2a$12$CKD6mNvI74MOLsNAKA4e1.KvPEC2kNo0OyYuEpreRzoXJ3lDVfK8e',
-  'READ,WRITE', 'client_credentials', null, 'CONSULT_ORDERS,GENERATE_REPORTS',
-  null, null, null
-);
+INSERT INTO oauth2_registered_client
+(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+VALUES('3', 'beverageAnalytics', '2022-08-16 19:04:12', '$2a$12$1hHshqcRrLUiPnwmEJypQusTfLT123z4qtfoBwLv7JdAMfEDvMGJi', NULL, '3', 'client_secret_basic', 'authorization_code', 'http://www.beverageanalytics.local:8082', 'READ,WRITE', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":false}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",1800.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
 
 unlock tables;

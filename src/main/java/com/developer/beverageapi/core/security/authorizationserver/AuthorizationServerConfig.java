@@ -26,6 +26,7 @@ import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
@@ -63,8 +64,11 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
+    public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder,
+                                                                 JdbcOperations jdbcOperations) {
 
+        /**
+         * It was commented the lines below because this data will be inserted via afterMigrate
         RegisteredClient beverageBackEnd = RegisteredClient
                 .withId("1")
                 .clientId("beverage-backend")
@@ -118,8 +122,19 @@ public class AuthorizationServerConfig {
                         .requireAuthorizationConsent(false)
                         .build())
                 .build();
+         */
 
-        return new InMemoryRegisteredClientRepository(Arrays.asList(beverageBackEnd, beverageWeb, beverageAnalytics));
+//        return new InMemoryRegisteredClientRepository(Arrays.asList(beverageBackEnd, beverageWeb, beverageAnalytics));
+        JdbcRegisteredClientRepository repository = new JdbcRegisteredClientRepository(jdbcOperations);
+
+        /**
+         * It was commented the lines below because this data will be inserted via afterMigrate
+        repository.save(beverageBackEnd);
+        repository.save(beverageWeb);
+        repository.save(beverageAnalytics);
+         */
+
+        return repository;
     }
 
     @Bean
