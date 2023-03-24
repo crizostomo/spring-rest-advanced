@@ -16,14 +16,16 @@ import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
-public class AuthorizationConsentController {
+public class AuthorizationConsentAndClientsController {
 
     private final RegisteredClientRepository registeredClientRepository;
     private final OAuth2AuthorizationConsentService consentService;
+    private final OAuth2AuthorizationQueryService oAuth2AuthorizationQueryService;
 
     @GetMapping("/oauth2/consent")
     public String consent(
@@ -60,4 +62,13 @@ public class AuthorizationConsentController {
 
         return "pages/approval";
     }
+
+    @GetMapping("/oauth2/authorized-clients")
+    public String clientsList(Principal principal, Model model) {
+        List<RegisteredClient> clients = oAuth2AuthorizationQueryService.registeredClientListWithConsent(principal.getName());
+
+        model.addAttribute("clients", clients);
+        return "pages/authorized-clients";
+    }
+
 }
